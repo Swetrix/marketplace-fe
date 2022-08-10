@@ -6,6 +6,7 @@ function App() {
     <div className='App'>
       <header className='App-header'>
         <img src={logo} className='App-logo' alt='logo' />
+        <p className='text-2xl font-extrabold text-blue-800'>tailwindcss</p>
         <p>
           Edit
           {' '}
