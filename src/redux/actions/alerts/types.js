@@ -1,0 +1,4 @@
+export const types = {
+  ACCOUNT_UPDATED: 'ALERT_ACCOUNT_UPDATED',
+  CLEAR_ALERTS: 'CLEAR_ALERTS',
+}

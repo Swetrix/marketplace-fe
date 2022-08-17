@@ -1,6 +1,9 @@
 import { combineReducers } from 'redux'
-import structure from './structure'
+import auth from './auth'
+import errors from './errors'
+import alerts from './alerts'
+import ui from './ui'
 
 export default combineReducers({
-  structure,
+  auth, errors, alerts, ui,
 })
