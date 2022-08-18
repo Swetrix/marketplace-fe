@@ -108,7 +108,7 @@ const App = () => {
     (!accessToken || !loading) && (
       // eslint-disable-next-line react/jsx-no-useless-fragment
       <Suspense fallback={<></>}>
-        <Header />
+        <Header authenticated={authenticated} theme={theme} />
         <ScrollToTop>
           <Suspense fallback={<Fallback theme={theme} />}>
             <Switch>
