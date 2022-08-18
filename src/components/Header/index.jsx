@@ -59,16 +59,10 @@ const Header = ({ authenticated, theme }) => {
                       {t('common.billing')}
                     </NavLink>
                   ) : (
-                    <>
-                      <NavLink to={routes.features} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-2 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' activeClassName='bg-indigo-700 hover:bg-indigo-700 dark:bg-gray-700' key='Features'>
-                        <CollectionIcon className='w-5 h-5 mr-1' />
-                        {t('common.features')}
-                      </NavLink>
-                      <HashLink to={`${routes.main}#pricing`} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-2 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' key='Pricing'>
-                        <CreditCardIcon className='w-5 h-5 mr-1' />
-                        {t('common.pricing')}
-                      </HashLink>
-                    </>
+                    <NavLink to={routes.features} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-2 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' activeClassName='bg-indigo-700 hover:bg-indigo-700 dark:bg-gray-700' key='Features'>
+                      <CollectionIcon className='w-5 h-5 mr-1' />
+                      {t('common.features')}
+                    </NavLink>
                   )
                 }
                 <NavLink to={routes.docs} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-2 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' activeClassName='bg-indigo-700 hover:bg-indigo-700 dark:bg-gray-700' key='Docs'>
