@@ -1,7 +1,7 @@
 import React, {
   useEffect, lazy, Suspense, useState,
 } from 'react'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, useLocation } from 'react-router-dom'
 import routes from 'routes'
 import { useDispatch, useSelector } from 'react-redux'
 import { useAlert } from '@blaumaus/react-alert'
@@ -15,12 +15,18 @@ import { getAccessToken } from 'utils/accessToken'
 import { authActions } from 'redux/actions/auth'
 import { errorsActions } from 'redux/actions/errors'
 import { alertsActions } from 'redux/actions/alerts'
+import _some from 'lodash/some'
+import _includes from 'lodash/includes'
 import { authMe } from './api'
 
 const MainPage = lazy(() => import('pages/MainPage'))
 const SignUp = lazy(() => import('pages/Auth/Signup'))
 const SignIn = lazy(() => import('pages/Auth/Signin'))
 const NotFound = lazy(() => import('pages/NotFound'))
+
+const minimalFooterPages = [
+  '/projects', '/dashboard', '/settings', '/contact',
+]
 
 const Fallback = () => {
   const [showLoader, setShowLoader] = useState(false)
@@ -51,6 +57,7 @@ const Fallback = () => {
 const App = () => {
   const dispatch = useDispatch()
   const alert = useAlert()
+  const location = useLocation()
   const { loading, authenticated } = useSelector(state => state.auth)
   const { theme } = useSelector(state => state.ui.theme)
   const { error } = useSelector(state => state.errors)
@@ -104,6 +111,8 @@ const App = () => {
     }
   }, [message, type]) // eslint-disable-line
 
+  const isMinimalFooter = _some(minimalFooterPages, (page) => _includes(location.pathname, page))
+
   return (
     (!accessToken || !loading) && (
       // eslint-disable-next-line react/jsx-no-useless-fragment
@@ -119,7 +128,7 @@ const App = () => {
             </Switch>
           </Suspense>
         </ScrollToTop>
-        <Footer />
+        <Footer minimal={isMinimalFooter} authenticated={authenticated} />
       </Suspense>
     )
   )
