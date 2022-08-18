@@ -6,7 +6,7 @@ import { ExclamationCircleIcon } from '@heroicons/react/solid'
 import Beta from 'ui/Beta'
 
 const Input = ({
-  label, hint, placeholder, type, id, name, className, onChange, error, value, disabled, onKeyDown, isBeta,
+  label, hint, placeholder, type, id, name, className, onChange, error, value, disabled, onKeyDown, isBeta, classNameInpit,
 }) => {
   const identifier = id || name || type
   const isError = !_isEmpty(error)
@@ -35,7 +35,7 @@ const Input = ({
           id={identifier}
           onChange={onChange}
           onKeyDown={onKeyDown}
-          className={cx('shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 dark:text-gray-50 dark:placeholder-gray-400 dark:border-gray-800 dark:bg-gray-700 rounded-md', {
+          className={cx(classNameInpit, 'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 dark:text-gray-50 dark:placeholder-gray-400 dark:border-gray-800 dark:bg-gray-700 rounded-md', {
             'border-red-300 text-red-900 placeholder-red-300': isError,
           })}
           placeholder={placeholder}
@@ -74,6 +74,7 @@ Input.propTypes = {
   name: PropTypes.string,
   disabled: PropTypes.bool,
   isBeta: PropTypes.bool,
+  classNameInpit: PropTypes.string,
 }
 
 Input.defaultProps = {
@@ -89,6 +90,7 @@ Input.defaultProps = {
   name: '',
   disabled: false,
   isBeta: false,
+  classNameInpit: '',
 }
 
 export default memo(Input)
