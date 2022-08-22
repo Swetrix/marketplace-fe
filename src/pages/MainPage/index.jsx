@@ -6,6 +6,7 @@ import Button from 'ui/Button'
 const MainPage = () => {
   return (
     <div className='dark:bg-gray-900'>
+      {/* test */}
       <div>
         <h1 className='text-center pt-16 font-extrabold text-3xl dark:text-white text-gray-700'>Extensions for Swetrix Analytics</h1>
         <div className='mt-5 mx-auto flex rounded-md shadow-sm !max-w-[360px] !w-full'>
