@@ -182,10 +182,10 @@ const Dashboard = ({
   const [showActivateEmailModal, setShowActivateEmailModal] = useState(false)
   const history = useHistory()
   const [tabProjects, setTabProjects] = useState(dashboardTabs)
-  const pageAmount = useMemo(() => (dashboardTabs === tabForSharedProject ? _ceil(sharedTotal / ENTRIES_PER_PAGE_DASHBOARD) : _ceil(total / ENTRIES_PER_PAGE_DASHBOARD)), [total, sharedTotal, dashboardTabs])
+  const pageAmount = useMemo(() => (dashboardTabs === tabForPublishProject ? _ceil(sharedTotal / ENTRIES_PER_PAGE_DASHBOARD) : _ceil(total / ENTRIES_PER_PAGE_DASHBOARD)), [total, sharedTotal, dashboardTabs])
 
   const onNewProject = () => {
-    if (user.isActive || isSelfhosted) {
+    if (user.isActive) {
       history.push(routes.new_project)
     } else {
       setShowActivateEmailModal(true)
@@ -194,18 +194,18 @@ const Dashboard = ({
 
   useEffect(() => {
     if (sharedTotal <= 0) {
-      setDashboardTabs(tabForOwnedProject)
-      setTabProjects(tabForOwnedProject)
+      setDashboardTabs(tabForInstallProject)
+      setTabProjects(tabForInstallProject)
     }
 
     setDashboardTabs(tabProjects)
   }, [tabProjects, setDashboardTabs, sharedTotal])
 
   useEffect(() => {
-    if (tabProjects === tabForOwnedProject) {
+    if (tabProjects === tabForInstallProject) {
       loadProjects(ENTRIES_PER_PAGE_DASHBOARD, (dashboardPaginationPage - 1) * ENTRIES_PER_PAGE_DASHBOARD)
     }
-    if (tabProjects === tabForSharedProject) {
+    if (tabProjects === tabForPublishProject) {
       loadSharedProjects(ENTRIES_PER_PAGE_DASHBOARD, (dashboardPaginationPageShared - 1) * ENTRIES_PER_PAGE_DASHBOARD)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -273,7 +273,7 @@ const Dashboard = ({
             ) : (
               <>
 
-                {tabProjects === tabForOwnedProject && (
+                {tabProjects === tabForInstallProject && (
                 <div>
                   {_isEmpty(_filter(projects, ({ uiHidden }) => !uiHidden)) ? (
                     <NoProjects t={t} />
@@ -306,7 +306,7 @@ const Dashboard = ({
                 </div>
                 )}
 
-                {tabProjects === tabForSharedProject && (
+                {tabProjects === tabForPublishProject && (
                 <div>
                   {_isEmpty(_filter(sharedProjects, ({ uiHidden }) => !uiHidden)) ? (
                     <NoProjects t={t} />
@@ -367,7 +367,7 @@ const Dashboard = ({
 
             {
                 pageAmount > 1 && (
-                  <Pagination page={tabProjects === tabForSharedProject ? dashboardPaginationPageShared : dashboardPaginationPage} setPage={tabProjects === tabForSharedProject ? (page) => setDashboardPaginationPageShared(page) : (page) => setDashboardPaginationPage(page)} pageAmount={pageAmount || 0} total={tabProjects === tabForSharedProject ? sharedTotal : total} />
+                  <Pagination page={tabProjects === tabForPublishProject ? dashboardPaginationPageShared : dashboardPaginationPage} setPage={tabProjects === tabForPublishProject ? (page) => setDashboardPaginationPageShared(page) : (page) => setDashboardPaginationPage(page)} pageAmount={pageAmount || 0} total={tabProjects === tabForPublishProject ? sharedTotal : total} />
                 )
               }
           </div>

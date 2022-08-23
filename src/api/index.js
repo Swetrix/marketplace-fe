@@ -83,3 +83,14 @@ export const submit2FA = (twoFactorAuthenticationCode) =>
         ? error.response.data
         : error.response.data.message
     })
+
+export const acceptShareProject = (id) =>
+  api
+    .get(`user/share/${id}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
