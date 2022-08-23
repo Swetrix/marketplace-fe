@@ -29,3 +29,19 @@ export const languages = {
 export const languageFlag = {
   en: 'GB',
 }
+
+export const ENTRIES_PER_PAGE_DASHBOARD = 10
+
+export const tabForInstallProject = 'installed'
+export const tabForPublishProject = 'published'
+
+export const tabsForDashboard = [
+  {
+    name: tabForInstallProject,
+    label: 'profileSettings.owned',
+  },
+  {
+    name: tabForPublishProject,
+    label: 'profileSettings.shared',
+  },
+]
