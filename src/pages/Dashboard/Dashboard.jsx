@@ -35,17 +35,17 @@ import Pagination from 'ui/Pagination'
 
 const ProjectCart = ({
   name, created, active, overall, t, language, live, isPublic, confirmed, id, deleteProjectFailed,
-  sharedProjects, setProjectsShareData, setUserShareData, shared, userSharedUpdate, sharedProjectError,
+  sharedextensions, setextensionsShareData, setUserShareData, shared, userSharedUpdate, sharedProjectError,
 }) => {
   const statsDidGrowUp = overall?.percChange >= 0
   const [showInviteModal, setShowInviteModal] = useState(false)
 
   const onAccept = async () => {
-    const pid = _find(sharedProjects, item => item.project.id === id).id
+    const pid = _find(sharedextensions, item => item.project.id === id).id
 
     try {
       await acceptShareProject(pid)
-      setProjectsShareData({ confirmed: true }, id, true)
+      setextensionsShareData({ confirmed: true }, id, true)
       setUserShareData({ confirmed: true }, pid)
       userSharedUpdate(t('apiNotifications.acceptInvitation'))
     } catch (e) {
@@ -161,10 +161,10 @@ const ProjectCart = ({
   )
 }
 
-const NoProjects = ({ t }) => (
+const Noextensions = ({ t }) => (
   <div className='mt-5'>
     <h3 className='text-center dark:text-gray-50'>
-      {t('dashboard.noProjects')}
+      {t('dashboard.noextensions')}
     </h3>
     <p className='text-center dark:text-gray-50'>
       {t('dashboard.createProject')}
@@ -173,15 +173,15 @@ const NoProjects = ({ t }) => (
 )
 
 const Dashboard = ({
-  projects, isLoading, error, user, deleteProjectFailed, setProjectsShareData,
-  setUserShareData, userSharedUpdate, sharedProjectError, loadProjects, loadSharedProjects,
-  total, setDashboardPaginationPage, dashboardPaginationPage, sharedProjects, dashboardTabs,
+  extensions, isLoading, error, user, deleteProjectFailed, setextensionsShareData,
+  setUserShareData, userSharedUpdate, sharedProjectError, loadextensions, loadSharedextensions,
+  total, setDashboardPaginationPage, dashboardPaginationPage, sharedextensions, dashboardTabs,
   setDashboardTabs, sharedTotal, setDashboardPaginationPageShared, dashboardPaginationPageShared,
 }) => {
   const { t, i18n: { language } } = useTranslation('common')
   const [showActivateEmailModal, setShowActivateEmailModal] = useState(false)
   const history = useHistory()
-  const [tabProjects, setTabProjects] = useState(dashboardTabs)
+  const [tabextensions, setTabextensions] = useState(dashboardTabs)
   const pageAmount = useMemo(() => (dashboardTabs === tabForPublishProject ? _ceil(sharedTotal / ENTRIES_PER_PAGE_DASHBOARD) : _ceil(total / ENTRIES_PER_PAGE_DASHBOARD)), [total, sharedTotal, dashboardTabs])
 
   const onNewProject = () => {
@@ -195,18 +195,18 @@ const Dashboard = ({
   useEffect(() => {
     if (sharedTotal <= 0) {
       setDashboardTabs(tabForInstallProject)
-      setTabProjects(tabForInstallProject)
+      setTabextensions(tabForInstallProject)
     }
 
-    setDashboardTabs(tabProjects)
-  }, [tabProjects, setDashboardTabs, sharedTotal])
+    setDashboardTabs(tabextensions)
+  }, [tabextensions, setDashboardTabs, sharedTotal])
 
   useEffect(() => {
-    if (tabProjects === tabForInstallProject) {
-      loadProjects(ENTRIES_PER_PAGE_DASHBOARD, (dashboardPaginationPage - 1) * ENTRIES_PER_PAGE_DASHBOARD)
+    if (tabextensions === tabForInstallProject) {
+      loadextensions(ENTRIES_PER_PAGE_DASHBOARD, (dashboardPaginationPage - 1) * ENTRIES_PER_PAGE_DASHBOARD)
     }
-    if (tabProjects === tabForPublishProject) {
-      loadSharedProjects(ENTRIES_PER_PAGE_DASHBOARD, (dashboardPaginationPageShared - 1) * ENTRIES_PER_PAGE_DASHBOARD)
+    if (tabextensions === tabForPublishProject) {
+      loadSharedextensions(ENTRIES_PER_PAGE_DASHBOARD, (dashboardPaginationPageShared - 1) * ENTRIES_PER_PAGE_DASHBOARD)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboardPaginationPage, dashboardPaginationPageShared])
@@ -251,12 +251,12 @@ const Dashboard = ({
                   <button
                     key={tab.name}
                     type='button'
-                    onClick={() => setTabProjects(tab.name)}
+                    onClick={() => setTabextensions(tab.name)}
                     className={cx('whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-md', {
-                      'border-indigo-500 text-indigo-600 dark:text-indigo-500': tabProjects === tab.name,
-                      'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-300': tabProjects !== tab.name,
+                      'border-indigo-500 text-indigo-600 dark:text-indigo-500': tabextensions === tab.name,
+                      'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-300': tabextensions !== tab.name,
                     })}
-                    aria-current={tab.name === tabProjects ? 'page' : undefined}
+                    aria-current={tab.name === tabextensions ? 'page' : undefined}
                   >
                     {t(tab.label)}
                   </button>
@@ -273,14 +273,14 @@ const Dashboard = ({
             ) : (
               <>
 
-                {tabProjects === tabForInstallProject && (
+                {tabextensions === tabForInstallProject && (
                 <div>
-                  {_isEmpty(_filter(projects, ({ uiHidden }) => !uiHidden)) ? (
-                    <NoProjects t={t} />
+                  {_isEmpty(_filter(extensions, ({ uiHidden }) => !uiHidden)) ? (
+                    <Noextensions t={t} />
                   ) : (
                     <div className='shadow overflow-hidden sm:rounded-md'>
                       <ul className='divide-y divide-gray-200 dark:divide-gray-500'>
-                        {_map(_filter(projects, ({ uiHidden }) => !uiHidden), ({
+                        {_map(_filter(extensions, ({ uiHidden }) => !uiHidden), ({
                           name, id, created, active, overall, live, public: isPublic, confirmed, shared = false,
                         }) => (
                           <div key={confirmed ? `${id}-confirmed` : id}>
@@ -306,14 +306,14 @@ const Dashboard = ({
                 </div>
                 )}
 
-                {tabProjects === tabForPublishProject && (
+                {tabextensions === tabForPublishProject && (
                 <div>
-                  {_isEmpty(_filter(sharedProjects, ({ uiHidden }) => !uiHidden)) ? (
-                    <NoProjects t={t} />
+                  {_isEmpty(_filter(sharedextensions, ({ uiHidden }) => !uiHidden)) ? (
+                    <Noextensions t={t} />
                   ) : (
                     <div className='shadow overflow-hidden sm:rounded-md'>
                       <ul className='divide-y divide-gray-200 dark:divide-gray-500'>
-                        {_map(_filter(sharedProjects, ({ uiHidden }) => !uiHidden), ({
+                        {_map(_filter(sharedextensions, ({ uiHidden }) => !uiHidden), ({
                           project, confirmed, shared = true,
                         }) => (
                           <div key={confirmed ? `${project.id}-confirmed` : project.id}>
@@ -345,8 +345,8 @@ const Dashboard = ({
                                     isPublic={project.public}
                                     overall={project.overall}
                                     confirmed={confirmed}
-                                    sharedProjects={user.sharedProjects}
-                                    setProjectsShareData={setProjectsShareData}
+                                    sharedextensions={user.sharedextensions}
+                                    setextensionsShareData={setextensionsShareData}
                                     setUserShareData={setUserShareData}
                                     live={_isNumber(project.live) ? project.live : 'N/A'}
                                     userSharedUpdate={userSharedUpdate}
@@ -367,7 +367,7 @@ const Dashboard = ({
 
             {
                 pageAmount > 1 && (
-                  <Pagination page={tabProjects === tabForPublishProject ? dashboardPaginationPageShared : dashboardPaginationPage} setPage={tabProjects === tabForPublishProject ? (page) => setDashboardPaginationPageShared(page) : (page) => setDashboardPaginationPage(page)} pageAmount={pageAmount || 0} total={tabProjects === tabForPublishProject ? sharedTotal : total} />
+                  <Pagination page={tabextensions === tabForPublishProject ? dashboardPaginationPageShared : dashboardPaginationPage} setPage={tabextensions === tabForPublishProject ? (page) => setDashboardPaginationPageShared(page) : (page) => setDashboardPaginationPage(page)} pageAmount={pageAmount || 0} total={tabextensions === tabForPublishProject ? sharedTotal : total} />
                 )
               }
           </div>
@@ -387,17 +387,17 @@ const Dashboard = ({
 }
 
 Dashboard.propTypes = {
-  projects: PropTypes.arrayOf(PropTypes.object).isRequired,
-  sharedProjects: PropTypes.arrayOf(PropTypes.object).isRequired,
+  extensions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  sharedextensions: PropTypes.arrayOf(PropTypes.object).isRequired,
   user: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.string,
   deleteProjectFailed: PropTypes.func.isRequired,
-  setProjectsShareData: PropTypes.func.isRequired,
+  setextensionsShareData: PropTypes.func.isRequired,
   setUserShareData: PropTypes.func.isRequired,
   sharedProjectError: PropTypes.func.isRequired,
   userSharedUpdate: PropTypes.func.isRequired,
-  loadProjects: PropTypes.func.isRequired,
+  loadextensions: PropTypes.func.isRequired,
   total: PropTypes.number.isRequired,
   setDashboardPaginationPage: PropTypes.func.isRequired,
   setDashboardPaginationPageShared: PropTypes.func.isRequired,
@@ -412,4 +412,4 @@ Dashboard.defaultProps = {
   error: '',
 }
 
-export default memo(withAuthentication(Dashboard, auth.authenticated))
+export default memo(Dashboard)

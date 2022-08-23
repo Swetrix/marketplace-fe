@@ -6,45 +6,45 @@ import { alertsActions } from 'redux/actions/alerts'
 import Dashboard from './Dashboard'
 
 const mapStateToProps = (state) => ({
-  projects: state.ui.projects.projects,
-  sharedProjects: state.ui.projects.sharedProjects,
+  extensions: state.ui.extensions.extensions,
+  publishExtensions: state.ui.extensions.publishExtensions,
   user: state.auth.user,
-  isLoading: state.ui.projects.isLoading,
-  total: state.ui.projects.total,
-  sharedTotal: state.ui.projects.sharedTotal,
-  error: state.ui.projects.error,
-  dashboardPaginationPage: state.ui.projects.dashboardPaginationPage,
-  dashboardPaginationPageShared: state.ui.projects.dashboardPaginationPageShared,
-  dashboardTabs: state.ui.projects.dashboardTabs,
+  isLoading: state.ui.extensions.isLoading,
+  total: state.ui.extensions.total,
+  publishTotal: state.ui.extensions.publishTotal,
+  error: state.ui.extensions.error,
+  dashboardPaginationPage: state.ui.extensions.dashboardPaginationPage,
+  dashboardPaginationPagePublish: state.ui.extensions.dashboardPaginationPagePublish,
+  dashboardTabs: state.ui.extensions.dashboardTabs,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteProjectFailed: (message) => {
-    dispatch(errorsActions.deleteProjectFailed(message))
+  deleteExtensionFailed: (message) => {
+    dispatch(errorsActions.deleteExtensionFailed(message))
   },
-  setProjectsShareData: (data, id, shared) => {
-    dispatch(UIActions.setProjectsShareData(data, id, shared))
+  setExtensionsPublishData: (data, id, publish) => {
+    dispatch(UIActions.setExtensionsPublishData(data, id, publish))
   },
-  setUserShareData: (data, id) => {
-    dispatch(authActions.setUserShareData(data, id))
+  setUserPublishData: (data, id) => {
+    dispatch(authActions.setUserPublishData(data, id))
   },
-  userSharedUpdate: (message) => {
-    dispatch(alertsActions.userSharedUpdate(message))
+  userPublishUpdate: (message) => {
+    dispatch(alertsActions.userPublishUpdate(message))
   },
-  sharedProjectError: (message) => {
-    dispatch(errorsActions.sharedProjectFailed(message))
+  publishExtensionError: (message) => {
+    dispatch(errorsActions.publishExtensionFailed(message))
   },
-  loadProjects: (take, skip) => {
-    dispatch(UIActions.loadProjects(take, skip))
+  loadextensions: (take, skip) => {
+    dispatch(UIActions.loadExtensions(take, skip))
   },
-  loadSharedProjects: (take, skip) => {
-    dispatch(UIActions.loadSharedProjects(take, skip))
+  loadPublishExtensions: (take, skip) => {
+    dispatch(UIActions.loadPublishExtensions(take, skip))
   },
   setDashboardPaginationPage: (page) => {
     dispatch(UIActions.setDashboardPaginationPage(page))
   },
-  setDashboardPaginationPageShared: (page) => {
-    dispatch(UIActions.setDashboardPaginationPageShared(page))
+  setDashboardPaginationPagePublish: (page) => {
+    dispatch(UIActions.setDashboardPaginationPagePublish(page))
   },
   setDashboardTabs: (tab) => {
     dispatch(UIActions.setDashboardTabs(tab))
