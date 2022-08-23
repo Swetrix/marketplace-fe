@@ -34,7 +34,7 @@ const mapDispatchToProps = (dispatch) => ({
   publishExtensionError: (message) => {
     dispatch(errorsActions.publishExtensionFailed(message))
   },
-  loadextensions: (take, skip) => {
+  loadExtensions: (take, skip) => {
     dispatch(UIActions.loadExtensions(take, skip))
   },
   loadPublishExtensions: (take, skip) => {

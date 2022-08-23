@@ -35,13 +35,13 @@ import Pagination from 'ui/Pagination'
 
 const ProjectCart = ({
   name, created, active, overall, t, language, live, isPublic, confirmed, id, deleteProjectFailed,
-  sharedextensions, setextensionsShareData, setUserShareData, shared, userSharedUpdate, sharedProjectError,
+  publishExtensions, setextensionsShareData, setUserShareData, shared, userSharedUpdate, sharedProjectError,
 }) => {
   const statsDidGrowUp = overall?.percChange >= 0
   const [showInviteModal, setShowInviteModal] = useState(false)
 
   const onAccept = async () => {
-    const pid = _find(sharedextensions, item => item.project.id === id).id
+    const pid = _find(publishExtensions, item => item.project.id === id).id
 
     try {
       await acceptShareProject(pid)
@@ -173,16 +173,16 @@ const Noextensions = ({ t }) => (
 )
 
 const Dashboard = ({
-  extensions, isLoading, error, user, deleteProjectFailed, setextensionsShareData,
-  setUserShareData, userSharedUpdate, sharedProjectError, loadextensions, loadSharedextensions,
-  total, setDashboardPaginationPage, dashboardPaginationPage, sharedextensions, dashboardTabs,
-  setDashboardTabs, sharedTotal, setDashboardPaginationPageShared, dashboardPaginationPageShared,
+  extensions, isLoading, error, user, deleteExtensionFailed, setExtensionsPublishData,
+  setUserPublishData, userPublishUpdate, publishExtensionError, loadExtensions, loadPublishExtensions,
+  total, setDashboardPaginationPage, dashboardPaginationPage, publishExtensions, dashboardTabs,
+  setDashboardTabs, publishTotal, setDashboardPaginationPagePublish, dashboardPaginationPagePublish,
 }) => {
   const { t, i18n: { language } } = useTranslation('common')
   const [showActivateEmailModal, setShowActivateEmailModal] = useState(false)
   const history = useHistory()
   const [tabextensions, setTabextensions] = useState(dashboardTabs)
-  const pageAmount = useMemo(() => (dashboardTabs === tabForPublishProject ? _ceil(sharedTotal / ENTRIES_PER_PAGE_DASHBOARD) : _ceil(total / ENTRIES_PER_PAGE_DASHBOARD)), [total, sharedTotal, dashboardTabs])
+  const pageAmount = useMemo(() => (dashboardTabs === tabForPublishProject ? _ceil(publishTotal / ENTRIES_PER_PAGE_DASHBOARD) : _ceil(total / ENTRIES_PER_PAGE_DASHBOARD)), [total, publishTotal, dashboardTabs])
 
   const onNewProject = () => {
     if (user.isActive) {
@@ -193,23 +193,23 @@ const Dashboard = ({
   }
 
   useEffect(() => {
-    if (sharedTotal <= 0) {
+    if (publishTotal <= 0) {
       setDashboardTabs(tabForInstallProject)
       setTabextensions(tabForInstallProject)
     }
 
     setDashboardTabs(tabextensions)
-  }, [tabextensions, setDashboardTabs, sharedTotal])
+  }, [tabextensions, setDashboardTabs, publishTotal])
 
   useEffect(() => {
     if (tabextensions === tabForInstallProject) {
-      loadextensions(ENTRIES_PER_PAGE_DASHBOARD, (dashboardPaginationPage - 1) * ENTRIES_PER_PAGE_DASHBOARD)
+      loadExtensions(ENTRIES_PER_PAGE_DASHBOARD, (dashboardPaginationPage - 1) * ENTRIES_PER_PAGE_DASHBOARD)
     }
     if (tabextensions === tabForPublishProject) {
-      loadSharedextensions(ENTRIES_PER_PAGE_DASHBOARD, (dashboardPaginationPageShared - 1) * ENTRIES_PER_PAGE_DASHBOARD)
+      loadPublishExtensions(ENTRIES_PER_PAGE_DASHBOARD, (dashboardPaginationPagePublish - 1) * ENTRIES_PER_PAGE_DASHBOARD)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dashboardPaginationPage, dashboardPaginationPageShared])
+  }, [dashboardPaginationPage, dashboardPaginationPagePublish])
 
   if (error && !isLoading) {
     return (
@@ -245,7 +245,7 @@ const Dashboard = ({
               </span>
             </div>
             <div className='mt-6'>
-              {sharedTotal > 0 && (
+              {publishTotal > 0 && (
               <nav className='-mb-px flex space-x-8'>
                 {_map(tabsForDashboard, (tab) => (
                   <button
@@ -308,12 +308,12 @@ const Dashboard = ({
 
                 {tabextensions === tabForPublishProject && (
                 <div>
-                  {_isEmpty(_filter(sharedextensions, ({ uiHidden }) => !uiHidden)) ? (
+                  {_isEmpty(_filter(publishExtensions, ({ uiHidden }) => !uiHidden)) ? (
                     <Noextensions t={t} />
                   ) : (
                     <div className='shadow overflow-hidden sm:rounded-md'>
                       <ul className='divide-y divide-gray-200 dark:divide-gray-500'>
-                        {_map(_filter(sharedextensions, ({ uiHidden }) => !uiHidden), ({
+                        {_map(_filter(publishExtensions, ({ uiHidden }) => !uiHidden), ({
                           project, confirmed, shared = true,
                         }) => (
                           <div key={confirmed ? `${project.id}-confirmed` : project.id}>
@@ -345,13 +345,13 @@ const Dashboard = ({
                                     isPublic={project.public}
                                     overall={project.overall}
                                     confirmed={confirmed}
-                                    sharedextensions={user.sharedextensions}
-                                    setextensionsShareData={setextensionsShareData}
-                                    setUserShareData={setUserShareData}
+                                    publishExtensions={user.publishExtensions}
+                                    setExtensionsPublishData={setExtensionsPublishData}
+                                    setUserPublishData={setUserPublishData}
                                     live={_isNumber(project.live) ? project.live : 'N/A'}
-                                    userSharedUpdate={userSharedUpdate}
-                                    sharedProjectError={sharedProjectError}
-                                    deleteProjectFailed={deleteProjectFailed}
+                                    userPublishUpdate={userPublishUpdate}
+                                    publishExtensionError={publishExtensionError}
+                                    deleteExtensionFailed={deleteExtensionFailed}
                                   />
                                 )
                               }
@@ -367,7 +367,7 @@ const Dashboard = ({
 
             {
                 pageAmount > 1 && (
-                  <Pagination page={tabextensions === tabForPublishProject ? dashboardPaginationPageShared : dashboardPaginationPage} setPage={tabextensions === tabForPublishProject ? (page) => setDashboardPaginationPageShared(page) : (page) => setDashboardPaginationPage(page)} pageAmount={pageAmount || 0} total={tabextensions === tabForPublishProject ? sharedTotal : total} />
+                  <Pagination page={tabextensions === tabForPublishProject ? dashboardPaginationPagePublish : dashboardPaginationPage} setPage={tabextensions === tabForPublishProject ? (page) => setDashboardPaginationPagePublish(page) : (page) => setDashboardPaginationPage(page)} pageAmount={pageAmount || 0} total={tabextensions === tabForPublishProject ? publishTotal : total} />
                 )
               }
           </div>
@@ -388,24 +388,24 @@ const Dashboard = ({
 
 Dashboard.propTypes = {
   extensions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  sharedextensions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  publishExtensions: PropTypes.arrayOf(PropTypes.object).isRequired,
   user: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.string,
-  deleteProjectFailed: PropTypes.func.isRequired,
-  setextensionsShareData: PropTypes.func.isRequired,
-  setUserShareData: PropTypes.func.isRequired,
-  sharedProjectError: PropTypes.func.isRequired,
-  userSharedUpdate: PropTypes.func.isRequired,
-  loadextensions: PropTypes.func.isRequired,
+  deleteExtensionFailed: PropTypes.func.isRequired,
+  setExtensionsPublishData: PropTypes.func.isRequired,
+  setUserPublishData: PropTypes.func.isRequired,
+  publishExtensionError: PropTypes.func.isRequired,
+  userPublishUpdate: PropTypes.func.isRequired,
+  loadExtensions: PropTypes.func.isRequired,
   total: PropTypes.number.isRequired,
   setDashboardPaginationPage: PropTypes.func.isRequired,
-  setDashboardPaginationPageShared: PropTypes.func.isRequired,
+  setDashboardPaginationPagePublish: PropTypes.func.isRequired,
   dashboardPaginationPage: PropTypes.number.isRequired,
-  dashboardPaginationPageShared: PropTypes.number.isRequired,
+  dashboardPaginationPagePublish: PropTypes.number.isRequired,
   dashboardTabs: PropTypes.string.isRequired,
   setDashboardTabs: PropTypes.func.isRequired,
-  sharedTotal: PropTypes.number.isRequired,
+  publishTotal: PropTypes.number.isRequired,
 }
 
 Dashboard.defaultProps = {
