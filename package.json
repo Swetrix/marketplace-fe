@@ -13,7 +13,6 @@
     "axios": "^0.27.2",
     "clsx": "^1.2.1",
     "debug": "^4.3.4",
-    "glider-js": "^1.7.7",
     "i18next": "^21.9.1",
     "i18next-browser-languagedetector": "^6.1.5",
     "i18next-http-backend": "^1.4.1",
