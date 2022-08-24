@@ -5,6 +5,7 @@ import Debug from 'debug'
 import _isEmpty from 'lodash/isEmpty'
 import _isArray from 'lodash/isArray'
 import { authActions } from 'redux/actions/auth'
+import _map from 'lodash/map'
 
 import { getAccessToken, removeAccessToken } from 'utils/accessToken'
 
@@ -87,6 +88,50 @@ export const submit2FA = (twoFactorAuthenticationCode) =>
 export const acceptShareProject = (id) =>
   api
     .get(`user/share/${id}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+export const getExtensions = (take = 0, skip = 0) =>
+  api
+    .get(`/extensions?take=${take}&skip=${skip}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+export const getPublishExtensions = (take = 0, skip = 0) =>
+  api
+    .get(`/extensions/shared?take=${take}&skip=${skip}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+export const getOverallStats = (pids) =>
+  api
+    .get(`log/birdseye?pids=[${_map(pids, (pid) => `"${pid}"`).join(',')}]`)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+export const getLiveVisitors = (pids) =>
+  api
+    .get(`log/hb?pids=[${_map(pids, (pid) => `"${pid}"`).join(',')}]`)
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)

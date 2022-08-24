@@ -412,4 +412,4 @@ Dashboard.defaultProps = {
   error: '',
 }
 
-export default memo(Dashboard)
+export default memo(withAuthentication(Dashboard, auth.authenticated))
