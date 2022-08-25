@@ -6,12 +6,12 @@ import StarsRaiting from 'ui/StarsRaiting'
 import _replace from 'lodash/replace'
 import _includes from 'lodash/includes'
 import Glider from 'react-glider'
-import 'glider-js/glider.min.css'
+import './glider.css'
 
 const ExtensionsCard = ({
   name, stars, downloads, imagePath, price, companyLink, companyName,
 }) => (
-  <div className='group w-[210px] relative border rounded-sm p-3 bg-gray-100 dark:bg-gray-800 dark:border-gray-900  shadow-md'>
+  <div className='group w-[210px] relative border-2 border-white rounded-sm p-3 bg-gray-100 dark:bg-gray-800 dark:border-gray-900  shadow-md'>
     <div className='h-28 w-28 mx-auto aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:aspect-none'>
       <img src={imagePath} alt={companyName} className='w-full h-full object-center object-cover lg:w-full lg:h-full' />
     </div>
@@ -82,7 +82,7 @@ const MainPage = () => {
             <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>Featured</h2>
             <Button onClick={() => {}} text='See more' primary regular />
           </div>
-          <div className='mt-6 relative p-5 sm:p-0'>
+          <div className='mt-6 relative p-5'>
             <Glider hasArrows slidesToScroll={6} scrollLock resizeLock exactWidth itemWidth={210}>
               <ExtensionsCard name='Swetrix Analytics' stars={3} downloads={10} imagePath='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_pweAjQS6GdD2bO4MB-PCUO-Cw5oUm9YTwQ&usqp=CAU' price={9} companyLink='https://simpson.com' companyName='Wimpson Or' />
               <ExtensionsCard name='BackgroundCover' stars={1} downloads={640} imagePath='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG4AAABuCAMAAADxhdbJAAAAOVBMVEVAAMDg4ECgoADg4IDgwAAAgMDgwEDAwIDAwEDAoECgoEDAwADggECggACggEDA3MDAoAD/+/D//wAc9NcrAAADGklEQVRoge2a25adIAxAR2koonNp//9jKyISIIBye+iSt5ml7pUdAsHjx8c73vEfje8/Q3GMjcXxkTRgHAbiNsZH2mSMT+NooHDjbG4KN84mU7hhNkHjRtncNG6UTaZxg2yCwY2xuRncGJvM4MbYtLgRNsHiRthkFjfCJsb1t6ldMjGNsckwrr9NhmV2twkurrfNzcX1tsk8XF+b4OO+u+I2H9c3eYZmCqGvTQhxPW1uIa6nTRbiOtoECrd1w1mX18zsaZNRuG42NxpXYPP3ncFonLhzr1svIJf1V26sJI7P+SH80yfAvGSJgsLlWXt6w/zC5zznYpxCnEyilniDCOpOmSSuAU5kWdMWmbq70PO6KHH1cPHELdeOGC8UsFdHiMLFxdJlU5usSkCpoIkTxi0ZVlRkIDRKRGsmodKupRmRoVCauFpcmnVzeQMP6BO5wckkKysyFuBBRMhJ41ANLNxn3RJ58YjitcRVT5UU6+E+EQg9xo9YDY9PKdZ9kXGhZ4rWI31c1YCgWY9EpgM8iXvioqzSDTfKmxcRzMMKkRePXO5/9koQczy08maCECp01c2yqcgLGLL2aanm5dJU5MWTHkvX+P53XWlHeeCy9AKm/ufDWJsWECTuwfTeo3CyC81pZzHOW5VbtdPg0DRDp7NLdBDSTpyrs1HqMG1ymxSnGqqrIMSZdJnqwNXQxiYQNNs3tLaJaUSrjtPXwmYGh6uhhU3yhIybsKYnS5rm9HydcDyCs+mrt0m8ufFxc7u3HhGa10C3x3m725eDu3TW2ozgwGtjrsWssncgVapNG9ThOqyGNjgntvOR4AhtYpPCXQ90+jTZIDz4G6h0uh8coGiAC2neBdLXWWMTfJXBs9CMkdXhgUsj20grdKnEgasy9zpGV0O5TcCxJR5zCa0LD+OS/bgJUNbgAKnMPeMMUFTixN3Zfc6Yit/Twai8dbA5hRbjLO3uDZ86fcU48WxiHwGKwlIA/WHDs/cxh84SHBR9lLIHKAtxZVpgXopu44VHbfgq+Iis4sszgOcHWajauMpvfcc73vGOJ+Mfb2wkd/LrZnAAAAAASUVORK5CYII=' price={0} companyLink='https://swetrix.com' companyName='Swetrix' />
@@ -110,7 +110,7 @@ const MainPage = () => {
             <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>Popular</h2>
             <Button onClick={() => {}} text='See more' primary regular />
           </div>
-          <div className='mt-6 relative p-5 sm:p-0'>
+          <div className='mt-6 relative p-5'>
             <Glider hasArrows slidesToScroll={6} scrollLock resizeLock exactWidth itemWidth={210}>
               <ExtensionsCard name='Swetrix Analytics' stars={3} downloads={10} imagePath='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_pweAjQS6GdD2bO4MB-PCUO-Cw5oUm9YTwQ&usqp=CAU' price={9} companyLink='https://simpson.com' companyName='Wimpson Or' />
               <ExtensionsCard name='BackgroundCover' stars={1} downloads={640} imagePath='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG4AAABuCAMAAADxhdbJAAAAOVBMVEVAAMDg4ECgoADg4IDgwAAAgMDgwEDAwIDAwEDAoECgoEDAwADggECggACggEDA3MDAoAD/+/D//wAc9NcrAAADGklEQVRoge2a25adIAxAR2koonNp//9jKyISIIBye+iSt5ml7pUdAsHjx8c73vEfje8/Q3GMjcXxkTRgHAbiNsZH2mSMT+NooHDjbG4KN84mU7hhNkHjRtncNG6UTaZxg2yCwY2xuRncGJvM4MbYtLgRNsHiRthkFjfCJsb1t6ldMjGNsckwrr9NhmV2twkurrfNzcX1tsk8XF+b4OO+u+I2H9c3eYZmCqGvTQhxPW1uIa6nTRbiOtoECrd1w1mX18zsaZNRuG42NxpXYPP3ncFonLhzr1svIJf1V26sJI7P+SH80yfAvGSJgsLlWXt6w/zC5zznYpxCnEyilniDCOpOmSSuAU5kWdMWmbq70PO6KHH1cPHELdeOGC8UsFdHiMLFxdJlU5usSkCpoIkTxi0ZVlRkIDRKRGsmodKupRmRoVCauFpcmnVzeQMP6BO5wckkKysyFuBBRMhJ41ANLNxn3RJ58YjitcRVT5UU6+E+EQg9xo9YDY9PKdZ9kXGhZ4rWI31c1YCgWY9EpgM8iXvioqzSDTfKmxcRzMMKkRePXO5/9koQczy08maCECp01c2yqcgLGLL2aanm5dJU5MWTHkvX+P53XWlHeeCy9AKm/ufDWJsWECTuwfTeo3CyC81pZzHOW5VbtdPg0DRDp7NLdBDSTpyrs1HqMG1ymxSnGqqrIMSZdJnqwNXQxiYQNNs3tLaJaUSrjtPXwmYGh6uhhU3yhIybsKYnS5rm9HydcDyCs+mrt0m8ufFxc7u3HhGa10C3x3m725eDu3TW2ozgwGtjrsWssncgVapNG9ThOqyGNjgntvOR4AhtYpPCXQ90+jTZIDz4G6h0uh8coGiAC2neBdLXWWMTfJXBs9CMkdXhgUsj20grdKnEgasy9zpGV0O5TcCxJR5zCa0LD+OS/bgJUNbgAKnMPeMMUFTixN3Zfc6Yit/Twai8dbA5hRbjLO3uDZ86fcU48WxiHwGKwlIA/WHDs/cxh84SHBR9lLIHKAtxZVpgXopu44VHbfgq+Iis4sszgOcHWajauMpvfcc73vGOJ+Mfb2wkd/LrZnAAAAAASUVORK5CYII=' price={0} companyLink='https://swetrix.com' companyName='Swetrix' />
@@ -138,7 +138,7 @@ const MainPage = () => {
             <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>For you</h2>
             <Button onClick={() => {}} text='See more' primary regular />
           </div>
-          <div className='mt-6 relative p-5 sm:p-0'>
+          <div className='mt-6 relative p-5'>
             <Glider hasArrows slidesToScroll={6} scrollLock resizeLock exactWidth itemWidth={210}>
               <ExtensionsCard name='Swetrix Analytics' stars={3} downloads={10} imagePath='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_pweAjQS6GdD2bO4MB-PCUO-Cw5oUm9YTwQ&usqp=CAU' price={9} companyLink='https://simpson.com' companyName='Wimpson Or' />
               <ExtensionsCard name='BackgroundCover' stars={1} downloads={640} imagePath='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG4AAABuCAMAAADxhdbJAAAAOVBMVEVAAMDg4ECgoADg4IDgwAAAgMDgwEDAwIDAwEDAoECgoEDAwADggECggACggEDA3MDAoAD/+/D//wAc9NcrAAADGklEQVRoge2a25adIAxAR2koonNp//9jKyISIIBye+iSt5ml7pUdAsHjx8c73vEfje8/Q3GMjcXxkTRgHAbiNsZH2mSMT+NooHDjbG4KN84mU7hhNkHjRtncNG6UTaZxg2yCwY2xuRncGJvM4MbYtLgRNsHiRthkFjfCJsb1t6ldMjGNsckwrr9NhmV2twkurrfNzcX1tsk8XF+b4OO+u+I2H9c3eYZmCqGvTQhxPW1uIa6nTRbiOtoECrd1w1mX18zsaZNRuG42NxpXYPP3ncFonLhzr1svIJf1V26sJI7P+SH80yfAvGSJgsLlWXt6w/zC5zznYpxCnEyilniDCOpOmSSuAU5kWdMWmbq70PO6KHH1cPHELdeOGC8UsFdHiMLFxdJlU5usSkCpoIkTxi0ZVlRkIDRKRGsmodKupRmRoVCauFpcmnVzeQMP6BO5wckkKysyFuBBRMhJ41ANLNxn3RJ58YjitcRVT5UU6+E+EQg9xo9YDY9PKdZ9kXGhZ4rWI31c1YCgWY9EpgM8iXvioqzSDTfKmxcRzMMKkRePXO5/9koQczy08maCECp01c2yqcgLGLL2aanm5dJU5MWTHkvX+P53XWlHeeCy9AKm/ufDWJsWECTuwfTeo3CyC81pZzHOW5VbtdPg0DRDp7NLdBDSTpyrs1HqMG1ymxSnGqqrIMSZdJnqwNXQxiYQNNs3tLaJaUSrjtPXwmYGh6uhhU3yhIybsKYnS5rm9HydcDyCs+mrt0m8ufFxc7u3HhGa10C3x3m725eDu3TW2ozgwGtjrsWssncgVapNG9ThOqyGNjgntvOR4AhtYpPCXQ90+jTZIDz4G6h0uh8coGiAC2neBdLXWWMTfJXBs9CMkdXhgUsj20grdKnEgasy9zpGV0O5TcCxJR5zCa0LD+OS/bgJUNbgAKnMPeMMUFTixN3Zfc6Yit/Twai8dbA5hRbjLO3uDZ86fcU48WxiHwGKwlIA/WHDs/cxh84SHBR9lLIHKAtxZVpgXopu44VHbfgq+Iis4sszgOcHWajauMpvfcc73vGOJ+Mfb2wkd/LrZnAAAAAASUVORK5CYII=' price={0} companyLink='https://swetrix.com' companyName='Swetrix' />
