@@ -15,8 +15,8 @@ export default function* signupWorder({ payload: { data: rawData, callback, t } 
     yield put(authActions.signupSuccess(response.user))
     yield call(setAccessToken, response.access_token, dontRemember)
     yield put(authActions.setDontRemember(dontRemember))
-    yield put(UIActions.loadProjects())
-    yield put(UIActions.loadSharedProjects())
+    yield put(UIActions.loadExtensions())
+    yield put(UIActions.loadPublishExtensions())
     callback(true)
   } catch (error) {
     const message = error.message || (typeof error === 'string' ? error : error[0])

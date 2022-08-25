@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
     "clsx": "^1.2.1",
+    "dayjs": "^1.11.5",
     "debug": "^4.3.4",
     "glider-js": "^1.7.7",
     "i18next": "^21.9.1",
