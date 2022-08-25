@@ -14,7 +14,7 @@ const debug = Debug('swetrix:rx:s:load-projects')
 
 export default function* loadPublishExtensions({ payload: { take = ENTRIES_PER_PAGE_DASHBOARD, skip = 0 } }) {
   try {
-    yield put(UIActions.setProjectsLoading(true, true))
+    yield put(UIActions.setExtensionsLoading(true, true))
 
     let {
       // eslint-disable-next-line prefer-const

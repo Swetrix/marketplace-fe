@@ -36,7 +36,7 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
 
       return {
         ...state,
-        extensions,
+        extensions: [...extensions],
         isLoading: false,
       }
     }
@@ -140,7 +140,7 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
       }
     }
 
-    case types.SET_PUBLIC_PROJECT: {
+    case types.SET_PUBLIC_EXTENSION: {
       const { project, publish = false } = payload
 
       if (publish) {
@@ -172,7 +172,7 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
       }
     }
 
-    case types.SET_EXTENSIONS_SHARE_DATA: {
+    case types.SET_EXTENSIONS_PUBLISH_DATA: {
       const { data, id, publish = false } = payload
 
       if (publish) {

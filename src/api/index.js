@@ -98,7 +98,7 @@ export const acceptShareProject = (id) =>
 
 export const getExtensions = (take = 0, skip = 0) =>
   api
-    .get(`/extensions?take=${take}&skip=${skip}`)
+    .get(`/project?take=${take}&skip=${skip}`)
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
@@ -109,7 +109,7 @@ export const getExtensions = (take = 0, skip = 0) =>
 
 export const getPublishExtensions = (take = 0, skip = 0) =>
   api
-    .get(`/extensions/shared?take=${take}&skip=${skip}`)
+    .get(`/project/shared?take=${take}&skip=${skip}`)
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)

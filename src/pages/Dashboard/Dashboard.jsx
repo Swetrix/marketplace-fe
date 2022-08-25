@@ -34,8 +34,8 @@ import { acceptShareProject } from 'api'
 import Pagination from 'ui/Pagination'
 
 const ProjectCart = ({
-  name, created, active, overall, t, language, live, isPublic, confirmed, id, deleteProjectFailed,
-  publishExtensions, setextensionsShareData, setUserShareData, shared, userSharedUpdate, sharedProjectError,
+  name, created, active, overall, t, language, live, isPublic, confirmed, id, deleteExtensionFailed,
+  publishExtensions, setExtensionsPublishData, setUserPublishData, publish, userPublishUpdate, publishExtensionError,
 }) => {
   const statsDidGrowUp = overall?.percChange >= 0
   const [showInviteModal, setShowInviteModal] = useState(false)
@@ -45,12 +45,12 @@ const ProjectCart = ({
 
     try {
       await acceptShareProject(pid)
-      setextensionsShareData({ confirmed: true }, id, true)
-      setUserShareData({ confirmed: true }, pid)
-      userSharedUpdate(t('apiNotifications.acceptInvitation'))
+      setExtensionsPublishData({ confirmed: true }, id, true)
+      setUserPublishData({ confirmed: true }, pid)
+      userPublishUpdate(t('apiNotifications.acceptInvitation'))
     } catch (e) {
-      sharedProjectError(t('apiNotifications.acceptInvitationError'))
-      deleteProjectFailed(e)
+      publishExtensionError(t('apiNotifications.acceptInvitationError'))
+      deleteExtensionFailed(e)
     }
   }
 
@@ -64,9 +64,9 @@ const ProjectCart = ({
             </p>
             <div className='ml-2 flex-shrink-0 flex'>
               {
-                shared && (
+                publish && (
                   confirmed ? (
-                    <ActivePin className='mr-2' label={t('dashboard.shared')} />
+                    <ActivePin className='mr-2' label={t('dashboard.publish')} />
                   ) : (
                     <WarningPin className='mr-2' label={t('common.pending')} />
                   )
@@ -281,7 +281,7 @@ const Dashboard = ({
                     <div className='shadow overflow-hidden sm:rounded-md'>
                       <ul className='divide-y divide-gray-200 dark:divide-gray-500'>
                         {_map(_filter(extensions, ({ uiHidden }) => !uiHidden), ({
-                          name, id, created, active, overall, live, public: isPublic, confirmed, shared = false,
+                          name, id, created, active, overall, live, public: isPublic, confirmed, publish = false,
                         }) => (
                           <div key={confirmed ? `${id}-confirmed` : id}>
                             <Link to={_replace(routes.project, ':id', id)}>
@@ -290,7 +290,7 @@ const Dashboard = ({
                                 language={language}
                                 name={name}
                                 created={created}
-                                shared={shared}
+                                publish={publish}
                                 active={active}
                                 isPublic={isPublic}
                                 confirmed={confirmed}
@@ -314,7 +314,7 @@ const Dashboard = ({
                     <div className='shadow overflow-hidden sm:rounded-md'>
                       <ul className='divide-y divide-gray-200 dark:divide-gray-500'>
                         {_map(_filter(publishExtensions, ({ uiHidden }) => !uiHidden), ({
-                          project, confirmed, shared = true,
+                          project, confirmed, publish = true,
                         }) => (
                           <div key={confirmed ? `${project.id}-confirmed` : project.id}>
                             {
@@ -325,7 +325,7 @@ const Dashboard = ({
                                       language={language}
                                       name={project.name}
                                       created={project.created}
-                                      shared={shared}
+                                      publish={publish}
                                       active={project.active}
                                       isPublic={project.public}
                                       confirmed={confirmed}
@@ -340,7 +340,7 @@ const Dashboard = ({
                                     language={language}
                                     name={project.name}
                                     created={project.created}
-                                    shared={shared}
+                                    publish={publish}
                                     active={project.active}
                                     isPublic={project.public}
                                     overall={project.overall}

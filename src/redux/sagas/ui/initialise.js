@@ -1,7 +1,8 @@
-import { call } from 'redux-saga/effects'
+import { call, put } from 'redux-saga/effects'
 import Debug from 'debug'
 
 import { getAccessToken } from 'utils/accessToken'
+import UIActions from 'redux/actions/ui'
 
 const debug = Debug('swetrix:rx:s:initialise')
 
@@ -10,7 +11,8 @@ export default function* initialise() {
     const token = yield call(getAccessToken)
 
     if (token) {
-      // TODO
+      yield put(UIActions.loadExtensions())
+      yield put(UIActions.loadPublishExtensions())
     }
   } catch (e) {
     debug('An error occured whilst initialising: %s', e)

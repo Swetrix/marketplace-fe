@@ -10,10 +10,10 @@ const loadPublishExtensions = (take, skip) => ({
   payload: { take, skip },
 })
 
-const setExtensions = (Extensions, publish) => ({
+const setExtensions = (extensions, publish) => ({
   type: types.SET_EXTENSIONS,
   payload: {
-    Extensions,
+    extensions,
     publish,
   },
 })
