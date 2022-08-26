@@ -5,9 +5,12 @@ import Button from 'ui/Button'
 import StarsRaiting from 'ui/StarsRaiting'
 import _replace from 'lodash/replace'
 import _includes from 'lodash/includes'
+import _isEmpty from 'lodash/isEmpty'
 import Glider from 'react-glider'
 import './glider.css'
-import { Redirect } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
+import { category, sortBy } from 'redux/constants'
+import routes from 'routes'
 
 const ExtensionsCard = ({
   name, stars, downloads, imagePath, price, companyLink, companyName,
@@ -54,16 +57,22 @@ const ExtensionsCard = ({
 
 const MainPage = () => {
   const [search, setSearch] = React.useState('')
+  const history = useHistory()
 
-  const searchSubmit = () => {
-    Redirect(`/search?term=${search}/`)
+  const searchSubmit = (e) => {
+    e.preventDefault()
+    if (!_isEmpty(search)) {
+      history.push(`/search?term=${search}&category=${category.all}&sortBy=${sortBy.relevance}`)
+    } else {
+      console.log('wrong')
+    }
   }
 
   return (
     <div className='dark:bg-gray-900'>
       <div>
         <h1 className='text-center pt-16 font-extrabold text-3xl dark:text-white text-gray-700'>Extensions for Swetrix Analytics</h1>
-        <form className='mt-5 mx-auto flex rounded-md shadow-sm !max-w-[360px] !w-full'>
+        <form className='mt-5 mx-auto flex rounded-md shadow-sm !max-w-[360px] !w-full' onSubmit={searchSubmit}>
           <Input
             type='text'
             label=''
@@ -77,7 +86,6 @@ const MainPage = () => {
           />
           <button
             type='submit'
-            onSubmit={() => {}}
             className='-ml-px mb-2 mt-1 relative inline-flex items-center space-x-2 px-4 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'
           >
             <SearchIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
