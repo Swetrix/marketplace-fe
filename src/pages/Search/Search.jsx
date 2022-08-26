@@ -55,7 +55,7 @@ const Search = () => {
   const [search, setSearch] = React.useState('')
 
   return (
-    <div className='dark:bg-gray-900 py-10'>
+    <div className='dark:bg-gray-900 py-10 px-2 sm:px-10'>
       <div className='mx-auto max-w-7xl'>
         <form className='flex rounded-md shadow-sm !max-w-[360px] !w-full' onSubmit={() => {}}>
           <Input
@@ -103,7 +103,7 @@ const Search = () => {
             </div>
           </div>
         </div>
-        <div className='flex justify-between items-center flex-wrap mt-4'>
+        <div className='flex items-center flex-wrap justify-center md:justify-between mt-4 gap-1'>
           {_map(testData, ((item) => (
             <ExtensionsCard key={item.id} name={item.name} stars={item.stars} downloads={item.downloads} price={item.price} companyLink={item.companyLink} companyName={item.companyName} imagePath={item.imagePath} />
           )))}

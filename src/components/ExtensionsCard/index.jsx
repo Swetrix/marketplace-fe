@@ -23,13 +23,13 @@ const ExtensionsCard = ({
       <div className='mt-4'>
         <h3 className='text-center text-lg font-semibold leading-5 text-gray-700 dark:text-gray-300'>
           <a href='/'>
-            {name}
+            {subStr(name, 17)}
           </a>
         </h3>
         <div className='flex items-center justify-between mt-2'>
           <div className='flex flex-col'>
             <p className='dark:text-gray-400 text-gray-500 text-sm leading-[10px]'>
-              {subStr(name, 10)}
+              {subStr(companyName, 10)}
             </p>
             <a href={companyLink} className='dark:text-indigo-400 cursor-pointer text-indigo-500 font-semibold border-0 text-sm'>
               {_includes(companyLink, 'https://')
