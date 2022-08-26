@@ -7,6 +7,7 @@ import _replace from 'lodash/replace'
 import _includes from 'lodash/includes'
 import Glider from 'react-glider'
 import './glider.css'
+import { Redirect } from 'react-router-dom'
 
 const ExtensionsCard = ({
   name, stars, downloads, imagePath, price, companyLink, companyName,
@@ -52,29 +53,36 @@ const ExtensionsCard = ({
 )
 
 const MainPage = () => {
+  const [search, setSearch] = React.useState('')
+
+  const searchSubmit = () => {
+    Redirect(`/search?term=${search}/`)
+  }
+
   return (
     <div className='dark:bg-gray-900'>
       <div>
         <h1 className='text-center pt-16 font-extrabold text-3xl dark:text-white text-gray-700'>Extensions for Swetrix Analytics</h1>
-        <div className='mt-5 mx-auto flex rounded-md shadow-sm !max-w-[360px] !w-full'>
+        <form className='mt-5 mx-auto flex rounded-md shadow-sm !max-w-[360px] !w-full'>
           <Input
             type='text'
             label=''
-            value=''
+            value={search}
             placeholder='Search extensions for Swetrix Analytics'
             classNameInpit='!rounded-none !rounded-l-md'
             className='!w-full !max-w-full'
-            onChange={() => { }}
+            onChange={(e) => setSearch(e.target.value)}
             disabled={false}
             error={false}
           />
           <button
-            type='button'
+            type='submit'
+            onSubmit={() => {}}
             className='-ml-px mb-2 mt-1 relative inline-flex items-center space-x-2 px-4 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'
           >
             <SearchIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
           </button>
-        </div>
+        </form>
       </div>
       <section>
         <div className='max-w-[1400px] mx-auto py-10 px-4 sm:px-6 lg:px-8'>

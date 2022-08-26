@@ -45,3 +45,13 @@ export const tabsForDashboard = [
     label: 'profileSettings.shared',
   },
 ]
+
+export const category = {
+  all: 'All categories',
+}
+
+export const sortBy = {
+  relevance: 'Relevance',
+  ratting: 'Ratting',
+  date: 'Published date',
+}
