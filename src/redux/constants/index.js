@@ -51,7 +51,6 @@ export const category = {
 }
 
 export const sortBy = {
-  relevance: 'Relevance',
-  ratting: 'Ratting',
-  date: 'Published date',
+  CREATED_AT: 'createdAt',
+  UPDATED_AT: 'updatedAt',
 }

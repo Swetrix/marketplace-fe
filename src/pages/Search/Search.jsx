@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import Input from 'ui/Input'
 import { SearchIcon } from '@heroicons/react/outline'
@@ -7,6 +7,8 @@ import { sortBy, category } from 'redux/constants'
 import _values from 'lodash/values'
 import ExtensionsCard from 'components/ExtensionsCard'
 import _map from 'lodash/map'
+import Loader from 'ui/Loader'
+import { getExtensionsSearch } from 'api'
 
 const testData = [{
   createdAt: '2022-08-26T01:17:18.876Z', name: 'Marcella Goyette', description: 'aspernatur velit ab', imagePath: 'http://loremflickr.com/640/480/transport', companyLink: 'http://parched-watercress.org', companyName: 'Cummings and Sons', stars: 60, downloads: 81, price: 18, id: '1',
@@ -54,11 +56,33 @@ const testData = [{
 
 const Search = () => {
   const params = new URLSearchParams(window.location.search)
-  const [search, setSearch] = React.useState(params.get('term'))
-  const [filterCategory, setFilterCategory] = React.useState(params.get('category'))
-  const [filterSortBy, setFilterSortBy] = React.useState(params.get('sortBy'))
+
+  const [search, setSearch] = useState(params.get('term'))
+  const [filterCategory, setFilterCategory] = useState(params.get('category'))
+  const [filterSortBy, setFilterSortBy] = useState(params.get('sortBy'))
+  const [extensions, setExtensions] = useState()
+  const [loading, setLoading] = useState(false)
 
   const history = useHistory()
+
+  const getExtensions = async () => {
+    setLoading(true)
+    await getExtensionsSearch(search, filterCategory, filterSortBy)
+      .then(res => {
+        setExtensions(res.extensions)
+        setLoading(false)
+      })
+      .catch(err => {
+        console.log(err)
+        setLoading(false)
+      })
+  }
+
+  useEffect(() => {
+    if (!loading) {
+      getExtensions()
+    }
+  }, [search, filterCategory, filterSortBy])
 
   useEffect(() => {
     history.push(`/search?term=${search}&category=${filterCategory}&sortBy=${filterSortBy}`)
@@ -114,9 +138,15 @@ const Search = () => {
           </div>
         </div>
         <div className='flex items-center flex-wrap justify-center md:justify-between mt-4 gap-1'>
-          {_map(testData, ((item) => (
-            <ExtensionsCard key={item.id} name={item.name} stars={item.stars} downloads={item.downloads} price={item.price} companyLink={item.companyLink} companyName={item.companyName} imagePath={item.imagePath} />
-          )))}
+          {loading
+            ? (
+              <div className='mx-auto'>
+                <Loader />
+              </div>
+            )
+            : _map(testData, ((item) => (
+              <ExtensionsCard key={item.id} name={item.name} stars={item.stars} downloads={item.downloads} price={item.price} companyLink={item.companyLink} companyName={item.companyName} imagePath={item.imagePath} />
+            )))}
         </div>
       </div>
     </div>

@@ -16,7 +16,7 @@ const MainPage = () => {
   const searchSubmit = (e) => {
     e.preventDefault()
     if (!_isEmpty(search)) {
-      history.push(`/search?term=${search}&category=${category.all}&sortBy=${sortBy.relevance}`)
+      history.push(`/search?term=${search}&category=${category.all}&sortBy=${sortBy.CREATED_AT}`)
     } else {
       console.log('wrong')
     }
