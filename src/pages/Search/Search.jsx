@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import Input from 'ui/Input'
 import { SearchIcon } from '@heroicons/react/outline'
 import Dropdown from 'ui/Dropdown'
@@ -52,7 +53,16 @@ const testData = [{
 }]
 
 const Search = () => {
-  const [search, setSearch] = React.useState('')
+  const params = new URLSearchParams(window.location.search)
+  const [search, setSearch] = React.useState(params.get('term'))
+  const [filterCategory, setFilterCategory] = React.useState(params.get('category'))
+  const [filterSortBy, setFilterSortBy] = React.useState(params.get('sortBy'))
+
+  const history = useHistory()
+
+  useEffect(() => {
+    history.push(`/search?term=${search}&category=${filterCategory}&sortBy=${filterSortBy}`)
+  }, [search, filterCategory, filterSortBy, history])
 
   return (
     <div className='dark:bg-gray-900 py-10 px-2 sm:px-10'>
@@ -85,20 +95,20 @@ const Search = () => {
               <span className='mr-3 dark:text-gray-200'>Showing:</span>
               <Dropdown
                 items={_values(category)}
-                title={category.all}
+                title={filterCategory}
                 buttonClassName='flex items-center w-full rounded-md border border-gray-300 shadow-sm px-1 md:px-2 py-1 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
                 selectItemClassName='text-gray-700 block px-2 py-1 text-base cursor-pointer hover:bg-gray-200 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
-                onSelect={() => {}}
+                onSelect={setFilterCategory}
               />
             </div>
             <div>
               <span className='mr-3  dark:text-gray-200'>Sort By:</span>
               <Dropdown
                 items={_values(sortBy)}
-                title={sortBy.relevance}
+                title={filterSortBy}
                 buttonClassName='flex items-center w-full rounded-md border border-gray-300 shadow-sm px-1 md:px-2 py-1 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
                 selectItemClassName='text-gray-700 block px-2 py-1 text-base cursor-pointer hover:bg-gray-200 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
-                onSelect={() => {}}
+                onSelect={setFilterSortBy}
               />
             </div>
           </div>
