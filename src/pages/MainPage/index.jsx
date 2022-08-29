@@ -1,70 +1,40 @@
 import React from 'react'
 import Input from 'ui/Input'
-import { SearchIcon, DownloadIcon } from '@heroicons/react/outline'
+import { SearchIcon } from '@heroicons/react/outline'
 import Button from 'ui/Button'
-import StarsRaiting from 'ui/StarsRaiting'
-import _replace from 'lodash/replace'
-import _includes from 'lodash/includes'
+import _isEmpty from 'lodash/isEmpty'
 import Glider from 'react-glider'
 import './glider.css'
-
-const ExtensionsCard = ({
-  name, stars, downloads, imagePath, price, companyLink, companyName,
-}) => (
-  <div className='group w-[210px] relative border-2 border-white rounded-sm p-3 bg-gray-100 dark:bg-gray-800 dark:border-gray-900  shadow-md'>
-    <div className='h-28 w-28 mx-auto aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:aspect-none'>
-      <img src={imagePath} alt={companyName} className='w-full h-full object-center object-cover lg:w-full lg:h-full' />
-    </div>
-    <div className='mt-4'>
-      <h3 className='text-center text-lg font-semibold leading-5 text-gray-700 dark:text-gray-300'>
-        <a href='/'>
-          {name}
-        </a>
-      </h3>
-      <div className='flex items-center justify-between mt-2'>
-        <div className='flex flex-col'>
-          <p className='dark:text-gray-400 text-gray-500 text-sm leading-[10px]'>
-            {companyName}
-          </p>
-          <a href={companyLink} className='dark:text-indigo-400 cursor-pointer text-indigo-500 font-semibold border-0 text-sm'>
-            {_includes(companyLink, 'https://') ? _replace(companyLink, 'https://', '') : _replace(companyLink, 'http://', '')}
-          </a>
-        </div>
-        <div className='flex items-center'>
-          <DownloadIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
-          <p className='pl-1 text-gray-400'>
-            {downloads}
-            k
-          </p>
-        </div>
-      </div>
-      <div className='flex justify-between items-center mt-1'>
-        <StarsRaiting stars={stars} />
-        <div>
-          <p className='text-indigo-700 dark:text-indigo-500 font-semibold'>
-            {price === 0 ? 'Free' : `${price}$`}
-          </p>
-          <span className='sr-only'>pricing</span>
-        </div>
-      </div>
-    </div>
-  </div>
-)
+import { useHistory } from 'react-router-dom'
+import { categoryConstans, sortByConstans } from 'redux/constants'
+import ExtensionsCard from 'components/ExtensionsCard'
 
 const MainPage = () => {
+  const [search, setSearch] = React.useState('')
+  const history = useHistory()
+
+  const searchSubmit = (e) => {
+    e.preventDefault()
+    if (!_isEmpty(search)) {
+      history.push(`/search?term=${search}&category=${categoryConstans.all}&sortBy=${sortByConstans.CREATED_AT}`)
+    } else {
+      console.log('wrong')
+    }
+  }
+
   return (
     <div className='dark:bg-gray-900'>
       <div>
         <h1 className='text-center pt-16 font-extrabold text-3xl dark:text-white text-gray-700'>Extensions for Swetrix Analytics</h1>
-        <div className='mt-5 mx-auto flex rounded-md shadow-sm !max-w-[360px] !w-full'>
+        <form className='mt-5 mx-auto flex rounded-md shadow-sm !max-w-[360px] !w-full' onSubmit={searchSubmit}>
           <Input
             type='text'
             label=''
-            value=''
+            value={search}
             placeholder='Search extensions for Swetrix Analytics'
             classNameInpit='!rounded-none !rounded-l-md'
             className='!w-full !max-w-full'
-            onChange={() => { }}
+            onChange={(e) => setSearch(e.target.value)}
             disabled={false}
             error={false}
           />
@@ -74,7 +44,7 @@ const MainPage = () => {
           >
             <SearchIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
           </button>
-        </div>
+        </form>
       </div>
       <section>
         <div className='max-w-[1400px] mx-auto py-10 px-4 sm:px-6 lg:px-8'>

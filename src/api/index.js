@@ -139,3 +139,14 @@ export const getLiveVisitors = (pids) =>
         ? error.response.data
         : error.response.data.message
     })
+
+export const getExtensionsSearch = (term, category, sortBy, offset = 0, limit = 25) =>
+  api
+    .get(`/extensions/search?term=${term}&category=${category}&sortBy=${sortBy}&offset=${offset}&limit=${limit}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
