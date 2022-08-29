@@ -1,18 +1,16 @@
 import { connect } from 'react-redux'
-import { errorsActions } from 'redux/actions/errors'
 import UIActions from 'redux/actions/ui'
-import { authActions } from 'redux/actions/auth'
-import { alertsActions } from 'redux/actions/alerts'
 import Search from './Search'
 
 const mapStateToProps = (state) => ({
-  // extensions: state.ui.extensions.extensions,
+  offset: state.ui.search.offset,
+  limit: state.ui.search.limit,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  // deleteExtensionFailed: (message) => {
-  //   dispatch(errorsActions.deleteExtensionFailed(message))
-  // },
+  setOffset: (offset) => {
+    dispatch(UIActions.setOffset(offset))
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search)

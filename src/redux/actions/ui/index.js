@@ -161,6 +161,13 @@ const setDashboardTabs = (tab) => ({
   payload: { tab },
 })
 
+const setOffset = (offset) => ({
+  type: types.SET_OFFSET,
+  payload: {
+    offset,
+  },
+})
+
 const UIActions = {
   loadExtensions,
   loadPublishExtensions,
@@ -185,6 +192,7 @@ const UIActions = {
   setExtensionsPublishData,
   shareVerifyAsync,
   setDashboardTabs,
+  setOffset,
 }
 
 export default UIActions

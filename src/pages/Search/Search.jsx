@@ -1,13 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
-import Input from 'ui/Input'
 import { SearchIcon } from '@heroicons/react/outline'
+
+import Input from 'ui/Input'
 import Dropdown from 'ui/Dropdown'
-import { sortBy, category } from 'redux/constants'
-import _values from 'lodash/values'
 import ExtensionsCard from 'components/ExtensionsCard'
-import _map from 'lodash/map'
+import Pagination from 'ui/Pagination'
 import Loader from 'ui/Loader'
+
+import { sortByConstans, categoryConstans } from 'redux/constants'
+
+import _values from 'lodash/values'
+import _map from 'lodash/map'
+import _ceil from 'lodash/ceil'
+
 import { getExtensionsSearch } from 'api'
 
 const testData = [{
@@ -54,7 +60,9 @@ const testData = [{
   createdAt: '2022-08-26T17:29:45.963Z', name: 'Miss Rita Johns', description: 'officia soluta ad', imagePath: 'http://loremflickr.com/640/480/cats', companyLink: 'http://far-off-ascot.net', companyName: 'Sanford and Sons', stars: 15, downloads: 45, price: 42, id: '21',
 }]
 
-const Search = () => {
+const Search = ({
+  limit, offset, setOffset,
+}) => {
   const params = new URLSearchParams(window.location.search)
 
   const [search, setSearch] = useState(params.get('term'))
@@ -62,14 +70,19 @@ const Search = () => {
   const [filterSortBy, setFilterSortBy] = useState(params.get('sortBy'))
   const [extensions, setExtensions] = useState()
   const [loading, setLoading] = useState(false)
+  const [page, setPage] = useState((offset / limit) + 1)
+  // eslint-disable-next-line no-unsafe-optional-chaining
+  const [total, setTotal] = useState(extensions?.total ?? 0)
+  const pageAmount = useMemo(() => (_ceil(total / limit)), [total, limit])
 
   const history = useHistory()
 
   const getExtensions = async () => {
     setLoading(true)
-    await getExtensionsSearch(search, filterCategory, filterSortBy)
-      .then(res => {
-        setExtensions(res.extensions)
+    await getExtensionsSearch(search, filterCategory, filterSortBy, offset, limit)
+      .then(results => {
+        setExtensions(results.extensions)
+        setTotal(results.count)
         setLoading(false)
       })
       .catch(err => {
@@ -79,10 +92,14 @@ const Search = () => {
   }
 
   useEffect(() => {
+    setOffset((page * limit) - 1)
+  }, [page, limit, setOffset])
+
+  useEffect(() => {
     if (!loading) {
       getExtensions()
     }
-  }, [search, filterCategory, filterSortBy])
+  }, [search, filterCategory, filterSortBy, offset, limit])
 
   useEffect(() => {
     history.push(`/search?term=${search}&category=${filterCategory}&sortBy=${filterSortBy}`)
@@ -118,7 +135,7 @@ const Search = () => {
             <div className='mr-5'>
               <span className='mr-3 dark:text-gray-200'>Showing:</span>
               <Dropdown
-                items={_values(category)}
+                items={_values(categoryConstans)}
                 title={filterCategory}
                 buttonClassName='flex items-center w-full rounded-md border border-gray-300 shadow-sm px-1 md:px-2 py-1 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
                 selectItemClassName='text-gray-700 block px-2 py-1 text-base cursor-pointer hover:bg-gray-200 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
@@ -128,7 +145,7 @@ const Search = () => {
             <div>
               <span className='mr-3  dark:text-gray-200'>Sort By:</span>
               <Dropdown
-                items={_values(sortBy)}
+                items={_values(sortByConstans)}
                 title={filterSortBy}
                 buttonClassName='flex items-center w-full rounded-md border border-gray-300 shadow-sm px-1 md:px-2 py-1 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
                 selectItemClassName='text-gray-700 block px-2 py-1 text-base cursor-pointer hover:bg-gray-200 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
@@ -148,6 +165,11 @@ const Search = () => {
               <ExtensionsCard key={item.id} name={item.name} stars={item.stars} downloads={item.downloads} price={item.price} companyLink={item.companyLink} companyName={item.companyName} imagePath={item.imagePath} />
             )))}
         </div>
+        {pageAmount > 1 && (
+          <div className='mt-2'>
+            <Pagination page={page} setPage={setPage} pageAmount={pageAmount} total={total} />
+          </div>
+        )}
       </div>
     </div>
   )

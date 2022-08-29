@@ -6,7 +6,7 @@ import _isEmpty from 'lodash/isEmpty'
 import Glider from 'react-glider'
 import './glider.css'
 import { useHistory } from 'react-router-dom'
-import { category, sortBy } from 'redux/constants'
+import { categoryConstans, sortByConstans } from 'redux/constants'
 import ExtensionsCard from 'components/ExtensionsCard'
 
 const MainPage = () => {
@@ -16,7 +16,7 @@ const MainPage = () => {
   const searchSubmit = (e) => {
     e.preventDefault()
     if (!_isEmpty(search)) {
-      history.push(`/search?term=${search}&category=${category.all}&sortBy=${sortBy.CREATED_AT}`)
+      history.push(`/search?term=${search}&category=${categoryConstans.all}&sortBy=${sortByConstans.CREATED_AT}`)
     } else {
       console.log('wrong')
     }
