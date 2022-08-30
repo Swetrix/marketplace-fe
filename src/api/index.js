@@ -118,6 +118,39 @@ export const getPublishExtensions = (take = 0, skip = 0) =>
         : error.response.data.message
     })
 
+export const createExtension = (data) =>
+  api
+    .post('/extensions', data)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+export const updateExtension = (id, data) =>
+  api
+    .patch(`/extensions/${id}`, data)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+export const deleteExtension = (id) =>
+  api
+    .delete(`/extensions/${id}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
 export const getOverallStats = (pids) =>
   api
     .get(`log/birdseye?pids=[${_map(pids, (pid) => `"${pid}"`).join(',')}]`)
