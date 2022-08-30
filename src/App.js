@@ -25,6 +25,7 @@ const SignIn = lazy(() => import('pages/Auth/Signin'))
 const NotFound = lazy(() => import('pages/NotFound'))
 const Dashboard = lazy(() => import('pages/Dashboard'))
 const Search = lazy(() => import('pages/Search'))
+const ProjectSettings = lazy(() => import('pages/Project/Settings'))
 
 const minimalFooterPages = [
   '/projects', '/dashboard', '/settings', '/contact',
@@ -128,6 +129,7 @@ const App = () => {
               <Route path={routes.signup} component={SignUp} exact />
               <Route path={routes.dashboard} component={Dashboard} exact />
               <Route path={routes.search} component={Search} exact />
+              <Route path={routes.projectSettings} component={ProjectSettings} exact />
               <Route path='*' component={NotFound} />
             </Switch>
           </Suspense>
