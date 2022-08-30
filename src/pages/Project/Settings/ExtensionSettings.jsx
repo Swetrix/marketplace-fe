@@ -9,12 +9,8 @@ import _isEmpty from 'lodash/isEmpty'
 import _size from 'lodash/size'
 import _replace from 'lodash/replace'
 import _find from 'lodash/find'
-import _join from 'lodash/join'
-import _isString from 'lodash/isString'
-import _split from 'lodash/split'
 import _keys from 'lodash/keys'
 import _map from 'lodash/map'
-import _includes from 'lodash/includes'
 import PropTypes from 'prop-types'
 import { ExclamationIcon } from '@heroicons/react/outline'
 
@@ -32,8 +28,6 @@ import { trackCustom } from 'utils/analytics'
 import routes from 'routes'
 
 const MAX_NAME_LENGTH = 50
-const MAX_ORIGINS_LENGTH = 300
-const MAX_IPBLACKLIST_LENGTH = 300
 
 const ExtensionSettings = ({
   updateExtensionFailed, createNewExtensionFailed, newExtension, extensionDelete, deleteExtensionFailed,
@@ -49,7 +43,6 @@ const ExtensionSettings = ({
   const [form, setForm] = useState({
     name: '',
     id: id || nanoid(),
-    public: false,
   })
   const [validated, setValidated] = useState(false)
   const [errors, setErrors] = useState({})
@@ -71,8 +64,6 @@ const ExtensionSettings = ({
       } else {
         setForm({
           ...extension,
-          ipBlacklist: _isString(extension.ipBlacklist) ? extension.ipBlacklist : _join(extension.ipBlacklist, ', '),
-          origins: _isString(extension.origins) ? extension.origins : _join(extension.origins, ', '),
         })
       }
     }
@@ -84,17 +75,6 @@ const ExtensionSettings = ({
       try {
         const formalisedData = {
           ...data,
-          origins: _isEmpty(data.origins) ? null : _map(_split(data.origins, ','), (origin) => {
-            try {
-              if (_includes(origin, 'localhost')) {
-                return origin
-              }
-              return new URL(origin).host
-            } catch (e) {
-              return origin
-            }
-          }),
-          ipBlacklist: _isEmpty(data.ipBlacklist) ? null : _split(data.ipBlacklist, ','),
         }
         if (isSettings) {
           await updateExtension(id, formalisedData)
@@ -145,14 +125,6 @@ const ExtensionSettings = ({
 
     if (_size(form.name) > MAX_NAME_LENGTH) {
       allErrors.name = t('extension.settings.pxCharsError', { amount: MAX_NAME_LENGTH })
-    }
-
-    if (_size(form.origins) > MAX_ORIGINS_LENGTH) {
-      allErrors.origins = t('extension.settings.oxCharsError', { amount: MAX_ORIGINS_LENGTH })
-    }
-
-    if (_size(form.ipBlacklist) > MAX_IPBLACKLIST_LENGTH) {
-      allErrors.ipBlacklist = t('extension.settings.oxCharsError', { amount: MAX_IPBLACKLIST_LENGTH })
     }
 
     const valid = _isEmpty(_keys(allErrors))
@@ -229,29 +201,6 @@ const ExtensionSettings = ({
           />
           {isSettings ? (
             <>
-              <Input
-                name='origins'
-                id='origins'
-                type='text'
-                label={t('extension.settings.origins')}
-                hint={t('extension.settings.originsHint')}
-                value={form.origins || ''}
-                className='mt-4'
-                onChange={handleInput}
-                error={beenSubmitted ? errors.origins : null}
-              />
-              <Input
-                name='ipBlacklist'
-                id='ipBlacklist'
-                type='text'
-                label={t('extension.settings.ipBlacklist')}
-                hint={t('extension.settings.ipBlacklistHint')}
-                value={form.ipBlacklist || ''}
-                className='mt-4'
-                onChange={handleInput}
-                error={beenSubmitted ? errors.ipBlacklist : null}
-                isBeta
-              />
               <Checkbox
                 checked={Boolean(form.active)}
                 onChange={handleInput}
@@ -260,15 +209,6 @@ const ExtensionSettings = ({
                 className='mt-4'
                 label={t('extension.settings.enabled')}
                 hint={t('extension.settings.enabledHint')}
-              />
-              <Checkbox
-                checked={Boolean(form.public)}
-                onChange={handleInput}
-                name='public'
-                id='public'
-                className='mt-4'
-                label={t('extension.settings.public')}
-                hint={t('extension.settings.publicHint')}
               />
               <div className='flex justify-between mt-8 h-20 sm:h-min'>
                 <div className='flex flex-wrap items-center'>
