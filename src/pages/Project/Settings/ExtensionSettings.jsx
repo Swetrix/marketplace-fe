@@ -16,13 +16,12 @@ import _keys from 'lodash/keys'
 import _map from 'lodash/map'
 import _includes from 'lodash/includes'
 import PropTypes from 'prop-types'
-import { ExclamationIcon, TrashIcon } from '@heroicons/react/outline'
+import { ExclamationIcon } from '@heroicons/react/outline'
 
 import Title from 'components/Title'
 import { withAuthentication, auth } from 'hoc/protected'
-import { isSelfhosted } from 'redux/constants'
 import {
-  createProject, updateProject, deleteProject, resetProject,
+  createExtension, updateExtension, deleteExtension,
 } from 'api'
 import Input from 'ui/Input'
 import Button from 'ui/Button'
@@ -32,22 +31,19 @@ import { nanoid } from 'utils/random'
 import { trackCustom } from 'utils/analytics'
 import routes from 'routes'
 
-import People from './People'
-
 const MAX_NAME_LENGTH = 50
 const MAX_ORIGINS_LENGTH = 300
 const MAX_IPBLACKLIST_LENGTH = 300
 
-const ProjectSettings = ({
-  updateProjectFailed, createNewProjectFailed, newProject, projectDeleted, deleteProjectFailed,
-  loadProjects, isLoading, projects, showError, removeProject, user, isSharedProject, sharedProjects,
-  deleteProjectCache,
+const ExtensionSettings = ({
+  updateExtensionFailed, createNewExtensionFailed, newExtension, extensionDelete, deleteExtensionFailed,
+  loadExtensions, isLoading, extensions, showError, removeExtension, user, isPublishExtension, publishExtensions,
 }) => {
   const { t } = useTranslation('common')
   const { pathname } = useLocation()
   const { id } = useParams()
-  const project = useMemo(() => _find([...projects, ..._map(sharedProjects, (item) => item.project)], p => p.id === id) || {}, [projects, id, sharedProjects])
-  const isSettings = !_isEmpty(id) && (_replace(routes.project_settings, ':id', id) === pathname)
+  const extension = useMemo(() => _find([...extensions, ..._map(publishExtensions, (item) => item.extension)], p => p.id === id) || {}, [extensions, id, publishExtensions])
+  const isSettings = !_isEmpty(id) && (_replace(routes.extension_settings, ':id', id) === pathname)
   const history = useHistory()
 
   const [form, setForm] = useState({
@@ -59,34 +55,32 @@ const ProjectSettings = ({
   const [errors, setErrors] = useState({})
   const [beenSubmitted, setBeenSubmitted] = useState(false)
   const [showDelete, setShowDelete] = useState(false)
-  const [showReset, setShowReset] = useState(false)
-  const [projectDeleting, setProjectDeleting] = useState(false)
-  const [projectResetting, setProjectResetting] = useState(false)
-  const [projectSaving, setProjectSaving] = useState(false)
+  const [extensionDeleting, setExtensionDeleting] = useState(false)
+  const [extensionSaving, setExtensionSaving] = useState(false)
 
   useEffect(() => {
-    if (!user.isActive && !isSelfhosted) {
-      showError(t('project.settings.verify'))
+    if (!user.isActive) {
+      showError(t('extension.settings.verify'))
       history.push(routes.dashboard)
     }
 
-    if (!isLoading && isSettings && !projectDeleting) {
-      if (_isEmpty(project) || project?.uiHidden) {
-        showError(t('project.noExist'))
+    if (!isLoading && isSettings && !extensionDeleting) {
+      if (_isEmpty(extension) || extension?.uiHidden) {
+        showError(t('extension.noExist'))
         history.push(routes.dashboard)
       } else {
         setForm({
-          ...project,
-          ipBlacklist: _isString(project.ipBlacklist) ? project.ipBlacklist : _join(project.ipBlacklist, ', '),
-          origins: _isString(project.origins) ? project.origins : _join(project.origins, ', '),
+          ...extension,
+          ipBlacklist: _isString(extension.ipBlacklist) ? extension.ipBlacklist : _join(extension.ipBlacklist, ', '),
+          origins: _isString(extension.origins) ? extension.origins : _join(extension.origins, ', '),
         })
       }
     }
-  }, [user, project, isLoading, isSettings, history, showError, projectDeleting, t])
+  }, [user, extension, isLoading, isSettings, history, showError, extensionDeleting, t])
 
   const onSubmit = async (data) => {
-    if (!projectSaving) {
-      setProjectSaving(true)
+    if (!extensionSaving) {
+      setExtensionSaving(true)
       try {
         const formalisedData = {
           ...data,
@@ -103,58 +97,41 @@ const ProjectSettings = ({
           ipBlacklist: _isEmpty(data.ipBlacklist) ? null : _split(data.ipBlacklist, ','),
         }
         if (isSettings) {
-          await updateProject(id, formalisedData)
-          newProject(t('project.settings.updated'))
+          await updateExtension(id, formalisedData)
+          newExtension(t('extension.settings.updated'))
         } else {
-          await createProject(formalisedData)
-          trackCustom('PROJECT_CREATED')
-          newProject(t('project.settings.created'))
+          await createExtension(formalisedData)
+          trackCustom('extension_CREATED')
+          newExtension(t('extension.settings.created'))
         }
 
-        loadProjects(isSharedProject)
+        loadExtensions(isPublishExtension)
         history.push(routes.dashboard)
       } catch (e) {
         if (isSettings) {
-          updateProjectFailed(e)
+          updateExtensionFailed(e)
         } else {
-          createNewProjectFailed(e)
+          createNewExtensionFailed(e)
         }
       } finally {
-        setProjectSaving(false)
+        setExtensionSaving(false)
       }
     }
   }
 
   const onDelete = async () => {
     setShowDelete(false)
-    if (!projectDeleting) {
-      setProjectDeleting(true)
+    if (!extensionDeleting) {
+      setExtensionDeleting(true)
       try {
-        await deleteProject(id)
-        removeProject(id, isSharedProject)
-        projectDeleted(t('project.settings.deleted'))
+        await deleteExtension(id)
+        removeExtension(id, isPublishExtension)
+        extensionDelete(t('extension.settings.deleted'))
         history.push(routes.dashboard)
       } catch (e) {
-        deleteProjectFailed(e)
+        deleteExtensionFailed(e)
       } finally {
-        setProjectDeleting(false)
-      }
-    }
-  }
-
-  const onReset = async () => {
-    setShowReset(false)
-    if (!projectResetting) {
-      setProjectResetting(true)
-      try {
-        await resetProject(id)
-        deleteProjectCache(id)
-        projectDeleted(t('project.settings.resetted'))
-        history.push(routes.dashboard)
-      } catch (e) {
-        deleteProjectFailed(e)
-      } finally {
-        setProjectResetting(false)
+        setExtensionDeleting(false)
       }
     }
   }
@@ -163,19 +140,19 @@ const ProjectSettings = ({
     const allErrors = {}
 
     if (_isEmpty(form.name)) {
-      allErrors.name = t('project.settings.noNameError')
+      allErrors.name = t('extension.settings.noNameError')
     }
 
     if (_size(form.name) > MAX_NAME_LENGTH) {
-      allErrors.name = t('project.settings.pxCharsError', { amount: MAX_NAME_LENGTH })
+      allErrors.name = t('extension.settings.pxCharsError', { amount: MAX_NAME_LENGTH })
     }
 
     if (_size(form.origins) > MAX_ORIGINS_LENGTH) {
-      allErrors.origins = t('project.settings.oxCharsError', { amount: MAX_ORIGINS_LENGTH })
+      allErrors.origins = t('extension.settings.oxCharsError', { amount: MAX_ORIGINS_LENGTH })
     }
 
     if (_size(form.ipBlacklist) > MAX_IPBLACKLIST_LENGTH) {
-      allErrors.ipBlacklist = t('project.settings.oxCharsError', { amount: MAX_IPBLACKLIST_LENGTH })
+      allErrors.ipBlacklist = t('extension.settings.oxCharsError', { amount: MAX_IPBLACKLIST_LENGTH })
     }
 
     const valid = _isEmpty(_keys(allErrors))
@@ -209,10 +186,10 @@ const ProjectSettings = ({
   }
 
   const onCancel = () => {
-    history.push(isSettings ? _replace(routes.project, ':id', id) : routes.dashboard)
+    history.push(isSettings ? _replace(routes.extension, ':id', id) : routes.dashboard)
   }
 
-  const title = isSettings ? `${t('project.settings.settings')} ${form.name}` : t('project.settings.create')
+  const title = isSettings ? `${t('extension.settings.settings')} ${form.name}` : t('extension.settings.create')
 
   return (
     <Title title={title}>
@@ -232,9 +209,9 @@ const ProjectSettings = ({
             name='name'
             id='name'
             type='text'
-            label={t('project.settings.name')}
+            label={t('extension.settings.name')}
             value={form.name}
-            placeholder='My awesome project'
+            placeholder='My awesome extension'
             className='mt-4'
             onChange={handleInput}
             error={beenSubmitted ? errors.name : null}
@@ -243,7 +220,7 @@ const ProjectSettings = ({
             name='id'
             id='id'
             type='text'
-            label={t('project.settings.pid')}
+            label={t('extension.settings.pid')}
             value={form.id}
             className='mt-4'
             onChange={handleInput}
@@ -256,8 +233,8 @@ const ProjectSettings = ({
                 name='origins'
                 id='origins'
                 type='text'
-                label={t('project.settings.origins')}
-                hint={t('project.settings.originsHint')}
+                label={t('extension.settings.origins')}
+                hint={t('extension.settings.originsHint')}
                 value={form.origins || ''}
                 className='mt-4'
                 onChange={handleInput}
@@ -267,8 +244,8 @@ const ProjectSettings = ({
                 name='ipBlacklist'
                 id='ipBlacklist'
                 type='text'
-                label={t('project.settings.ipBlacklist')}
-                hint={t('project.settings.ipBlacklistHint')}
+                label={t('extension.settings.ipBlacklist')}
+                hint={t('extension.settings.ipBlacklistHint')}
                 value={form.ipBlacklist || ''}
                 className='mt-4'
                 onChange={handleInput}
@@ -281,8 +258,8 @@ const ProjectSettings = ({
                 name='active'
                 id='active'
                 className='mt-4'
-                label={t('project.settings.enabled')}
-                hint={t('project.settings.enabledHint')}
+                label={t('extension.settings.enabled')}
+                hint={t('extension.settings.enabledHint')}
               />
               <Checkbox
                 checked={Boolean(form.public)}
@@ -290,41 +267,30 @@ const ProjectSettings = ({
                 name='public'
                 id='public'
                 className='mt-4'
-                label={t('project.settings.public')}
-                hint={t('project.settings.publicHint')}
+                label={t('extension.settings.public')}
+                hint={t('extension.settings.publicHint')}
               />
               <div className='flex justify-between mt-8 h-20 sm:h-min'>
                 <div className='flex flex-wrap items-center'>
                   <Button className='mr-2 border-indigo-100 dark:text-gray-50 dark:border-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600' onClick={onCancel} secondary regular>
                     {t('common.cancel')}
                   </Button>
-                  <Button type='submit' loading={projectSaving} primary regular>
+                  <Button type='submit' loading={extensionSaving} primary regular>
                     {t('common.save')}
                   </Button>
                 </div>
-                {!project.shared && (
-                  <div className='flex flex-wrap items-center justify-end'>
-                    <Button onClick={() => !projectResetting && setShowReset(true)} loading={projectDeleting} semiDanger semiSmall>
-                      <TrashIcon className='w-5 h-5 mr-1' />
-                      {t('project.settings.reset')}
-                    </Button>
-                    <Button className='ml-2' onClick={() => !projectDeleting && setShowDelete(true)} loading={projectDeleting} danger semiSmall>
-                      <ExclamationIcon className='w-5 h-5 mr-1' />
-                      {t('project.settings.delete')}
-                    </Button>
-                  </div>
-                )}
+                <div className='flex flex-wrap items-center justify-end'>
+                  <Button className='ml-2' onClick={() => !extensionDeleting && setShowDelete(true)} loading={extensionDeleting} danger semiSmall>
+                    <ExclamationIcon className='w-5 h-5 mr-1' />
+                    {t('extension.settings.delete')}
+                  </Button>
+                </div>
               </div>
               <hr className='mt-2 sm:mt-5' />
-              {
-                !project.shared && (
-                  <People project={project} />
-                )
-              }
             </>
           ) : (
             <p className='text-gray-500 dark:text-gray-300 italic mt-1 mb-4 text-sm'>
-              {t('project.settings.createHint')}
+              {t('extension.settings.createHint')}
             </p>
           )}
 
@@ -333,7 +299,7 @@ const ProjectSettings = ({
               <Button className='mr-2 border-indigo-100 dark:text-gray-50 dark:border-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600' onClick={onCancel} secondary regular>
                 {t('common.cancel')}
               </Button>
-              <Button type='submit' loading={projectSaving} primary regular>
+              <Button type='submit' loading={extensionSaving} primary regular>
                 {t('common.save')}
               </Button>
             </div>
@@ -342,43 +308,31 @@ const ProjectSettings = ({
         <Modal
           onClose={() => setShowDelete(false)}
           onSubmit={onDelete}
-          submitText={t('project.settings.delete')}
+          submitText={t('extension.settings.delete')}
           closeText={t('common.close')}
-          title={t('project.settings.qDelete')}
-          message={t('project.settings.deleteHint')}
+          title={t('extension.settings.qDelete')}
+          message={t('extension.settings.deleteHint')}
           submitType='danger'
           type='error'
           isOpened={showDelete}
-        />
-        <Modal
-          onClose={() => setShowReset(false)}
-          onSubmit={onReset}
-          submitText={t('project.settings.reset')}
-          closeText={t('common.close')}
-          title={t('project.settings.qReset')}
-          message={t('project.settings.resetHint')}
-          submitType='danger'
-          type='error'
-          isOpened={showReset}
         />
       </div>
     </Title>
   )
 }
 
-ProjectSettings.propTypes = {
-  updateProjectFailed: PropTypes.func.isRequired,
-  createNewProjectFailed: PropTypes.func.isRequired,
-  newProject: PropTypes.func.isRequired,
-  projectDeleted: PropTypes.func.isRequired,
-  deleteProjectFailed: PropTypes.func.isRequired,
-  loadProjects: PropTypes.func.isRequired,
-  projects: PropTypes.arrayOf(PropTypes.object).isRequired,
+ExtensionSettings.propTypes = {
+  updateExtensionFailed: PropTypes.func.isRequired,
+  createNewExtensionFailed: PropTypes.func.isRequired,
+  newExtension: PropTypes.func.isRequired,
+  extensionDelete: PropTypes.func.isRequired,
+  deleteExtensionFailed: PropTypes.func.isRequired,
+  loadExtensions: PropTypes.func.isRequired,
+  extensions: PropTypes.arrayOf(PropTypes.object).isRequired,
   showError: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
-  isSharedProject: PropTypes.bool.isRequired,
-  deleteProjectCache: PropTypes.func.isRequired,
+  isPublishExtension: PropTypes.bool.isRequired,
 }
 
-export default memo(withAuthentication(ProjectSettings, auth.authenticated))
+export default memo(withAuthentication(ExtensionSettings, auth.authenticated))

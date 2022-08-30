@@ -32,16 +32,16 @@ export const languageFlag = {
 
 export const ENTRIES_PER_PAGE_DASHBOARD = 10
 
-export const tabForInstallProject = 'installed'
-export const tabForPublishProject = 'published'
+export const tabForInstallExtension = 'installed'
+export const tabForPublishExtensions = 'published'
 
 export const tabsForDashboard = [
   {
-    name: tabForInstallProject,
+    name: tabForInstallExtension,
     label: 'profileSettings.owned',
   },
   {
-    name: tabForPublishProject,
+    name: tabForPublishExtensions,
     label: 'profileSettings.shared',
   },
 ]
