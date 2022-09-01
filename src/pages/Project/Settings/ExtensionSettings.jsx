@@ -11,10 +11,14 @@ import _replace from 'lodash/replace'
 import _find from 'lodash/find'
 import _keys from 'lodash/keys'
 import _map from 'lodash/map'
+import _filter from 'lodash/filter'
 import PropTypes from 'prop-types'
 import { ExclamationIcon } from '@heroicons/react/outline'
 
 import Title from 'components/Title'
+import ImageUpload from 'components/ImageUpload/ImageUpload'
+import ImageList from 'components/ImageUpload/ImageList'
+
 import { withAuthentication, auth } from 'hoc/protected'
 import {
   createExtension, updateExtension, deleteExtension,
@@ -50,6 +54,7 @@ const ExtensionSettings = ({
   const [showDelete, setShowDelete] = useState(false)
   const [extensionDeleting, setExtensionDeleting] = useState(false)
   const [extensionSaving, setExtensionSaving] = useState(false)
+  const [files, setFiles] = useState([])
 
   useEffect(() => {
     if (!user.isActive) {
@@ -161,6 +166,10 @@ const ExtensionSettings = ({
     history.push(isSettings ? _replace(routes.extension, ':id', id) : routes.dashboard)
   }
 
+  const removeFile = (filename) => {
+    setFiles(_filter(files, file => file.name !== filename))
+  }
+
   const title = isSettings ? `${t('extension.settings.settings')} ${form.name}` : t('extension.settings.create')
 
   return (
@@ -199,6 +208,15 @@ const ExtensionSettings = ({
             error={beenSubmitted ? errors.id : null}
             disabled
           />
+          <div>
+            <div className='title'>Upload file</div>
+            <ImageUpload
+              files={files}
+              setFiles={setFiles}
+              removeFile={removeFile}
+            />
+            <ImageList files={files} removeFile={removeFile} />
+          </div>
           {isSettings ? (
             <>
               <Checkbox
