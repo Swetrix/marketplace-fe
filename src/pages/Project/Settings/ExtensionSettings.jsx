@@ -11,6 +11,7 @@ import _replace from 'lodash/replace'
 import _find from 'lodash/find'
 import _keys from 'lodash/keys'
 import _map from 'lodash/map'
+import _forEach from 'lodash/forEach'
 import _filter from 'lodash/filter'
 import PropTypes from 'prop-types'
 import { ExclamationIcon } from '@heroicons/react/outline'
@@ -23,6 +24,7 @@ import { withAuthentication, auth } from 'hoc/protected'
 import {
   createExtension, updateExtension, deleteExtension,
 } from 'api'
+import { uploadFile } from 'api/cnd'
 import Input from 'ui/Input'
 import Button from 'ui/Button'
 import Checkbox from 'ui/Checkbox'
@@ -74,6 +76,34 @@ const ExtensionSettings = ({
     }
   }, [user, extension, isLoading, isSettings, history, showError, extensionDeleting, t])
 
+  const removeFile = (filename) => {
+    setFiles((items) => _filter(items, file => {
+      return file.isUploading ? file.name !== filename : file.filename !== filename
+    }))
+  }
+
+  useEffect(() => {
+    console.log(files)
+  }, [files])
+
+  const loadFileToAPi = async (file, index) => {
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('token', process.env.REACT_APP_CDN_API_TOKEN)
+
+    await uploadFile(formData)
+      .then((res) => {
+        setFiles((item) => {
+          const result = item
+          result[index] = res
+          return result
+        })
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
   const onSubmit = async (data) => {
     if (!extensionSaving) {
       setExtensionSaving(true)
@@ -81,6 +111,12 @@ const ExtensionSettings = ({
         const formalisedData = {
           ...data,
         }
+        _forEach(files, async (file, index) => {
+          if (file.isUploading) {
+            await loadFileToAPi(file, index)
+          }
+        })
+        // setFiles(uploadedFiles)
         if (isSettings) {
           await updateExtension(id, formalisedData)
           newExtension(t('extension.settings.updated'))
@@ -164,10 +200,6 @@ const ExtensionSettings = ({
 
   const onCancel = () => {
     history.push(isSettings ? _replace(routes.extension, ':id', id) : routes.dashboard)
-  }
-
-  const removeFile = (filename) => {
-    setFiles(_filter(files, file => file.name !== filename))
   }
 
   const title = isSettings ? `${t('extension.settings.settings')} ${form.name}` : t('extension.settings.create')

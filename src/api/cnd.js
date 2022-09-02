@@ -24,7 +24,7 @@ export const uploadFile = (file) =>
 
 export const deleteFile = (file) =>
   api
-    .delete(`/file/${file}`, { token })
+    .delete('/file', { data: { filename: file, token } })
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)

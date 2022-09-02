@@ -4,23 +4,26 @@ import { deleteFile } from 'api/cnd'
 import ImageItem from './ImageItem'
 
 const ImageList = ({ files, removeFile }) => {
-  const deleteFileHandler = async (_name) => {
-    await deleteFile(_name)
-      .then((res) => {
-        console.log(res)
-        removeFile(_name)
-      })
-      .catch((err) => console.error(err))
+  const deleteFileHandler = async (file) => {
+    if (!file.isUploading) {
+      await deleteFile(file.filename)
+        .then(() => {
+          removeFile(file.filename)
+        })
+        .catch((err) => console.error(err))
+    } else {
+      removeFile(file.name)
+    }
   }
 
   return (
     <ul className='file-list'>
       {
-        files && _map(files, f => (
+        files && _map(files, file => (
           <ImageItem
-            key={f.name}
-            file={f}
-            deleteFile={deleteFileHandler}
+            key={file?.name || file.filename}
+            file={file}
+            deleteFile={() => deleteFileHandler(file)}
           />
         ))
       }

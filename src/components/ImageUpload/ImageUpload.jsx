@@ -1,9 +1,8 @@
 import React from 'react'
 import Button from 'ui/Button'
 import { PlusIcon } from '@heroicons/react/outline'
-import { uploadFile } from 'api/cnd'
 
-const ImageUpload = ({ files, setFiles, removeFile }) => {
+const ImageUpload = ({ files, setFiles }) => {
   const uploadHandler = async (event) => {
     const file = event.target.files[0]
     if (!file) return
@@ -11,21 +10,21 @@ const ImageUpload = ({ files, setFiles, removeFile }) => {
     setFiles([...files, file])
 
     // upload file
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('token', process.env.REACT_APP_CDN_API_TOKEN)
+    // const formData = new FormData()
+    // formData.append('file', file)
+    // formData.append('token', process.env.REACT_APP_CDN_API_TOKEN)
 
-    await uploadFile(formData)
-      .then((res) => {
-        console.log(res)
-        file.isUploading = false
-        setFiles([...files, file])
-      })
-      .catch((err) => {
-        // inform the user
-        console.error(err)
-        removeFile(file.name)
-      })
+    // await uploadFile(formData)
+    //   .then((res) => {
+    //     console.log(res)
+    //     file.isUploading = false
+    //     setFiles([...files, file])
+    //   })
+    //   .catch((err) => {
+    //     // inform the user
+    //     console.error(err)
+    //     removeFile(file.name)
+    //   })
   }
 
   return (
