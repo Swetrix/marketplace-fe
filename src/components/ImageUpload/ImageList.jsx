@@ -17,7 +17,7 @@ const ImageList = ({ files, removeFile }) => {
   }
 
   return (
-    <ul className='file-list'>
+    <ul className='flex items-center justify-between flex-wrap'>
       {
         files && _map(files, file => (
           <ImageItem

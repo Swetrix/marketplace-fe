@@ -1,6 +1,5 @@
 import React from 'react'
 import Button from 'ui/Button'
-import { PlusIcon } from '@heroicons/react/outline'
 
 const ImageUpload = ({ files, setFiles }) => {
   const uploadHandler = async (event) => {
@@ -31,15 +30,14 @@ const ImageUpload = ({ files, setFiles }) => {
     <div className='bg-gray-200 p-4 border-2 border-dashed border-[#cbd5e0] relative'>
       <input type='file' className='absolute top-0 left-0 opacity-0 cursor-pointer z-20 w-full h-full' onChange={uploadHandler} />
       <div className='flex flex-col justify-center items-center'>
-        <div className='relative mb-6'>
-          <Button primary>
-            <PlusIcon className='w-6 h-6 mr-3' />
-            Upload
+        <div className='relative mb-4'>
+          <Button type='button' primary regular>
+            Upload Image
           </Button>
         </div>
 
         <p className='main'>Supported files</p>
-        <p className='info'>PDF, JPG, PNG</p>
+        <p className='info'>GIF, JPG, PNG</p>
       </div>
     </div>
   )
