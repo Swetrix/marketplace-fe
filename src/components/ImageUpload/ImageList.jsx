@@ -5,14 +5,14 @@ import ImageItem from './ImageItem'
 const ImageList = ({ files, removeFile }) => {
   const deleteFileHandler = async (file) => {
     if (!file.isUploading) {
-      removeFile(file.name)
+      removeFile(file)
     //   await deleteFile(file.filename)
     //     .then(() => {
     //       removeFile(file.filename)
     //     })
     //     .catch((err) => console.error(err))
     } else {
-      removeFile(file.name)
+      removeFile(file)
     }
   }
 

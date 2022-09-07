@@ -75,7 +75,7 @@ const ExtensionSettings = ({
     }
   }, [user, extension, isLoading, isSettings, history, showError, extensionDeleting, t])
 
-  const removeFile = (filename, isMainImage) => {
+  const removeFile = (rFiles, isMainImage) => {
     setForm((items) => {
       if (isMainImage) {
         return {
@@ -86,7 +86,7 @@ const ExtensionSettings = ({
       return {
         ...items,
         additionalImages: _filter(items.additionalImages, file => {
-          return file.isUploading ? file.name !== filename : file.filename !== filename
+          return file.isUploading ? file.id !== rFiles.id : file.filename !== rFiles.filename
         }),
       }
     })
