@@ -11,7 +11,7 @@ import _replace from 'lodash/replace'
 import _find from 'lodash/find'
 import _keys from 'lodash/keys'
 import _map from 'lodash/map'
-import _forEach from 'lodash/forEach'
+import _toNumber from 'lodash/toNumber'
 import _filter from 'lodash/filter'
 import PropTypes from 'prop-types'
 import { ExclamationIcon } from '@heroicons/react/outline'
@@ -24,7 +24,6 @@ import { withAuthentication, auth } from 'hoc/protected'
 import {
   createExtension, updateExtension, deleteExtension,
 } from 'api'
-import { uploadFile } from 'api/cnd'
 import Input from 'ui/Input'
 import Button from 'ui/Button'
 import Checkbox from 'ui/Checkbox'
@@ -34,6 +33,7 @@ import { trackCustom } from 'utils/analytics'
 import routes from 'routes'
 
 const MAX_NAME_LENGTH = 50
+const MAX_VERSION_LENGTH = 6
 
 const ExtensionSettings = ({
   updateExtensionFailed, createNewExtensionFailed, newExtension, extensionDelete, deleteExtensionFailed,
@@ -48,7 +48,7 @@ const ExtensionSettings = ({
 
   const [form, setForm] = useState({
     name: '',
-    id: id || nanoid(),
+    additionalImages: [],
   })
   const [validated, setValidated] = useState(false)
   const [errors, setErrors] = useState({})
@@ -56,7 +56,6 @@ const ExtensionSettings = ({
   const [showDelete, setShowDelete] = useState(false)
   const [extensionDeleting, setExtensionDeleting] = useState(false)
   const [extensionSaving, setExtensionSaving] = useState(false)
-  const [files, setFiles] = useState([])
 
   useEffect(() => {
     if (!user.isActive) {
@@ -76,52 +75,38 @@ const ExtensionSettings = ({
     }
   }, [user, extension, isLoading, isSettings, history, showError, extensionDeleting, t])
 
-  const removeFile = (filename) => {
-    setFiles((items) => _filter(items, file => {
-      return file.isUploading ? file.name !== filename : file.filename !== filename
-    }))
-  }
-
-  useEffect(() => {
-    console.log(files)
-  }, [files])
-
-  const loadFileToAPi = async (file, index) => {
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('token', process.env.REACT_APP_CDN_API_TOKEN)
-
-    await uploadFile(formData)
-      .then((res) => {
-        setFiles((item) => {
-          const result = item
-          result[index] = res
-          return result
-        })
-      })
-      .catch((err) => {
-        console.error(err)
-      })
+  const removeFile = (filename, isMainImage) => {
+    setForm((items) => {
+      if (isMainImage) {
+        return {
+          ...items,
+          mainImage: null,
+        }
+      }
+      return {
+        ...items,
+        additionalImages: _filter(items.additionalImages, file => {
+          return file.isUploading ? file.name !== filename : file.filename !== filename
+        }),
+      }
+    })
   }
 
   const onSubmit = async (data) => {
     if (!extensionSaving) {
       setExtensionSaving(true)
       try {
-        const formalisedData = {
-          ...data,
-        }
-        _forEach(files, async (file, index) => {
-          if (file.isUploading) {
-            await loadFileToAPi(file, index)
-          }
-        })
-        // setFiles(uploadedFiles)
+        const formData = new FormData()
+        formData.append('name', data.name)
+        formData.append('mainImage', data.mainImage)
+        formData.append('additionalImages', data.additionalImages)
+        formData.append('version', data.version)
+        formData.append('description', data.description)
         if (isSettings) {
-          await updateExtension(id, formalisedData)
+          await updateExtension(id, formData)
           newExtension(t('extension.settings.updated'))
         } else {
-          await createExtension(formalisedData)
+          await createExtension(formData)
           trackCustom('extension_CREATED')
           newExtension(t('extension.settings.created'))
         }
@@ -157,6 +142,10 @@ const ExtensionSettings = ({
     }
   }
 
+  useEffect(() => {
+    console.log('form', form)
+  }, [form])
+
   const validate = () => {
     const allErrors = {}
 
@@ -166,6 +155,10 @@ const ExtensionSettings = ({
 
     if (_size(form.name) > MAX_NAME_LENGTH) {
       allErrors.name = t('extension.settings.pxCharsError', { amount: MAX_NAME_LENGTH })
+    }
+
+    if (_size(form.version) > MAX_VERSION_LENGTH) {
+      allErrors.version = t('extension.settings.pxCharsError', { amount: MAX_VERSION_LENGTH })
     }
 
     const valid = _isEmpty(_keys(allErrors))
@@ -181,6 +174,15 @@ const ExtensionSettings = ({
   const handleInput = event => {
     const { target } = event
     const value = target.type === 'checkbox' ? target.checked : target.value
+
+    if (target.name === 'price') {
+      console.log(_toNumber(value))
+      setForm({
+        ...form,
+        [target.name]: _toNumber(value),
+      })
+      return
+    }
 
     setForm(oldForm => ({
       ...oldForm,
@@ -230,24 +232,48 @@ const ExtensionSettings = ({
             error={beenSubmitted ? errors.name : null}
           />
           <Input
-            name='id'
-            id='id'
+            name='discription'
+            id='discription'
             type='text'
-            label={t('extension.settings.pid')}
-            value={form.id}
+            label='Discription'
+            value={form.discription || ''}
+            placeholder='My awesome extension'
             className='mt-4'
             onChange={handleInput}
-            error={beenSubmitted ? errors.id : null}
-            disabled
+            error={beenSubmitted ? errors.discription : null}
+          />
+          <Input
+            name='version'
+            id='version'
+            type='text'
+            label='Version'
+            value={form.version || ''}
+            placeholder='0.0.1'
+            className='mt-4'
+            onChange={handleInput}
+            error={beenSubmitted ? errors.version : null}
+          />
+          <Input
+            name='price'
+            id='price'
+            type='number'
+            label='Price'
+            value={`${form.price}` || ''}
+            placeholder='0 (free), 1 (1$), 2 (2$)'
+            className='mt-4'
+            onChange={handleInput}
+            error={beenSubmitted ? errors.price : null}
           />
           <div>
             <div className='title'>Upload file</div>
             <ImageUpload
-              files={files}
-              setFiles={setFiles}
+              files={form.additionalImages}
+              setFiles={(files) => {
+                setForm((items) => ({ ...items, additionalImages: [...items.additionalImages, files] }))
+              }}
               removeFile={removeFile}
             />
-            <ImageList files={files} removeFile={removeFile} />
+            <ImageList files={form.additionalImages} removeFile={removeFile} />
           </div>
           {isSettings ? (
             <>

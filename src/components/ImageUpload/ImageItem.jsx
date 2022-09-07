@@ -30,7 +30,7 @@ const ImageItem = ({ file, deleteFile }) => {
         )
         : (
           <div className='relative'>
-            <img className='max-w-xs max-h-[200px]' alt={file.filename} src={`${process.env.REACT_APP_CDN_API_URL}file/${file.filename}`} />
+            <img className='max-w-xs max-h-[200px]' alt={file.filename} src={`file/${file.filename}`} />
             <TrashIcon
               className='w-6 h-6 cursor-pointer absolute top-0 right-0 bg-white border-2 p-1 rounded-sm border-gray-900'
               onClick={() => deleteFile(file)}

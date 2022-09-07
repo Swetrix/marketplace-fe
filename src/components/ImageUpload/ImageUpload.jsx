@@ -6,7 +6,9 @@ const ImageUpload = ({ files, setFiles }) => {
     const file = event.target.files[0]
     if (!file) return
     file.isUploading = true
-    setFiles([...files, file])
+    const formData = new FormData()
+    formData.append('file', file)
+    setFiles(file)
 
     // upload file
     // const formData = new FormData()
