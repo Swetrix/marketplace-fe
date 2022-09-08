@@ -34,4 +34,25 @@ export const errorsActions = {
       type: types.CLEAR_ERRORS,
     }
   },
+
+  createNewProjectFailed(error) {
+    return {
+      type: types.CREATE_NEW_PROJECT_FAILED,
+      payload: { error },
+    }
+  },
+
+  updateProjectFailed(error) {
+    return {
+      type: types.UPDATE_PROJECT_FAILED,
+      payload: { error },
+    }
+  },
+
+  deleteProjectFailed(error) {
+    return {
+      type: types.DELETE_PROJECT_FAILED,
+      payload: { error },
+    }
+  },
 }
