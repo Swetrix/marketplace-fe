@@ -13,4 +13,19 @@ export const alertsActions = {
       type: types.CLEAR_ALERTS,
     }
   },
+
+  newProject(message, type = 'success') {
+    return {
+      type: types.CREATE_NEW_PROJECT_SUCCESS,
+      payload: { message, type },
+    }
+  },
+
+  projectDeleted(message, type = 'success') {
+    return {
+      type: types.CREATE_NEW_PROJECT_SUCCESS,
+      payload: { message, type },
+    }
+  },
+
 }
