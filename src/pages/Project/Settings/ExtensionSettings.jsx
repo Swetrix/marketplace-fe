@@ -236,15 +236,15 @@ const ExtensionSettings = ({
             error={beenSubmitted ? errors.name : null}
           />
           <Input
-            name='discription'
-            id='discription'
+            name='description'
+            id='description'
             type='text'
-            label='Discription'
-            value={form.discription || ''}
+            label='Description'
+            value={form.description || ''}
             placeholder='My awesome extension'
             className='mt-4'
             onChange={handleInput}
-            error={beenSubmitted ? errors.discription : null}
+            error={beenSubmitted ? errors.description : null}
           />
           <Input
             name='version'
