@@ -15,9 +15,6 @@ const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 })
 
-console.log(process.env.CDN_API_TOKEN)
-console.log(process.env)
-
 api.interceptors.request.use(
   (config) => {
     const token = getAccessToken()

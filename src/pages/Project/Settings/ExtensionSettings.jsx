@@ -64,7 +64,6 @@ const ExtensionSettings = ({
     getCategories()
       .then((res) => {
         setCategories(res)
-        console.log(res)
       })
   }, [])
 
@@ -156,10 +155,6 @@ const ExtensionSettings = ({
     }
   }
 
-  useEffect(() => {
-    console.log('form', form)
-  }, [form])
-
   const validate = () => {
     const allErrors = {}
 
@@ -190,7 +185,6 @@ const ExtensionSettings = ({
     const value = target.type === 'checkbox' ? target.checked : target.value
 
     if (target.name === 'price') {
-      console.log(_toNumber(value))
       setForm({
         ...form,
         [target.name]: _toNumber(value),
