@@ -13,6 +13,7 @@ import _keys from 'lodash/keys'
 import _map from 'lodash/map'
 import _toNumber from 'lodash/toNumber'
 import _filter from 'lodash/filter'
+import _forEach from 'lodash/forEach'
 import PropTypes from 'prop-types'
 import { ExclamationIcon } from '@heroicons/react/outline'
 
@@ -49,6 +50,7 @@ const ExtensionSettings = ({
   const [form, setForm] = useState({
     name: '',
     additionalImages: [],
+    mainImage: [],
   })
   const [validated, setValidated] = useState(false)
   const [errors, setErrors] = useState({})
@@ -99,7 +101,9 @@ const ExtensionSettings = ({
         const formData = new FormData()
         formData.append('name', data.name)
         formData.append('mainImage', data.mainImage)
-        formData.append('additionalImages', data.additionalImages)
+        _forEach(data.additionalImages, (file) => {
+          formData.append('additionalImages', file)
+        })
         formData.append('version', data.version)
         formData.append('description', data.description)
         if (isSettings) {
@@ -264,6 +268,17 @@ const ExtensionSettings = ({
             onChange={handleInput}
             error={beenSubmitted ? errors.price : null}
           />
+          <div>
+            <div className='title'>Main image</div>
+            <ImageUpload
+              files={form.mainImage}
+              setFiles={(files) => {
+                setForm((items) => ({ ...items, mainImage: files }))
+              }}
+              removeFile={(file) => removeFile(file, true)}
+            />
+            <ImageList files={form.mainImage} removeFile={(file) => removeFile(file, true)} />
+          </div>
           <div>
             <div className='title'>Upload file</div>
             <ImageUpload

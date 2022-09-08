@@ -134,11 +134,7 @@ export const createExtension = (data) =>
 
 export const updateExtension = (id, data) =>
   api
-    .patch(`/extensions/${id}`, data.additionalImages, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
+    .patch(`/extensions/${id}`, data)
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
