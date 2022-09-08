@@ -23,12 +23,13 @@ import ImageList from 'components/ImageUpload/ImageList'
 
 import { withAuthentication, auth } from 'hoc/protected'
 import {
-  createExtension, updateExtension, deleteExtension,
+  createExtension, updateExtension, deleteExtension, getCategories,
 } from 'api'
 import Input from 'ui/Input'
 import Button from 'ui/Button'
 import Checkbox from 'ui/Checkbox'
 import Modal from 'ui/Modal'
+import Select from 'ui/Select'
 import { trackCustom } from 'utils/analytics'
 import routes from 'routes'
 
@@ -57,6 +58,15 @@ const ExtensionSettings = ({
   const [showDelete, setShowDelete] = useState(false)
   const [extensionDeleting, setExtensionDeleting] = useState(false)
   const [extensionSaving, setExtensionSaving] = useState(false)
+  const [categories, setCategories] = useState([])
+
+  useEffect(() => {
+    getCategories()
+      .then((res) => {
+        setCategories(res)
+        console.log(res)
+      })
+  }, [])
 
   useEffect(() => {
     if (!user.isActive) {
@@ -105,6 +115,7 @@ const ExtensionSettings = ({
         })
         formData.append('version', data.version)
         formData.append('description', data.description)
+        formData.append('categories', data.categories)
         if (isSettings) {
           await updateExtension(id, formData)
           newExtension(t('extension.settings.updated'))
@@ -266,6 +277,13 @@ const ExtensionSettings = ({
             className='mt-4'
             onChange={handleInput}
             error={beenSubmitted ? errors.price : null}
+          />
+          <Select
+            title='Categories'
+            label='Categories'
+            className='w-full'
+            items={categories.categories}
+            onSelect={(category) => setForm({ ...form, categories: category })}
           />
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mb-2 mt-2'>

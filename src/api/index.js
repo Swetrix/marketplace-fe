@@ -186,3 +186,14 @@ export const getExtensionsSearch = (term, category, sortBy, offset = 0, limit = 
         ? error.response.data
         : error.response.data.message
     })
+
+export const getCategories = () =>
+  api
+    .get('/categories')
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
