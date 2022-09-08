@@ -16,7 +16,7 @@ const ImageUpload = ({ files, setFiles, isMainImage }) => {
   }
 
   return (
-    <div className='bg-gray-200 p-4 border-2 border-dashed border-[#cbd5e0] relative'>
+    <div className='bg-gray-200 dark:bg-gray-700 p-4 border-2 border-dashed border-[#cbd5e0] dark:border-gray-750 relative'>
       <input type={files?.length >= 5 ? 'hidden' : 'file'} className='absolute top-0 left-0 opacity-0 cursor-pointer z-20 w-full h-full' onChange={uploadHandler} />
       <div className='flex flex-col justify-center items-center'>
         <div className='relative mb-4'>
@@ -25,8 +25,8 @@ const ImageUpload = ({ files, setFiles, isMainImage }) => {
           </Button>
         </div>
 
-        <p className='main'>Supported files</p>
-        <p className='info'>GIF, JPG, PNG</p>
+        <p className='flex text-sm font-medium text-gray-700 dark:text-gray-200'>Supported files</p>
+        <p className='flex text-sm font-medium text-gray-700 dark:text-gray-200'>GIF, JPG, PNG</p>
       </div>
     </div>
   )

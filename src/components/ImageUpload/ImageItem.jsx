@@ -13,7 +13,7 @@ const ImageItem = ({ file, deleteFile }) => {
   return (
     <li
       className={cx('flex my-2 max-w-sm mx-auto items-center px-2 py-3', {
-        'border-2 border-indigo-200 bg-indigo-200 rounded': file.isUploading,
+        'border-2 border-indigo-200 dark:border-indigo-500 bg-indigo-200 dark:bg-indigo-400 rounded': file.isUploading,
       })}
       key={file?.name || file.filename}
     >

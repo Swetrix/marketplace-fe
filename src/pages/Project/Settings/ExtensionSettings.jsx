@@ -29,7 +29,6 @@ import Input from 'ui/Input'
 import Button from 'ui/Button'
 import Checkbox from 'ui/Checkbox'
 import Modal from 'ui/Modal'
-import { nanoid } from 'utils/random'
 import { trackCustom } from 'utils/analytics'
 import routes from 'routes'
 
@@ -269,7 +268,9 @@ const ExtensionSettings = ({
             error={beenSubmitted ? errors.price : null}
           />
           <div>
-            <div className='title'>Main image</div>
+            <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mb-2 mt-2'>
+              Main image
+            </div>
             <ImageUpload
               files={form.mainImage}
               setFiles={(files) => {
@@ -281,7 +282,9 @@ const ExtensionSettings = ({
             <ImageList isMainImage files={form.mainImage} removeFile={(file) => removeFile(file, true)} />
           </div>
           <div>
-            <div className='title'>Upload file</div>
+            <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mb-2 mt-3'>
+              Additional images
+            </div>
             <ImageUpload
               files={form.additionalImages}
               setFiles={(files) => {
