@@ -25,7 +25,7 @@ const SignIn = lazy(() => import('pages/Auth/Signin'))
 const NotFound = lazy(() => import('pages/NotFound'))
 const Dashboard = lazy(() => import('pages/Dashboard'))
 const Search = lazy(() => import('pages/Search'))
-const ProjectSettings = lazy(() => import('pages/Project/Settings'))
+const ProjectSettings = lazy(() => import('pages/Extension/Settings'))
 
 const minimalFooterPages = [
   '/projects', '/dashboard', '/settings', '/contact',
