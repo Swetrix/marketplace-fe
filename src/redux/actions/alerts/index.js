@@ -14,16 +14,16 @@ export const alertsActions = {
     }
   },
 
-  newProject(message, type = 'success') {
+  newExtension(message, type = 'success') {
     return {
-      type: types.CREATE_NEW_PROJECT_SUCCESS,
+      type: types.CREATE_NEW_EXTENSION_SUCCESS,
       payload: { message, type },
     }
   },
 
-  projectDeleted(message, type = 'success') {
+  extensionDeleted(message, type = 'success') {
     return {
-      type: types.CREATE_NEW_PROJECT_SUCCESS,
+      type: types.CREATE_NEW_EXTENSION_SUCCESS,
       payload: { message, type },
     }
   },
