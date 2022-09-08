@@ -1,8 +1,9 @@
 import React from 'react'
 import _map from 'lodash/map'
+import _isEmputy from 'lodash/isEmpty'
 import ImageItem from './ImageItem'
 
-const ImageList = ({ files, removeFile }) => {
+const ImageList = ({ files, removeFile, isMainImage }) => {
   const deleteFileHandler = async (file) => {
     if (!file.isUploading) {
       removeFile(file)
@@ -19,7 +20,13 @@ const ImageList = ({ files, removeFile }) => {
   return (
     <ul className='flex items-center justify-between flex-wrap'>
       {
-        files && _map(files, (file, index) => (
+      isMainImage && !_isEmputy(files) ? (
+        <ImageItem
+          file={files}
+          deleteFile={() => deleteFileHandler(files)}
+        />
+      )
+        : files && _map(files, (file, index) => (
           <ImageItem
             key={index + (file?.name || file.filename)}
             file={file}

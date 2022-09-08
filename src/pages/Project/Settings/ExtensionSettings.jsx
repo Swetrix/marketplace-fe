@@ -50,7 +50,7 @@ const ExtensionSettings = ({
   const [form, setForm] = useState({
     name: '',
     additionalImages: [],
-    mainImage: [],
+    mainImage: {},
   })
   const [validated, setValidated] = useState(false)
   const [errors, setErrors] = useState({})
@@ -276,8 +276,9 @@ const ExtensionSettings = ({
                 setForm((items) => ({ ...items, mainImage: files }))
               }}
               removeFile={(file) => removeFile(file, true)}
+              isMainImage
             />
-            <ImageList files={form.mainImage} removeFile={(file) => removeFile(file, true)} />
+            <ImageList isMainImage files={form.mainImage} removeFile={(file) => removeFile(file, true)} />
           </div>
           <div>
             <div className='title'>Upload file</div>
