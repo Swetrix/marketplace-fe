@@ -26,7 +26,7 @@ import { ActivePin, InactivePin, WarningPin } from 'ui/Pin'
 import PulsatingCircle from 'ui/icons/PulsatingCircle'
 import routes from 'routes'
 import {
-  ENTRIES_PER_PAGE_DASHBOARD, tabsForDashboard, tabForInstallProject, tabForPublishProject,
+  ENTRIES_PER_PAGE_DASHBOARD, tabsForDashboard, tabForInstallExtension, tabForPublishExtensions,
 } from 'redux/constants'
 
 import { acceptShareProject } from 'api'
@@ -182,11 +182,11 @@ const Dashboard = ({
   const [showActivateEmailModal, setShowActivateEmailModal] = useState(false)
   const history = useHistory()
   const [tabextensions, setTabextensions] = useState(dashboardTabs)
-  const pageAmount = useMemo(() => (dashboardTabs === tabForPublishProject ? _ceil(publishTotal / ENTRIES_PER_PAGE_DASHBOARD) : _ceil(total / ENTRIES_PER_PAGE_DASHBOARD)), [total, publishTotal, dashboardTabs])
+  const pageAmount = useMemo(() => (dashboardTabs === tabForPublishExtensions ? _ceil(publishTotal / ENTRIES_PER_PAGE_DASHBOARD) : _ceil(total / ENTRIES_PER_PAGE_DASHBOARD)), [total, publishTotal, dashboardTabs])
 
-  const onNewProject = () => {
+  const onNewExtension = () => {
     if (user.isActive) {
-      history.push(routes.new_project)
+      history.push(routes.new_extension)
     } else {
       setShowActivateEmailModal(true)
     }
@@ -194,18 +194,18 @@ const Dashboard = ({
 
   useEffect(() => {
     if (publishTotal <= 0) {
-      setDashboardTabs(tabForInstallProject)
-      setTabextensions(tabForInstallProject)
+      setDashboardTabs(tabForInstallExtension)
+      setTabextensions(tabForInstallExtension)
     }
 
     setDashboardTabs(tabextensions)
   }, [tabextensions, setDashboardTabs, publishTotal])
 
   useEffect(() => {
-    if (tabextensions === tabForInstallProject) {
+    if (tabextensions === tabForInstallExtension) {
       loadExtensions(ENTRIES_PER_PAGE_DASHBOARD, (dashboardPaginationPage - 1) * ENTRIES_PER_PAGE_DASHBOARD)
     }
-    if (tabextensions === tabForPublishProject) {
+    if (tabextensions === tabForPublishExtensions) {
       loadPublishExtensions(ENTRIES_PER_PAGE_DASHBOARD, (dashboardPaginationPagePublish - 1) * ENTRIES_PER_PAGE_DASHBOARD)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -239,7 +239,7 @@ const Dashboard = ({
               <h2 className='mt-2 text-3xl font-bold text-gray-900 dark:text-gray-50'>
                 {t('titles.dashboard')}
               </h2>
-              <span onClick={onNewProject} className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 text-sm'>
+              <span onClick={onNewExtension} className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 text-sm'>
                 <FolderAddIcon className='w-5 h-5 mr-1' />
                 {t('dashboard.newProject')}
               </span>
@@ -273,7 +273,7 @@ const Dashboard = ({
             ) : (
               <>
 
-                {tabextensions === tabForInstallProject && (
+                {tabextensions === tabForInstallExtension && (
                 <div>
                   {_isEmpty(_filter(extensions, ({ uiHidden }) => !uiHidden)) ? (
                     <Noextensions t={t} />
@@ -306,7 +306,7 @@ const Dashboard = ({
                 </div>
                 )}
 
-                {tabextensions === tabForPublishProject && (
+                {tabextensions === tabForPublishExtensions && (
                 <div>
                   {_isEmpty(_filter(publishExtensions, ({ uiHidden }) => !uiHidden)) ? (
                     <Noextensions t={t} />
@@ -367,7 +367,7 @@ const Dashboard = ({
 
             {
                 pageAmount > 1 && (
-                  <Pagination page={tabextensions === tabForPublishProject ? dashboardPaginationPagePublish : dashboardPaginationPage} setPage={tabextensions === tabForPublishProject ? (page) => setDashboardPaginationPagePublish(page) : (page) => setDashboardPaginationPage(page)} pageAmount={pageAmount || 0} total={tabextensions === tabForPublishProject ? publishTotal : total} />
+                  <Pagination page={tabextensions === tabForPublishExtensions ? dashboardPaginationPagePublish : dashboardPaginationPage} setPage={tabextensions === tabForPublishExtensions ? (page) => setDashboardPaginationPagePublish(page) : (page) => setDashboardPaginationPage(page)} pageAmount={pageAmount || 0} total={tabextensions === tabForPublishExtensions ? publishTotal : total} />
                 )
               }
           </div>

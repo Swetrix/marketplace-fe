@@ -2,7 +2,7 @@ import { types } from 'redux/actions/ui/types'
 import _filter from 'lodash/filter'
 import _findIndex from 'lodash/findIndex'
 import _map from 'lodash/map'
-import { tabForInstallProject } from 'redux/constants'
+import { tabForInstallExtension } from 'redux/constants'
 import { setItem, getItem } from 'utils/localstorage'
 
 const getInitialState = () => {
@@ -17,7 +17,7 @@ const getInitialState = () => {
     publishTotal: 0,
     dashboardPaginationPage: 1,
     dashboardPaginationPagePublish: 1,
-    dashboardTabs: getItem('dashboardTabs') || tabForInstallProject,
+    dashboardTabs: getItem('dashboardTabs') || tabForInstallExtension,
   }
 }
 

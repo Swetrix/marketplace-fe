@@ -34,4 +34,25 @@ export const errorsActions = {
       type: types.CLEAR_ERRORS,
     }
   },
+
+  createNewExtensionFailed(error) {
+    return {
+      type: types.CREATE_NEW_EXTENSION_FAILED,
+      payload: { error },
+    }
+  },
+
+  updateExtensionFailed(error) {
+    return {
+      type: types.UPDATE_EXTENSION_FAILED,
+      payload: { error },
+    }
+  },
+
+  deleteExtensionFailed(error) {
+    return {
+      type: types.DELETE_EXTENSION_FAILED,
+      payload: { error },
+    }
+  },
 }

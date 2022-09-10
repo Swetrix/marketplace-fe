@@ -13,4 +13,19 @@ export const alertsActions = {
       type: types.CLEAR_ALERTS,
     }
   },
+
+  newExtension(message, type = 'success') {
+    return {
+      type: types.CREATE_NEW_EXTENSION_SUCCESS,
+      payload: { message, type },
+    }
+  },
+
+  extensionDeleted(message, type = 'success') {
+    return {
+      type: types.CREATE_NEW_EXTENSION_SUCCESS,
+      payload: { message, type },
+    }
+  },
+
 }
