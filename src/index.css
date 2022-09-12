@@ -12,3 +12,16 @@ html {
 body {
   margin: 0;
 }
+
+/* Temporary solution: this WILL override all the other colour - background colour transitions */
+/* Do not use animations for people with vestibular motion disorders */
+* {
+  transition-property: background-color, color, border-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+@media (prefers-reduced-motion) {
+  * {
+    transition: none !important;
+  }
+}

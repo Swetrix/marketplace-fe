@@ -225,9 +225,6 @@ const ExtensionSettings = ({
           <h2 className='mt-2 text-3xl font-bold text-gray-900 dark:text-gray-50'>
             {title}
           </h2>
-          <h3 className='mt-2 text-lg font-bold text-gray-900 dark:text-gray-50'>
-            {t('profileSettings.general')}
-          </h3>
           <Input
             name='name'
             id='name'
@@ -243,7 +240,7 @@ const ExtensionSettings = ({
             name='description'
             id='description'
             type='text'
-            label='Description'
+            label={t('extension.settings.description')}
             value={form.description || ''}
             placeholder='My awesome extension'
             className='mt-4'
@@ -254,7 +251,7 @@ const ExtensionSettings = ({
             name='version'
             id='version'
             type='text'
-            label='Version'
+            label={t('extension.settings.version')}
             value={form.version || ''}
             placeholder='0.0.1'
             className='mt-4'
@@ -265,7 +262,7 @@ const ExtensionSettings = ({
             name='price'
             id='price'
             type='number'
-            label='Price'
+            label={t('extension.settings.price')}
             value={`${form.price}` || ''}
             placeholder='0 (free), 1 (1$), 2 (2$)'
             className='mt-4'
@@ -273,15 +270,15 @@ const ExtensionSettings = ({
             error={beenSubmitted ? errors.price : null}
           />
           <Select
-            title='Categories'
-            label='Categories'
+            title={t('extension.settings.category')}
+            label={t('extension.settings.category')}
             className='w-full'
             items={categories.categories}
             onSelect={(category) => setForm({ ...form, categories: category })}
           />
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mb-2 mt-2'>
-              Main image
+              {t('extension.settings.mainImage')}
             </div>
             <ImageUpload
               files={form.mainImage}
@@ -295,7 +292,7 @@ const ExtensionSettings = ({
           </div>
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mb-2 mt-3'>
-              Additional images
+              {t('extension.settings.additionalImages')}
             </div>
             <ImageUpload
               files={form.additionalImages}

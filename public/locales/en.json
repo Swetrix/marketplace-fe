@@ -89,6 +89,45 @@
   "titles": {
     "signin": "Sign in",
     "signup": "Sign up",
-    "main": "Swetrix Marketplace"
+    "main": "Swetrix Marketplace",
+    "dashboard": "Dashboard"
+  },
+  "extension": {
+    "settings": {
+      "create": "Create an extension",
+      "name": "Name",
+      "description": "Description",
+      "version": "Version",
+      "price": "Price",
+      "category": "Category",
+      "mainImage": "Main image",
+      "additionalImages": "Additional images"
+    }
+  },
+  "footer": {
+    "slogan": "The best apps need the best services.",
+    "description": "Swetrix is a powerful analytics platform that respects user privacy.",
+    "madeIn": "Made in",
+    "hostedIn": "Hosted in the",
+    "ukraine": "Ukraine",
+    "eu": "European Union",
+    "support": "Support",
+    "company": "Company",
+    "legal": "Legal",
+    "copy": "Swetrix Analytics. All rights reserved.",
+    "contact": "Contact",
+    "pp": "Privacy Policy",
+    "tos": "Terms of Service",
+    "blog": "Blog",
+    "utm": "UTM Generator",
+    "billing": "Billing",
+    "pricing": "Pricing",
+    "docs": "Documentation",
+    "guides": "Guides",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "status": "Status",
+    "donate": "Donate",
+    "about": "About us"
   }
 }
