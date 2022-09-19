@@ -25,12 +25,12 @@ const getInitialState = () => {
 const extensionsReducer = (state = getInitialState(), { type, payload }) => {
   switch (type) {
     case types.SET_EXTENSIONS: {
-      const { extensions, shared = false } = payload
-      if (shared) {
+      const { extensions, publish = false } = payload
+      if (publish) {
         return {
           ...state,
           isLoadingPublish: false,
-          publishExtensions: extensions,
+          publishExtensions: [...extensions],
         }
       }
 
@@ -54,14 +54,6 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
       return {
         ...state,
         dashboardPaginationPagePublish: page,
-      }
-    }
-
-    case types.SET_TOTAL_MONTHLY_EVENTS: {
-      const { totalMonthlyEvents } = payload
-      return {
-        ...state,
-        totalMonthlyEvents,
       }
     }
 

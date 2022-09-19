@@ -34,29 +34,13 @@ import { acceptShareProject } from 'api'
 import Pagination from 'ui/Pagination'
 
 const ProjectCart = ({
-  name, created, active, overall, t, language, live, isPublic, confirmed, id, deleteExtensionFailed,
-  publishExtensions, setExtensionsPublishData, setUserPublishData, publish, userPublishUpdate, publishExtensionError,
+  name, created, active, overall, t, language, live, isPublic, confirmed, publish,
 }) => {
   const statsDidGrowUp = overall?.percChange >= 0
-  const [showInviteModal, setShowInviteModal] = useState(false)
-
-  const onAccept = async () => {
-    const pid = _find(publishExtensions, item => item.project.id === id).id
-
-    try {
-      await acceptShareProject(pid)
-      setExtensionsPublishData({ confirmed: true }, id, true)
-      setUserPublishData({ confirmed: true }, pid)
-      userPublishUpdate(t('apiNotifications.acceptInvitation'))
-    } catch (e) {
-      publishExtensionError(t('apiNotifications.acceptInvitationError'))
-      deleteExtensionFailed(e)
-    }
-  }
 
   return (
     <li>
-      <div onClick={() => !confirmed && setShowInviteModal(true)} className='block cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-700'>
+      <div className='block cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-700'>
         <div className='px-4 py-4 sm:px-6'>
           <div className='flex items-center justify-between'>
             <p className='text-lg font-medium text-indigo-600 dark:text-gray-50 truncate'>
@@ -143,20 +127,6 @@ const ProjectCart = ({
           </div>
         </div>
       </div>
-      {
-        !confirmed && (
-          <Modal
-            onClose={() => { setShowInviteModal(false) }}
-            onSubmit={() => { setShowInviteModal(false); onAccept() }}
-            submitText={t('common.accept')}
-            type='confirmed'
-            closeText={t('common.cancel')}
-            title={t('dashboard.invitationFor', { project: name })}
-            message={t('dashboard.invitationDesc', { project: name })}
-            isOpened={showInviteModal}
-          />
-        )
-      }
     </li>
   )
 }
@@ -308,53 +278,26 @@ const Dashboard = ({
 
                 {tabextensions === tabForPublishExtensions && (
                 <div>
-                  {_isEmpty(_filter(publishExtensions, ({ uiHidden }) => !uiHidden)) ? (
+                  {_isEmpty(publishExtensions) ? (
                     <Noextensions t={t} />
                   ) : (
                     <div className='shadow overflow-hidden sm:rounded-md'>
                       <ul className='divide-y divide-gray-200 dark:divide-gray-500'>
-                        {_map(_filter(publishExtensions, ({ uiHidden }) => !uiHidden), ({
-                          project, confirmed, publish = true,
-                        }) => (
-                          <div key={confirmed ? `${project.id}-confirmed` : project.id}>
-                            {
-                                (_isUndefined(confirmed) || confirmed) ? (
-                                  <Link to={_replace(routes.project, ':id', project.id)}>
-                                    <ProjectCart
-                                      t={t}
-                                      language={language}
-                                      name={project.name}
-                                      created={project.created}
-                                      publish={publish}
-                                      active={project.active}
-                                      isPublic={project.public}
-                                      confirmed={confirmed}
-                                      overall={project.overall}
-                                      live={_isNumber(project.live) ? project.live : 'N/A'}
-                                    />
-                                  </Link>
-                                ) : (
-                                  <ProjectCart
-                                    t={t}
-                                    id={project.id}
-                                    language={language}
-                                    name={project.name}
-                                    created={project.created}
-                                    publish={publish}
-                                    active={project.active}
-                                    isPublic={project.public}
-                                    overall={project.overall}
-                                    confirmed={confirmed}
-                                    publishExtensions={user.publishExtensions}
-                                    setExtensionsPublishData={setExtensionsPublishData}
-                                    setUserPublishData={setUserPublishData}
-                                    live={_isNumber(project.live) ? project.live : 'N/A'}
-                                    userPublishUpdate={userPublishUpdate}
-                                    publishExtensionError={publishExtensionError}
-                                    deleteExtensionFailed={deleteExtensionFailed}
-                                  />
-                                )
-                              }
+                        {_map(publishExtensions, (extension) => (
+                          <div key={extension.id}>
+                            <Link to={_replace(routes.project, ':id', extension.id)}>
+                              <ProjectCart
+                                t={t}
+                                language={language}
+                                name={extension.name}
+                                created={extension.created}
+                                publish={extension}
+                                active={extension.active}
+                                isPublic={extension.public}
+                                overall={extension.overall}
+                                live={_isNumber(extension.live) ? extension.live : 'N/A'}
+                              />
+                            </Link>
                           </div>
                         ))}
                       </ul>

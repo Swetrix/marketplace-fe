@@ -7,7 +7,7 @@ import UIActions from 'redux/actions/ui'
 
 import { ENTRIES_PER_PAGE_DASHBOARD } from 'redux/constants'
 import {
-  getExtensions, getOverallStats, getLiveVisitors,
+  getExtensions, getOverallStats,
 } from '../../../api'
 
 const debug = Debug('swetrix:rx:s:load-projects')
@@ -18,10 +18,10 @@ export default function* loadExtensions({ payload: { take = ENTRIES_PER_PAGE_DAS
 
     let {
       // eslint-disable-next-line prefer-const
-      results, totalMonthlyEvents, total,
+      extensions, count,
     } = yield call(getExtensions, take, skip)
 
-    const pids = _map(results, result => result.id)
+    const pids = _map(extensions, result => result.id)
     let overall
 
     try {
@@ -30,17 +30,13 @@ export default function* loadExtensions({ payload: { take = ENTRIES_PER_PAGE_DAS
       debug('failed to overall stats: %s', e)
     }
 
-    results = _map(results, res => ({
+    extensions = _map(extensions, res => ({
       ...res,
       overall: overall?.[res.id],
     }))
 
-    yield put(UIActions.setExtensions(results))
-    yield put(UIActions.setTotalMonthlyEvents(totalMonthlyEvents))
-    yield put(UIActions.setTotal(total))
-
-    const liveStats = yield call(getLiveVisitors, pids)
-    yield put(UIActions.setLiveStats(liveStats))
+    yield put(UIActions.setExtensions(extensions))
+    yield put(UIActions.setTotal(count))
   } catch ({ message }) {
     if (_isString(message)) {
       yield put(UIActions.setExtensionsError(message))

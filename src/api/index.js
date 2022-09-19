@@ -96,9 +96,9 @@ export const acceptShareProject = (id) =>
         : error.response.data.message
     })
 
-export const getExtensions = (take = 0, skip = 0) =>
+export const getExtensions = (limit = 0, offset = 0) =>
   api
-    .get(`/project?take=${take}&skip=${skip}`)
+    .get(`/extensions?limit=${limit}&offset=${offset}`)
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
@@ -107,9 +107,9 @@ export const getExtensions = (take = 0, skip = 0) =>
         : error.response.data.message
     })
 
-export const getPublishExtensions = (take = 0, skip = 0) =>
+export const getPublishExtensions = (limit = 0, offset = 0) =>
   api
-    .get(`/project/shared?take=${take}&skip=${skip}`)
+    .get(`/extensions/published?limit=${limit}&offset=${offset}`)
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)

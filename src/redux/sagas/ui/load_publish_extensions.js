@@ -18,9 +18,9 @@ export default function* loadPublishExtensions({ payload: { take = ENTRIES_PER_P
 
     let {
       // eslint-disable-next-line prefer-const
-      results, totalMonthlyEvents, total,
+      extensions, count,
     } = yield call(getPublishExtensions, take, skip)
-    const projectsWithShared = _map(results, (project) => {
+    const projectsWithShared = _map(extensions, (project) => {
       return {
         ...project,
         project: {
@@ -38,7 +38,7 @@ export default function* loadPublishExtensions({ payload: { take = ENTRIES_PER_P
       debug('failed to overall stats: %s', e)
     }
 
-    results = _map(projectsWithShared, res => ({
+    extensions = _map(projectsWithShared, res => ({
       ...res,
       project: {
         ...res.project,
@@ -46,9 +46,8 @@ export default function* loadPublishExtensions({ payload: { take = ENTRIES_PER_P
       },
     }))
 
-    yield put(UIActions.setExtensions(results, true))
-    yield put(UIActions.setTotalMonthlyEvents(totalMonthlyEvents))
-    yield put(UIActions.setTotal(total, true))
+    yield put(UIActions.setExtensions(extensions, true))
+    yield put(UIActions.setTotal(count, true))
 
     const liveStats = yield call(getLiveVisitors, pids)
     yield put(UIActions.setLiveStats(liveStats, true))
