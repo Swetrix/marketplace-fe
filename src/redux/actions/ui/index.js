@@ -18,13 +18,6 @@ const setExtensions = (extensions, publish) => ({
   },
 })
 
-const setTotalMonthlyEvents = (totalMonthlyEvents) => ({
-  type: types.SET_TOTAL_MONTHLY_EVENTS,
-  payload: {
-    totalMonthlyEvents,
-  },
-})
-
 const setTotal = (total, publish) => ({
   type: types.SET_TOTAL,
   payload: {
@@ -184,7 +177,6 @@ const UIActions = {
   setTheme,
   setGeneralStats,
   setPaddleLastEvent,
-  setTotalMonthlyEvents,
   setDashboardPaginationPage,
   setDashboardPaginationPagePublish,
   setTotal,
