@@ -43,8 +43,8 @@ const ExtensionSettings = ({
   const { t } = useTranslation('common')
   const { pathname } = useLocation()
   const { id } = useParams()
-  const extension = useMemo(() => _find([...extensions, ..._map(publishExtensions, (item) => item.extension)], p => p.id === id) || {}, [extensions, id, publishExtensions])
   const isSettings = !_isEmpty(id) && (_replace(routes.extension_settings, ':id', id) === pathname)
+  const extension = useMemo(() => _find([...extensions, publishExtensions], p => p.id === id) || {}, [extensions, id, publishExtensions])
   const history = useHistory()
 
   const [form, setForm] = useState({
@@ -114,7 +114,7 @@ const ExtensionSettings = ({
         })
         formData.append('version', data.version)
         formData.append('description', data.description)
-        formData.append('categories', data.categories)
+        formData.append('categoriesIds', data.categories)
         if (isSettings) {
           await updateExtension(id, formData)
           newExtension(t('extension.settings.updated'))
