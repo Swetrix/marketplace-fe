@@ -10,9 +10,7 @@ import _isEmpty from 'lodash/isEmpty'
 import _isNumber from 'lodash/isNumber'
 import _replace from 'lodash/replace'
 import _map from 'lodash/map'
-import _isUndefined from 'lodash/isUndefined'
 import _filter from 'lodash/filter'
-import _find from 'lodash/find'
 import _ceil from 'lodash/ceil'
 import { useTranslation } from 'react-i18next'
 import { EyeIcon, CalendarIcon, FolderAddIcon } from '@heroicons/react/outline'
@@ -26,15 +24,13 @@ import { ActivePin, InactivePin, WarningPin } from 'ui/Pin'
 import PulsatingCircle from 'ui/icons/PulsatingCircle'
 import routes from 'routes'
 import {
-  ENTRIES_PER_PAGE_DASHBOARD, tabsForDashboard, tabForInstallExtension, tabForPublishExtensions,
+  ENTRIES_PER_PAGE_DASHBOARD, tabsForDashboard, tabForInstallExtension, tabForPublishExtensions, extensionStatus,
 } from 'redux/constants'
-
-import { acceptShareProject } from 'api'
 
 import Pagination from 'ui/Pagination'
 
 const ProjectCart = ({
-  name, created, active, overall, t, language, live, isPublic, confirmed, publish,
+  name, created, status, overall, t, language, live, isPublic, installed, publish,
 }) => {
   const statsDidGrowUp = overall?.percChange >= 0
 
@@ -48,21 +44,20 @@ const ProjectCart = ({
             </p>
             <div className='ml-2 flex-shrink-0 flex'>
               {
-                publish && (
-                  confirmed ? (
-                    <ActivePin className='mr-2' label={t('dashboard.publish')} />
+                !publish ? (
+                  installed ? (
+                    <ActivePin className='mr-2' label='installed' />
                   ) : (
-                    <WarningPin className='mr-2' label={t('common.pending')} />
+                    <WarningPin className='mr-2' label='disabled' />
                   )
+                ) : status === extensionStatus[0] ? (
+                  <InactivePin label={extensionStatus[0]} />
+                ) : (
+                  <ActivePin label={t('dashboard.active')} />
                 )
               }
-              {active ? (
-                <ActivePin label={t('dashboard.active')} />
-              ) : (
-                <InactivePin label={t('dashboard.disabled')} />
-              )}
               {isPublic && (
-                <ActivePin label={t('dashboard.public')} className='ml-2' />
+              <ActivePin label={t('dashboard.public')} className='ml-2' />
               )}
             </div>
           </div>
@@ -250,9 +245,9 @@ const Dashboard = ({
                     <div className='shadow overflow-hidden sm:rounded-md'>
                       <ul className='divide-y divide-gray-200 dark:divide-gray-500'>
                         {_map(_filter(extensions, ({ uiHidden }) => !uiHidden), ({
-                          name, id, created, active, overall, live, public: isPublic, confirmed, publish = false,
+                          name, id, created, status, overall, live, public: isPublic, publish = false, installed,
                         }) => (
-                          <div key={confirmed ? `${id}-confirmed` : id}>
+                          <div key={id}>
                             <Link to={_replace(routes.project, ':id', id)}>
                               <ProjectCart
                                 t={t}
@@ -260,9 +255,9 @@ const Dashboard = ({
                                 name={name}
                                 created={created}
                                 publish={publish}
-                                active={active}
+                                status={status}
                                 isPublic={isPublic}
-                                confirmed={confirmed}
+                                installed={installed}
                                 overall={overall}
                                 live={_isNumber(live) ? live : 'N/A'}
                               />
@@ -291,7 +286,7 @@ const Dashboard = ({
                                 name={extension.name}
                                 created={extension.created}
                                 publish={extension}
-                                active={extension.active}
+                                status={extension.status}
                                 isPublic={extension.public}
                                 overall={extension.overall}
                                 live={_isNumber(extension.live) ? extension.live : 'N/A'}
