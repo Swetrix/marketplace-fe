@@ -143,8 +143,7 @@ const Noextensions = ({ t }) => (
 )
 
 const Dashboard = ({
-  extensions, isLoading, error, user, deleteExtensionFailed, setExtensionsPublishData,
-  setUserPublishData, userPublishUpdate, publishExtensionError, loadExtensions, loadPublishExtensions,
+  extensions, isLoading, error, user, loadExtensions, loadPublishExtensions,
   total, setDashboardPaginationPage, dashboardPaginationPage, publishExtensions, dashboardTabs,
   setDashboardTabs, publishTotal, setDashboardPaginationPagePublish, dashboardPaginationPagePublish,
 }) => {
@@ -335,11 +334,6 @@ Dashboard.propTypes = {
   user: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.string,
-  deleteExtensionFailed: PropTypes.func.isRequired,
-  setExtensionsPublishData: PropTypes.func.isRequired,
-  setUserPublishData: PropTypes.func.isRequired,
-  publishExtensionError: PropTypes.func.isRequired,
-  userPublishUpdate: PropTypes.func.isRequired,
   loadExtensions: PropTypes.func.isRequired,
   total: PropTypes.number.isRequired,
   setDashboardPaginationPage: PropTypes.func.isRequired,
