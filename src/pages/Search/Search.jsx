@@ -8,60 +8,17 @@ import ExtensionsCard from 'components/ExtensionsCard'
 import Pagination from 'ui/Pagination'
 import Loader from 'ui/Loader'
 
-import { sortByConstans, categoryConstans } from 'redux/constants'
+import { sortByConstans } from 'redux/constants'
 
 import _values from 'lodash/values'
 import _map from 'lodash/map'
 import _ceil from 'lodash/ceil'
+import _isEmputy from 'lodash/isEmpty'
 
 import { getExtensionsSearch } from 'api'
 
-const testData = [{
-  createdAt: '2022-08-26T01:17:18.876Z', name: 'Marcella Goyette', description: 'aspernatur velit ab', imagePath: 'http://loremflickr.com/640/480/transport', companyLink: 'http://parched-watercress.org', companyName: 'Cummings and Sons', stars: 60, downloads: 81, price: 18, id: '1',
-}, {
-  createdAt: '2022-08-26T07:24:27.069Z', name: 'Peter Kilback', description: 'omnis autem incidunt', imagePath: 'http://loremflickr.com/640/480/people', companyLink: 'https://ultimate-step-mother.biz', companyName: 'Schaefer LLC', stars: 61, downloads: 44, price: 88, id: '2',
-}, {
-  createdAt: '2022-08-26T03:55:25.567Z', name: 'Olive Mohr DVM', description: 'aut facilis soluta', imagePath: 'http://loremflickr.com/640/480/people', companyLink: 'https://corrupt-raisin.name', companyName: 'Paucek, Romaguera and Schowalter', stars: 68, downloads: 54, price: 32, id: '3',
-}, {
-  createdAt: '2022-08-26T01:32:37.589Z', name: 'Minnie Kemmer', description: 'culpa asperiores non', imagePath: 'http://loremflickr.com/640/480/sports', companyLink: 'http://shadowy-curio.com', companyName: 'Connelly and Sons', stars: 18, downloads: 94, price: 25, id: '4',
-}, {
-  createdAt: '2022-08-25T21:36:42.477Z', name: 'Mr. George Heller', description: 'et dolore cum', imagePath: 'http://loremflickr.com/640/480/transport', companyLink: 'https://crooked-faith.net', companyName: 'Kub and Sons', stars: 63, downloads: 18, price: 90, id: '5',
-}, {
-  createdAt: '2022-08-26T07:23:33.526Z', name: 'Natasha Lueilwitz', description: 'unde quis fugiat', imagePath: 'http://loremflickr.com/640/480/sports', companyLink: 'http://bossy-documentation.info', companyName: 'Zboncak, Rowe and Wiza', stars: 7, downloads: 24, price: 58, id: '6',
-}, {
-  createdAt: '2022-08-26T02:37:05.141Z', name: 'Leo Jacobs', description: 'maiores ratione assumenda', imagePath: 'http://loremflickr.com/640/480/food', companyLink: 'https://giant-princess.net', companyName: 'Witting LLC', stars: 57, downloads: 71, price: 42, id: '7',
-}, {
-  createdAt: '2022-08-26T12:39:48.376Z', name: 'Hugh Fadel', description: 'tempora voluptatem nemo', imagePath: 'http://loremflickr.com/640/480/sports', companyLink: 'http://putrid-apse.com', companyName: 'Flatley - Daniel', stars: 22, downloads: 68, price: 31, id: '8',
-}, {
-  createdAt: '2022-08-26T00:06:39.266Z', name: 'Albert Hudson DDS', description: 'dolore iure sint', imagePath: 'http://loremflickr.com/640/480/people', companyLink: 'https://worthless-ladle.org', companyName: 'Wisoky LLC', stars: 66, downloads: 89, price: 75, id: '9',
-}, {
-  createdAt: '2022-08-26T04:51:45.492Z', name: 'Perry Stehr', description: 'aut eligendi consequatur', imagePath: 'http://loremflickr.com/640/480/food', companyLink: 'http://plump-vaccine.org', companyName: 'Wolf LLC', stars: 93, downloads: 96, price: 79, id: '10',
-}, {
-  createdAt: '2022-08-25T21:37:33.768Z', name: 'Angelica Ritchie', description: 'rerum quos quae', imagePath: 'http://loremflickr.com/640/480/technics', companyLink: 'https://favorable-coonskin.org', companyName: 'Erdman, Parker and Aufderhar', stars: 70, downloads: 71, price: 72, id: '11',
-}, {
-  createdAt: '2022-08-25T19:51:56.933Z', name: 'Donnie Lakin', description: 'consectetur sit et', imagePath: 'http://loremflickr.com/640/480/city', companyLink: 'https://cylindrical-pomelo.info', companyName: 'Gorczany, Hoppe and Champlin', stars: 29, downloads: 74, price: 25, id: '12',
-}, {
-  createdAt: '2022-08-25T19:02:15.329Z', name: 'Clara Boyer', description: 'sint praesentium ratione', imagePath: 'http://loremflickr.com/640/480/transport', companyLink: 'https://mortified-barstool.com', companyName: 'Bechtelar Group', stars: 2, downloads: 94, price: 2, id: '13',
-}, {
-  createdAt: '2022-08-25T21:26:45.731Z', name: 'Sylvia Schmitt', description: 'architecto adipisci molestiae', imagePath: 'http://loremflickr.com/640/480/fashion', companyLink: 'https://handsome-coordinator.org', companyName: 'Medhurst, Herzog and Hackett', stars: 5, downloads: 80, price: 71, id: '14',
-}, {
-  createdAt: '2022-08-26T17:33:39.292Z', name: 'Marion Hartmann', description: 'natus id quasi', imagePath: 'http://loremflickr.com/640/480/abstract', companyLink: 'https://ripe-sunshine.org', companyName: 'Wolf - Littel', stars: 67, downloads: 13, price: 84, id: '15',
-}, {
-  createdAt: '2022-08-25T19:44:04.512Z', name: 'Stanley Cormier', description: 'repellat nulla explicabo', imagePath: 'http://loremflickr.com/640/480/people', companyLink: 'http://lean-trove.com', companyName: 'Marquardt - Lakin', stars: 80, downloads: 46, price: 93, id: '16',
-}, {
-  createdAt: '2022-08-26T06:11:52.565Z', name: 'Spencer Quigley', description: 'perspiciatis et quis', imagePath: 'http://loremflickr.com/640/480/food', companyLink: 'https://informal-lipid.name', companyName: 'Hermiston - Braun', stars: 84, downloads: 82, price: 73, id: '17',
-}, {
-  createdAt: '2022-08-25T22:22:49.044Z', name: 'Victoria Hettinger', description: 'rem dolorum harum', imagePath: 'http://loremflickr.com/640/480/nature', companyLink: 'http://rubbery-communion.biz', companyName: 'Koss - Rempel', stars: 36, downloads: 18, price: 14, id: '18',
-}, {
-  createdAt: '2022-08-26T00:57:36.891Z', name: 'Terrence Tillman', description: 'commodi ea porro', imagePath: 'http://loremflickr.com/640/480/sports', companyLink: 'https://revolving-meeting.org', companyName: 'Hirthe - Schultz', stars: 50, downloads: 69, price: 93, id: '19',
-}, {
-  createdAt: '2022-08-26T14:20:14.821Z', name: 'Ms. Johnathan Jacobs', description: 'accusantium laborum aut', imagePath: 'http://loremflickr.com/640/480/technics', companyLink: 'https://creamy-abolishment.name', companyName: 'Jones - Heathcote', stars: 89, downloads: 31, price: 83, id: '20',
-}, {
-  createdAt: '2022-08-26T17:29:45.963Z', name: 'Miss Rita Johns', description: 'officia soluta ad', imagePath: 'http://loremflickr.com/640/480/cats', companyLink: 'http://far-off-ascot.net', companyName: 'Sanford and Sons', stars: 15, downloads: 45, price: 42, id: '21',
-}]
-
 const Search = ({
-  limit, offset, setOffset,
+  limit, offset, setOffset, category,
 }) => {
   const params = new URLSearchParams(window.location.search)
 
@@ -69,10 +26,10 @@ const Search = ({
   const [filterCategory, setFilterCategory] = useState(params.get('category'))
   const [filterSortBy, setFilterSortBy] = useState(params.get('sortBy'))
   const [extensions, setExtensions] = useState()
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [page, setPage] = useState((offset / limit) + 1)
   // eslint-disable-next-line no-unsafe-optional-chaining
-  const [total, setTotal] = useState(extensions?.total ?? 0)
+  const [total, setTotal] = useState(0)
   const pageAmount = useMemo(() => (_ceil(total / limit)), [total, limit])
 
   const history = useHistory()
@@ -83,25 +40,25 @@ const Search = ({
       .then(results => {
         setExtensions(results.extensions)
         setTotal(results.count)
-        setLoading(false)
       })
       .catch(err => {
+        console.log(err)
+      })
+      .finally(() => {
         setLoading(false)
       })
   }
 
   useEffect(() => {
-    setOffset((page * limit) - 1)
+    setOffset((page - 1) * limit)
   }, [page, limit, setOffset])
 
   useEffect(() => {
-    if (!loading) {
-      getExtensions()
-    }
+    getExtensions()
   }, [search, filterCategory, filterSortBy, offset, limit])
 
   useEffect(() => {
-    history.push(`/search?term=${search}&category=${filterCategory}&sortBy=${filterSortBy}`)
+    history.push(`/search?term=${search}&category=${_isEmputy(filterCategory) ? '' : filterCategory}&sortBy=${filterSortBy}`)
   }, [search, filterCategory, filterSortBy, history])
 
   return (
@@ -134,7 +91,7 @@ const Search = ({
             <div className='mr-5'>
               <span className='mr-3 dark:text-gray-200'>Showing:</span>
               <Dropdown
-                items={_values(categoryConstans)}
+                items={_values(category)}
                 title={filterCategory}
                 buttonClassName='flex items-center w-full rounded-md border border-gray-300 shadow-sm px-1 md:px-2 py-1 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
                 selectItemClassName='text-gray-700 block px-2 py-1 text-base cursor-pointer hover:bg-gray-200 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
@@ -160,8 +117,8 @@ const Search = ({
                 <Loader />
               </div>
             )
-            : _map(testData, ((item) => (
-              <ExtensionsCard key={item.id} name={item.name} stars={item.stars} downloads={item.downloads} price={item.price} companyLink={item.companyLink} companyName={item.companyName} imagePath={item.imagePath} />
+            : _map(extensions, ((item) => (
+              <ExtensionsCard key={item.id} name={item.name} stars={4} downloads={1000} price={item.price} companyLink='swetrix' companyName='companyName' imagePath={item.mainIamge} />
             )))}
         </div>
         {pageAmount > 1 && (

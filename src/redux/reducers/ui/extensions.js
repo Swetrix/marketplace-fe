@@ -15,6 +15,7 @@ const getInitialState = () => {
     totalMonthlyEvents: null,
     total: 0,
     publishTotal: 0,
+    category: null,
     dashboardPaginationPage: 1,
     dashboardPaginationPagePublish: 1,
     dashboardTabs: getItem('dashboardTabs') || tabForInstallExtension,
@@ -246,6 +247,15 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
       return {
         ...state,
         dashboardTabs: tab,
+      }
+    }
+
+    case types.SET_CATEGORY: {
+      const { category = null } = payload
+
+      return {
+        ...state,
+        category,
       }
     }
 

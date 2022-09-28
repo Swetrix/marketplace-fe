@@ -10,6 +10,7 @@ export default function* initialise() {
   try {
     const token = yield call(getAccessToken)
 
+    yield put(UIActions.loadCategory())
     if (token) {
       yield put(UIActions.loadExtensions())
       yield put(UIActions.loadPublishExtensions())
