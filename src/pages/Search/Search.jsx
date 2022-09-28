@@ -118,7 +118,7 @@ const Search = ({
               </div>
             )
             : _map(extensions, ((item) => (
-              <ExtensionsCard key={item.id} name={item.name} stars={4} downloads={1000} price={item.price} companyLink='swetrix' companyName='companyName' imagePath={item.mainIamge} />
+              <ExtensionsCard key={item.id} name={item.name} stars={4} downloads={1000} price={item.price} companyLink='swetrix' companyName='companyName' mainImage={item.mainImage} />
             )))}
         </div>
         {pageAmount > 1 && (
