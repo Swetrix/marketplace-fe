@@ -161,6 +161,18 @@ const setOffset = (offset) => ({
   },
 })
 
+const setCategory = (category) => ({
+  type: types.SET_CATEGORY,
+  payload: {
+    category,
+  },
+})
+
+const loadCategory = () => ({
+  type: types.LOAD_CATEGORY,
+  payload: { },
+})
+
 const UIActions = {
   loadExtensions,
   loadPublishExtensions,
@@ -185,6 +197,8 @@ const UIActions = {
   shareVerifyAsync,
   setDashboardTabs,
   setOffset,
+  setCategory,
+  loadCategory,
 }
 
 export default UIActions

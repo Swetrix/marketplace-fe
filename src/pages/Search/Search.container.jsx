@@ -5,6 +5,7 @@ import Search from './Search'
 const mapStateToProps = (state) => ({
   offset: state.ui.search.offset,
   limit: state.ui.search.limit,
+  category: state.ui.extensions.category,
 })
 
 const mapDispatchToProps = (dispatch) => ({

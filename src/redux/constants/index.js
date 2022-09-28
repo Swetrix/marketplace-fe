@@ -46,10 +46,6 @@ export const tabsForDashboard = [
   },
 ]
 
-export const categoryConstans = {
-  all: 'All categories',
-}
-
 export const sortByConstans = {
   CREATED_AT: 'createdAt',
   UPDATED_AT: 'updatedAt',
