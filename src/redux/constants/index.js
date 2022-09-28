@@ -54,3 +54,5 @@ export const sortByConstans = {
   CREATED_AT: 'createdAt',
   UPDATED_AT: 'updatedAt',
 }
+
+export const extensionStatus = ['PENDING']

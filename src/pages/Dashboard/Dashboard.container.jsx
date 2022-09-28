@@ -19,21 +19,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteExtensionFailed: (message) => {
-    dispatch(errorsActions.deleteExtensionFailed(message))
-  },
-  setExtensionsPublishData: (data, id, publish) => {
-    dispatch(UIActions.setExtensionsPublishData(data, id, publish))
-  },
-  setUserPublishData: (data, id) => {
-    dispatch(authActions.setUserPublishData(data, id))
-  },
-  userPublishUpdate: (message) => {
-    dispatch(alertsActions.userPublishUpdate(message))
-  },
-  publishExtensionError: (message) => {
-    dispatch(errorsActions.publishExtensionFailed(message))
-  },
   loadExtensions: (take, skip) => {
     dispatch(UIActions.loadExtensions(take, skip))
   },
