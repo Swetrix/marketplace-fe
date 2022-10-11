@@ -4,6 +4,8 @@ import StarsRaiting from 'ui/StarsRaiting'
 import _replace from 'lodash/replace'
 import _includes from 'lodash/includes'
 import { DownloadIcon } from '@heroicons/react/outline'
+import { useHistory } from 'react-router-dom'
+import routes from 'routes'
 
 const ExtensionsCard = ({
   name, stars, downloads, mainImage, price, companyLink, companyName,
@@ -14,9 +16,12 @@ const ExtensionsCard = ({
     }
     return string
   }
-
+  const history = useHistory()
+  const openExtension = () => {
+    history.push(routes.card_extensions)
+  }
   return (
-    <div className='group w-[210px] relative border-2 border-white rounded-lg p-3 bg-gray-100 dark:bg-gray-800 dark:border-gray-900'>
+    <div className='group w-[210px] relative border-2 border-white rounded-lg p-3 bg-gray-100 dark:bg-gray-800 dark:border-gray-900' onClick={openExtension}>
       <div className='h-28 w-28 mx-auto aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:aspect-none'>
         <img src={`${process.env.REACT_APP_SDN_URL}file/${mainImage}`} alt={companyName} className='w-full h-full object-center object-cover lg:w-full lg:h-full' />
       </div>

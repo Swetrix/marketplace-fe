@@ -46,7 +46,6 @@ const ExtensionSettings = ({
   const isSettings = !_isEmpty(id) && (_replace(routes.extension_settings, ':id', id) === pathname)
   const extension = useMemo(() => _find([...extensions, publishExtensions], p => p.id === id) || {}, [extensions, id, publishExtensions])
   const history = useHistory()
-
   const [form, setForm] = useState({
     name: '',
     additionalImages: [],
