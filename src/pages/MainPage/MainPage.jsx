@@ -4,19 +4,16 @@ import { SearchIcon } from '@heroicons/react/outline'
 import Button from 'ui/Button'
 import _isEmpty from 'lodash/isEmpty'
 import Glider from 'react-glider'
-import './glider.css'
+import '../../glider.css'
 import { useHistory } from 'react-router-dom'
 import { sortByConstans } from 'redux/constants'
 import ExtensionsCard from 'components/ExtensionsCard'
-import { useDispatch, useSelector } from 'react-redux'
 import _map from 'lodash/map'
 
 const MainPage = ({ extensions }) => {
   const [search, setSearch] = useState('')
   const history = useHistory()
-  const data = useSelector((state) => state.extensions)
-  console.log(data)
-  console.log('extensions', extensions)
+
   const searchSubmit = (e) => {
     e.preventDefault()
     if (!_isEmpty(search)) {

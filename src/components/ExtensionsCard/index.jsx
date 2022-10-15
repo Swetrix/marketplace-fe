@@ -10,16 +10,19 @@ import routes from 'routes'
 const ExtensionsCard = ({
   name, stars, downloads, mainImage, price, companyLink, companyName,
 }) => {
+  const history = useHistory()
+
   const subStr = (string, len) => {
     if (string.length > len) {
       return `${string.substring(0, len)}...`
     }
     return string
   }
-  const history = useHistory()
+
   const openExtension = () => {
     history.push(routes.card_extensions)
   }
+
   return (
     <div className='group w-[210px] relative border-2 border-white rounded-lg p-3 bg-gray-100 dark:bg-gray-800 dark:border-gray-900' onClick={openExtension}>
       <div className='h-28 w-28 mx-auto aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:aspect-none'>
