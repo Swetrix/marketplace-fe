@@ -10,7 +10,6 @@ import _size from 'lodash/size'
 import _replace from 'lodash/replace'
 import _find from 'lodash/find'
 import _keys from 'lodash/keys'
-import _map from 'lodash/map'
 import _toNumber from 'lodash/toNumber'
 import _filter from 'lodash/filter'
 import _forEach from 'lodash/forEach'
@@ -46,7 +45,6 @@ const ExtensionSettings = ({
   const isSettings = !_isEmpty(id) && (_replace(routes.extension_settings, ':id', id) === pathname)
   const extension = useMemo(() => _find([...extensions, publishExtensions], p => p.id === id) || {}, [extensions, id, publishExtensions])
   const history = useHistory()
-
   const [form, setForm] = useState({
     name: '',
     additionalImages: [],

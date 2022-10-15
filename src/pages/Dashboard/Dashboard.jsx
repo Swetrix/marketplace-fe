@@ -155,7 +155,7 @@ const Dashboard = ({
       setShowActivateEmailModal(true)
     }
   }
-
+  console.log('extensions', extensions)
   useEffect(() => {
     if (publishTotal <= 0) {
       setDashboardTabs(tabForInstallExtension)
