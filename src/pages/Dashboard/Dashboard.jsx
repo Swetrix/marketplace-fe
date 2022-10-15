@@ -33,7 +33,6 @@ const ProjectCart = ({
   name, created, status, overall, t, language, live, isPublic, installed, publish,
 }) => {
   const statsDidGrowUp = overall?.percChange >= 0
-
   return (
     <li>
       <div className='block cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-700'>
@@ -193,7 +192,11 @@ const Dashboard = ({
       </Title>
     )
   }
-
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [toggleState, setToggleState] = useState(1)
+  const ToggleTab = (index) => {
+    setToggleState(index)
+  }
   return (
     <Title title={t('titles.dashboard')}>
       <div className='min-h-min-footer bg-gray-50 dark:bg-gray-800'>
@@ -207,6 +210,32 @@ const Dashboard = ({
                 <FolderAddIcon className='w-5 h-5 mr-1' />
                 {t('dashboard.newProject')}
               </span>
+            </div>
+            <div className={toggleState}>
+              <div className='flex pt-4 space-x-4 mt-1 text-1xl font-bold text-gray-900 dark:text-gray-50 '>
+                <button type='button' className={toggleState === 1 ? 'underline decoration-blue-900 decoration-2 underline-offset-8' : 'text-gray-400'} onClick={() => ToggleTab(1)}> Added extensions</button>
+                <button type='button' className={toggleState === 2 ? 'underline decoration-blue-900 decoration-2 underline-offset-8' : 'text-gray-400'} onClick={() => ToggleTab(2)}> Shared extensions</button>
+              </div>
+              <div className='flex justify-center p-5 w-full h-full'>
+                <div
+                  className={toggleState === 1 ? 'relative' : 'absolute invisible'}
+                >
+                  <h2>Content 1</h2>
+                  <hr />
+                  <p>
+                    First Content
+                  </p>
+                </div>
+                <div
+                  className={toggleState === 2 ? 'relative' : 'absolute invisible'}
+                >
+                  <h2>Content 2</h2>
+                  <hr />
+                  <p>
+                    Second Content
+                  </p>
+                </div>
+              </div>
             </div>
             <div className='mt-6'>
               {publishTotal > 0 && (
