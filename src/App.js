@@ -26,6 +26,7 @@ const NotFound = lazy(() => import('pages/NotFound'))
 const Dashboard = lazy(() => import('pages/Dashboard'))
 const Search = lazy(() => import('pages/Search'))
 const ProjectSettings = lazy(() => import('pages/Extension/Settings'))
+const MyExtension = lazy(() => import('pages/MyExtension/MyExtension'))
 
 const minimalFooterPages = [
   '/projects', '/dashboard', '/settings', '/contact',
@@ -124,6 +125,7 @@ const App = () => {
         <ScrollToTop>
           <Suspense fallback={<Fallback theme={theme} />}>
             <Switch>
+              <Route path={routes.myextension} component={MyExtension} exact />
               <Route path={routes.main} component={MainPage} exact />
               <Route path={routes.signin} component={SignIn} exact />
               <Route path={routes.signup} component={SignUp} exact />
