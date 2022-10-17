@@ -21,8 +21,7 @@ const UserSettings = ({
 
   const [form, setForm] = useState({
     email: user.email || '',
-    password: '',
-    repeat: '',
+    nickname: user.nickname || '',
   })
   const [validated, setValidated] = useState(false)
   const [errors, setErrors] = useState({})
@@ -105,6 +104,17 @@ const UserSettings = ({
             disabled
             // onChange={handleInput}
             // error={beenSubmitted ? errors.email : null}
+          />
+          <Input
+            name='nickname'
+            id='nickname'
+            type='text'
+            label='Nickname'
+            value={form.nickname}
+            placeholder='you name'
+            className='mt-4'
+            onChange={handleInput}
+            error={beenSubmitted ? errors.nickname : null}
           />
           <hr className='mt-5 border-gray-200 dark:border-gray-600' />
           <div className='flex justify-between mt-4'>
