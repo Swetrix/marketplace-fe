@@ -27,6 +27,7 @@ const Dashboard = lazy(() => import('pages/Dashboard'))
 const Search = lazy(() => import('pages/Search'))
 const ProjectSettings = lazy(() => import('pages/Extension/Settings'))
 const ExtensionPage = lazy(() => import('pages/Extension/View/ExtensionPage'))
+const UserSettings = lazy(() => import('pages/UserSettings'))
 const minimalFooterPages = [
   '/projects', '/dashboard', '/settings', '/contact',
 ]
@@ -127,6 +128,7 @@ const App = () => {
               <Route path={routes.main} component={MainPage} exact />
               <Route path={routes.signin} component={SignIn} exact />
               <Route path={routes.signup} component={SignUp} exact />
+              <Route path={routes.user_settings} component={UserSettings} exact />
               <Route path={routes.dashboard} component={Dashboard} exact />
               <Route path={routes.search} component={Search} exact />
               <Route
