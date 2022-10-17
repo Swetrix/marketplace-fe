@@ -5,7 +5,7 @@ import '../../../glider.css'
 
 const ExtensionPage = () => {
   return (
-    <div className='flex flex-col bg-gray-50 dark:bg-gray-800 py-6 px-4 sm:px-6 lg:px-8 min-h-min-footer-ad extensionPage'>
+    <div className='flex flex-col bg-gray-50 dark:bg-gray-800 py-6 px-4 sm:px-6 lg:px-8 min-h-min-footer-ad extensionPageGlider'>
       <div className='flex flex-col justify-between items-start pt-6 pl-6'>
         <div className='flex items-end'>
           <div className='flex justify-center items-center'>
