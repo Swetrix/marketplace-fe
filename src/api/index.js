@@ -205,3 +205,15 @@ export const confirmEmail = () =>
         ? error.response.data
         : error.response.data.message
     })
+
+export const changeUserDetails = (data) =>
+  api
+    .put('/user', data)
+    .then((response) => response.data)
+    .catch((error) => {
+      const errorsArray = error.response.data.message
+      if (_isArray(errorsArray)) {
+        throw errorsArray
+      }
+      throw new Error(errorsArray)
+    })
