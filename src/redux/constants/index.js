@@ -18,6 +18,11 @@ export const SECURITY_EMAIL = 'security@swetrix.com'
 
 // Cookies
 export const TOKEN = 'access_token'
+export const GDPR_REQUEST = 'gdpr_request'
+export const CONFIRMATION_TIMEOUT = 'confirmation_timeout'
+
+// a dedicated variable is needed for paid tier checking
+export const GDPR_EXPORT_TIMEFRAME = 14 // days
 
 // List of languages with translations available
 export const whitelist = ['en']
