@@ -82,12 +82,12 @@ const UserSettings = ({
               {t('titles.profileSettings')}
             </h2>
             <a
-              className='bg-indigo-500 dark:bg-indigo-600 text-gray-300 rounded hover:bg-indigo-600 dark:hover:bg-indigo-700 px-2 py-1 font-medium ml-3'
+              className='bg-indigo-500 dark:bg-indigo-600 text-gray-300 rounded hover:bg-indigo-600 dark:hover:bg-indigo-700 px-4 py-2 text-sm font-medium ml-3'
               href={`${process.env.REACT_APP_FE_URL}settings`}
               target='_blank'
               rel='noopener noreferrer'
             >
-              Other settings
+              {t('profileSettings.other')}
             </a>
           </div>
           <h3 className='mt-2 text-lg font-bold text-gray-900 dark:text-gray-50'>
@@ -119,7 +119,7 @@ const UserSettings = ({
           <hr className='mt-5 border-gray-200 dark:border-gray-600' />
           <div className='flex justify-between mt-4'>
             <Button
-              semiSmall
+              large
               primary
               type='submit'
             >

@@ -110,7 +110,7 @@ const ProjectCart = ({
             <div className='mt-2 flex items-center text-sm text-gray-500 dark:text-gray-300'>
               <CalendarIcon className='flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400 dark:text-gray-300' />
               <p>
-                {t('dashboard.createdAt')}
+                {t('dashboard.createdOn')}
                 &nbsp;
                 <time dateTime={dayjs(created).format('YYYY-MM-DD')}>
                   {language === 'en'
@@ -205,7 +205,7 @@ const Dashboard = ({
               </h2>
               <span onClick={onNewExtension} className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 text-sm'>
                 <FolderAddIcon className='w-5 h-5 mr-1' />
-                {t('dashboard.newProject')}
+                {t('dashboard.create')}
               </span>
             </div>
             <div className='mt-6'>
