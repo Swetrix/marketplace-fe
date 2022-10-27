@@ -21,6 +21,7 @@ const routes = Object.freeze({
   about: '/about',
   search: '/search',
   myextension: '/myextension/:id',
+  card_extensions: '/extensions',
 })
 
 export default routes

@@ -64,6 +64,15 @@
   transition: opacity .5s cubic-bezier(.17,.67,.83,.67),
               color .5s cubic-bezier(.17,.67,.83,.67);
 }
+.extensionPageGlider .glider-prev, .extensionPageGlider .glider-next {
+  top: 160px;
+}
+
+.extensionPageGlider .glider-block img {
+  height: 400px;
+  width: 100%;
+}
+
 .glider-prev:hover,
 .glider-next:hover,
 .glider-prev:focus,
@@ -127,3 +136,4 @@
     box-shadow: 0 0 1px rgba(255,255,255,.25);
   }
 }
+

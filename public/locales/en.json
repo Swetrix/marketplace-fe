@@ -39,6 +39,10 @@
     "enable": "Enable",
     "disable": "Disable"
   },
+  "dashboard": {
+    "create": "Create extension",
+    "createdOn": "Created on"
+  },
   "auth": {
     "signin": {
       "title": "Sign in to your account",
@@ -90,7 +94,14 @@
     "signin": "Sign in",
     "signup": "Sign up",
     "main": "Swetrix Marketplace",
+    "profileSettings": "Profile settings",
     "dashboard": "Dashboard"
+  },
+  "profileSettings": {
+    "general": "General settings",
+    "update": "Update profile",
+    "noLink": "Didn't receive a link to confirm the email address? Request a new one!",
+    "other": "Other settings"
   },
   "extension": {
     "settings": {
@@ -101,7 +112,8 @@
       "price": "Price",
       "category": "Category",
       "mainImage": "Main image",
-      "additionalImages": "Additional images"
+      "additionalImages": "Additional images",
+      "createHint": "*you will be able to set up your extension more thoroughly after you have created it"
     }
   },
   "footer": {

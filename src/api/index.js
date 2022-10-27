@@ -194,3 +194,26 @@ export const getCategories = () =>
         ? error.response.data
         : error.response.data.message
     })
+
+export const confirmEmail = () =>
+  api
+    .post('/user/confirm_email')
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+export const changeUserDetails = (data) =>
+  api
+    .put('/user', data)
+    .then((response) => response.data)
+    .catch((error) => {
+      const errorsArray = error.response.data.message
+      if (_isArray(errorsArray)) {
+        throw errorsArray
+      }
+      throw new Error(errorsArray)
+    })
