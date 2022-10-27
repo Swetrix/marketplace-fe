@@ -25,6 +25,7 @@ import {
   createExtension, updateExtension, deleteExtension, getCategories,
 } from 'api'
 import Input from 'ui/Input'
+import Textarea from 'ui/Textarea'
 import Button from 'ui/Button'
 import Checkbox from 'ui/Checkbox'
 import Modal from 'ui/Modal'
@@ -234,7 +235,7 @@ const ExtensionSettings = ({
             onChange={handleInput}
             error={beenSubmitted ? errors.name : null}
           />
-          <Input
+          <Textarea
             name='description'
             id='description'
             type='text'
