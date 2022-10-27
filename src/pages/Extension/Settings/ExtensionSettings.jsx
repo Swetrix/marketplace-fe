@@ -50,6 +50,7 @@ const ExtensionSettings = ({
     name: '',
     additionalImages: [],
     mainImage: {},
+    price: 0,
   })
   const [validated, setValidated] = useState(false)
   const [errors, setErrors] = useState({})
@@ -257,7 +258,7 @@ const ExtensionSettings = ({
             onChange={handleInput}
             error={beenSubmitted ? errors.version : null}
           />
-          <Input
+          {/* <Input
             name='price'
             id='price'
             type='number'
@@ -267,7 +268,7 @@ const ExtensionSettings = ({
             className='mt-4'
             onChange={handleInput}
             error={beenSubmitted ? errors.price : null}
-          />
+          /> */}
           <Select
             title={t('extension.settings.category')}
             label={t('extension.settings.category')}
