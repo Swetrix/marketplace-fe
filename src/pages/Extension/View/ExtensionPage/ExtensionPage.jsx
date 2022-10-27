@@ -10,7 +10,7 @@ import { installExtension, deleteInstallExtension } from 'api'
 import '../../../../glider.css'
 import Button from 'ui/Button'
 
-const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions }) => {
+const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions, authenticated }) => {
   const { id } = useParams()
   const extension = useMemo(() => _find(extensions, p => p.id === id) || {}, [extensions, id])
   const [deleteLoading, setDeleteLoading] = useState(false)
@@ -18,6 +18,10 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
   const isInstalled = useMemo(() => !_isEmputy(_find(installExtensions, p => p.id === id) || {}), [installExtensions, id])
 
   const install = async () => {
+    if (!authenticated) {
+      showError('You must be logged in to install extensions')
+      return
+    }
     setInstallLoading(true)
     await installExtension(extension.id)
       .then((response) => {
@@ -30,6 +34,10 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
   }
 
   const deleted = async () => {
+    if (!authenticated) {
+      showError('You must be logged in to install extensions')
+      return
+    }
     setDeleteLoading(true)
     await deleteInstallExtension(extension.id)
       .then((response) => {

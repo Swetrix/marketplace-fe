@@ -8,7 +8,7 @@ const mapStateToProps = (state) => ({
   extensions: state.ui.extensions.extensions,
   installExtensions: state.ui.extensions.installExtensions,
   isLoading: state.ui.extensions.isLoading,
-  // authenticated: state.auth.authenticated,
+  authenticated: state.auth.authenticated,
   user: state.auth.user,
 })
 
