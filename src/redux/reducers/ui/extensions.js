@@ -9,12 +9,15 @@ const getInitialState = () => {
   return {
     extensions: [],
     publishExtensions: [],
+    installExtensions: [],
     isLoading: true,
     isLoadingPublish: true,
+    isLoadingInstall: true,
     error: null,
     totalMonthlyEvents: null,
     total: 0,
     publishTotal: 0,
+    installTotal: 0,
     category: null,
     dashboardPaginationPage: 1,
     dashboardPaginationPagePublish: 1,
@@ -34,6 +37,16 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
           publishExtensions: [...extensions],
         }
       }
+
+      return {
+        ...state,
+        installExtensions: [...extensions],
+        isLoadingInstall: false,
+      }
+    }
+
+    case types.SET_ALL_EXTENSIONS: {
+      const { extensions } = payload
 
       return {
         ...state,
@@ -58,15 +71,17 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
       }
     }
 
-    case types.SET_TOTAL: {
-      const { total, publish } = payload
+    case types.SET_ALL_TOTAL: {
+      const { total } = payload
 
-      if (publish) {
-        return {
-          ...state,
-          publishTotal: total,
-        }
+      return {
+        ...state,
+        installTotal: total,
       }
+    }
+
+    case types.SET_TOTAL: {
+      const { total } = payload
 
       return {
         ...state,
@@ -225,6 +240,14 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
       }
     }
 
+    case types.SET_ALL_EXTENSIONS_LOADING: {
+      const { isLoading } = payload
+      return {
+        ...state,
+        isLoading,
+      }
+    }
+
     case types.SET_EXTENSIONS_LOADING: {
       const { isLoading, publish = false } = payload
       if (publish) {
@@ -235,7 +258,7 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
       }
       return {
         ...state,
-        isLoading,
+        isLoadingInstall: isLoading,
       }
     }
 

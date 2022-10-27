@@ -6,6 +6,7 @@ import logout from './logout'
 import loadExtensions from './load_extensions'
 import loadPublishExtensions from './load_publish_extensions'
 import loadCategory from './load_category'
+import loadInstallExtensions from './load_install_extensions'
 
 function* mainUISaga() {
   yield fork(initialise)
@@ -13,6 +14,7 @@ function* mainUISaga() {
   yield takeEvery(types.LOAD_EXTENSIONS, loadExtensions)
   yield takeEvery(types.LOAD_CATEGORY, loadCategory)
   yield takeEvery(types.LOAD_PUBLISH_EXTENSIONS, loadPublishExtensions)
+  yield takeEvery(types.LOAD_INSTALL_EXTENSIONS, loadInstallExtensions)
 }
 
 export default mainUISaga

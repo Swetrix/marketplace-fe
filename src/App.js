@@ -137,7 +137,7 @@ const App = () => {
                 exact
               />
               <Route
-                path={routes.card_extensions}
+                path={routes.viewExtensions}
                 component={ExtensionPage}
                 exact
               />

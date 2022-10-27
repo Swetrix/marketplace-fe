@@ -107,6 +107,17 @@ export const getExtensions = (limit = 0, offset = 0) =>
         : error.response.data.message
     })
 
+export const getInstallExtensions = (limit = 0, offset = 0) =>
+  api
+    .get(`/extensions/install?limit=${limit}&offset=${offset}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
 export const getPublishExtensions = (limit = 0, offset = 0) =>
   api
     .get(`/extensions/published?limit=${limit}&offset=${offset}`)
@@ -216,4 +227,26 @@ export const changeUserDetails = (data) =>
         throw errorsArray
       }
       throw new Error(errorsArray)
+    })
+
+export const installExtension = (extensionId) =>
+  api
+    .post(`${extensionId}/install`)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+export const uninstallExtension = (extensionId) =>
+  api
+    .post(`${extensionId}/uninstall`)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
     })

@@ -7,7 +7,7 @@ import UIActions from 'redux/actions/ui'
 
 import { ENTRIES_PER_PAGE_DASHBOARD } from 'redux/constants'
 import {
-  getPublishExtensions, getOverallStats, getLiveVisitors,
+  getPublishExtensions,
 } from '../../../api'
 
 const debug = Debug('swetrix:rx:s:load-projects')
@@ -29,28 +29,16 @@ export default function* loadPublishExtensions({ payload: { take = ENTRIES_PER_P
         },
       }
     })
-    const pids = _map(projectsWithShared, ({ project }) => project.id)
-    let overall
-
-    try {
-      overall = yield call(getOverallStats, pids)
-    } catch (e) {
-      debug('failed to overall stats: %s', e)
-    }
 
     extensions = _map(projectsWithShared, res => ({
       ...res,
       project: {
         ...res.project,
-        overall: overall?.[res.project.id],
       },
     }))
 
     yield put(UIActions.setExtensions(extensions, true))
     yield put(UIActions.setTotal(count, true))
-
-    const liveStats = yield call(getLiveVisitors, pids)
-    yield put(UIActions.setLiveStats(liveStats, true))
   } catch ({ message }) {
     if (_isString(message)) {
       yield put(UIActions.setExtensionsError(message))

@@ -20,7 +20,7 @@ const routes = Object.freeze({
   contact: '/contact',
   about: '/about',
   search: '/search',
-  card_extensions: '/extensions',
+  viewExtensions: '/extensions/:id',
 })
 
 export default routes
