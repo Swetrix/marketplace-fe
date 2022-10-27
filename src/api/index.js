@@ -229,9 +229,9 @@ export const installExtension = (extensionId) =>
         : error.response.data.message
     })
 
-export const uninstallExtension = (extensionId) =>
+export const deleteInstallExtension = (extensionId) =>
   api
-    .post(`/extensions/${extensionId}/uninstall`)
+    .delete(`/extensions/${extensionId}/uninstall`)
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
