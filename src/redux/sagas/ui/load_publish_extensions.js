@@ -20,22 +20,15 @@ export default function* loadPublishExtensions({ payload: { take = ENTRIES_PER_P
       // eslint-disable-next-line prefer-const
       extensions, count,
     } = yield call(getPublishExtensions, take, skip)
-    const projectsWithShared = _map(extensions, (project) => {
+    extensions = _map(extensions, (extension) => {
       return {
-        ...project,
+        ...extension,
         project: {
-          ...project.project,
+          ...extension.project,
           shared: true,
         },
       }
     })
-
-    extensions = _map(projectsWithShared, res => ({
-      ...res,
-      project: {
-        ...res.project,
-      },
-    }))
 
     yield put(UIActions.setExtensions(extensions, true))
     yield put(UIActions.setTotal(count, true))

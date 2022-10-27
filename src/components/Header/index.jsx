@@ -52,19 +52,12 @@ const Header = ({ authenticated, theme }) => {
                   <RssIcon className='w-5 h-5 mr-1' />
                   {t('footer.blog')}
                 </a>
-                {
-                  authenticated ? (
-                    <NavLink to={routes.main} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-2 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' activeClassName='bg-indigo-700 hover:bg-indigo-700 dark:bg-gray-700' key='Billing'>
-                      <CreditCardIcon className='w-5 h-5 mr-1' />
-                      {t('common.billing')}
-                    </NavLink>
-                  ) : (
-                    <NavLink to={routes.features} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-2 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' activeClassName='bg-indigo-700 hover:bg-indigo-700 dark:bg-gray-700' key='Features'>
-                      <CollectionIcon className='w-5 h-5 mr-1' />
-                      {t('common.features')}
-                    </NavLink>
-                  )
-                }
+                {!authenticated && (
+                  <NavLink to={routes.features} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-2 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' activeClassName='bg-indigo-700 hover:bg-indigo-700 dark:bg-gray-700' key='Features'>
+                    <CollectionIcon className='w-5 h-5 mr-1' />
+                    {t('common.features')}
+                  </NavLink>
+                )}
                 <NavLink to={routes.docs} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-2 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' activeClassName='bg-indigo-700 hover:bg-indigo-700 dark:bg-gray-700' key='Docs'>
                   <DocumentTextIcon className='w-5 h-5 mr-1' />
                   {t('common.docs')}
@@ -145,12 +138,7 @@ const Header = ({ authenticated, theme }) => {
               <RssIcon className='w-5 h-5 mr-1' />
               {t('footer.blog')}
             </a>
-            {authenticated ? (
-              <NavLink to={routes.billing} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-1 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' activeClassName='bg-indigo-700 hover:bg-indigo-700 dark:bg-gray-700' key='Billing'>
-                <CreditCardIcon className='w-5 h-5 mr-1' />
-                {t('common.billing')}
-              </NavLink>
-            ) : (
+            {!authenticated && (
               <>
                 <HashLink to={`${routes.main}#pricing`} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-1 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' key='Pricing'>
                   <CreditCardIcon className='w-5 h-5 mr-1' />

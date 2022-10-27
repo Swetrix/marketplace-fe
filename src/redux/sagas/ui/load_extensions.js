@@ -20,7 +20,7 @@ export default function* loadExtensions({ payload: { take = ENTRIES_PER_PAGE_DAS
       // eslint-disable-next-line prefer-const
       extensions, count,
     } = yield call(getExtensions, take, skip)
-
+  
     extensions = _map(extensions, res => ({
       ...res,
     }))
