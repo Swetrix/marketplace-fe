@@ -25,7 +25,6 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
     setInstallLoading(true)
     await installExtension(extension.id)
       .then((response) => {
-        console.log(extension)
         setExtensions([...installExtensions, extension], false)
       }).catch((err) => {
         showError(`Error installing extension: ${err.message}`)
