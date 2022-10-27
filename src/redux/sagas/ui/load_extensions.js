@@ -14,15 +14,19 @@ const debug = Debug('swetrix:rx:s:load-projects')
 
 export default function* loadExtensions({ payload: { take = ENTRIES_PER_PAGE_DASHBOARD, skip = 0 } }) {
   try {
-    yield put(UIActions.setExtensionsLoading(true))
+    yield put(UIActions.setAllExtensionsLoading(true))
 
     let {
       // eslint-disable-next-line prefer-const
       extensions, count,
     } = yield call(getExtensions, take, skip)
+  
+    extensions = _map(extensions, res => ({
+      ...res,
+    }))
 
-    yield put(UIActions.setExtensions(extensions))
-    yield put(UIActions.setTotal(count))
+    yield put(UIActions.setAllExtensions(extensions))
+    yield put(UIActions.setAllTotal(count))
   } catch ({ message }) {
     if (_isString(message)) {
       yield put(UIActions.setExtensionsError(message))

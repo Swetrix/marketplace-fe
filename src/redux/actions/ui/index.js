@@ -10,11 +10,31 @@ const loadPublishExtensions = (take, skip) => ({
   payload: { take, skip },
 })
 
+const loadInstallExtensions = (take, skip) => ({
+  type: types.LOAD_INSTALL_EXTENSIONS,
+  payload: { take, skip },
+})
+
 const setExtensions = (extensions, publish) => ({
   type: types.SET_EXTENSIONS,
   payload: {
     extensions,
     publish,
+  },
+})
+
+const setAllExtensions = (extensions, publish) => ({
+  type: types.SET_ALL_EXTENSIONS,
+  payload: {
+    extensions,
+    publish,
+  },
+})
+
+const setAllTotal = (total) => ({
+  type: types.SET_ALL_TOTAL,
+  payload: {
+    total,
   },
 })
 
@@ -90,6 +110,13 @@ const setExtensionsLoading = (isLoading, publish) => ({
   payload: {
     isLoading,
     publish,
+  },
+})
+
+const setAllExtensionsLoading = (isLoading) => ({
+  type: types.SET_ALL_EXTENSIONS_LOADING,
+  payload: {
+    isLoading,
   },
 })
 
@@ -199,6 +226,10 @@ const UIActions = {
   setOffset,
   setCategory,
   loadCategory,
+  loadInstallExtensions,
+  setAllExtensions,
+  setAllExtensionsLoading,
+  setAllTotal,
 }
 
 export default UIActions

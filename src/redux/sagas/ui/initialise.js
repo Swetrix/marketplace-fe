@@ -14,6 +14,7 @@ export default function* initialise() {
     if (token) {
       yield put(UIActions.loadExtensions())
       yield put(UIActions.loadPublishExtensions())
+      yield put(UIActions.loadInstallExtensions())
     }
   } catch (e) {
     debug('An error occured whilst initialising: %s', e)

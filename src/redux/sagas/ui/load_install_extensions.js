@@ -7,31 +7,37 @@ import UIActions from 'redux/actions/ui'
 
 import { ENTRIES_PER_PAGE_DASHBOARD } from 'redux/constants'
 import {
-  getPublishExtensions,
+  getInstallExtensions,
 } from '../../../api'
 
 const debug = Debug('swetrix:rx:s:load-projects')
 
-export default function* loadPublishExtensions({ payload: { take = ENTRIES_PER_PAGE_DASHBOARD, skip = 0 } }) {
+export default function* loadInstallExtensions({ payload: { take = ENTRIES_PER_PAGE_DASHBOARD, skip = 0 } }) {
   try {
-    yield put(UIActions.setExtensionsLoading(true, true))
+    yield put(UIActions.setExtensionsLoading(true))
 
     let {
       // eslint-disable-next-line prefer-const
       extensions, count,
-    } = yield call(getPublishExtensions, take, skip)
-    extensions = _map(extensions, (extension) => {
+    } = yield call(getInstallExtensions, take, skip)
+    const projectsWithShared = _map(extensions, (project) => {
       return {
-        ...extension,
+        ...project,
         project: {
-          ...extension.project,
-          shared: true,
+          ...project.project,
         },
       }
     })
 
-    yield put(UIActions.setExtensions(extensions, true))
-    yield put(UIActions.setTotal(count, true))
+    extensions = _map(projectsWithShared, res => ({
+      ...res,
+      project: {
+        ...res.project,
+      },
+    }))
+
+    yield put(UIActions.setExtensions(extensions))
+    yield put(UIActions.setTotal(count))
   } catch ({ message }) {
     if (_isString(message)) {
       yield put(UIActions.setExtensionsError(message))
