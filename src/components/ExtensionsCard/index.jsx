@@ -30,20 +30,20 @@ const ExtensionsCard = ({
       </div>
       <div className='mt-4'>
         <h3 className='text-center text-lg font-semibold leading-5 text-gray-700 dark:text-gray-300'>
-          <a href='/'>
+          <p>
             {subStr(name, 17)}
-          </a>
+          </з>
         </h3>
         <div className='flex items-center justify-between mt-2'>
           <div className='flex flex-col'>
             <p className='dark:text-gray-400 text-gray-500 text-sm leading-[10px]'>
               {subStr(companyName, 10)}
             </p>
-            <a href={companyLink} className='dark:text-indigo-400 cursor-pointer text-indigo-500 font-semibold border-0 text-sm'>
+            {/* <a href={companyLink} className='dark:text-indigo-400 cursor-pointer text-indigo-500 font-semibold border-0 text-sm'>
               {_includes(companyLink, 'https://')
                 ? subStr(_replace(companyLink, 'https://', ''), 10)
                 : subStr(_replace(companyLink, 'http://', ''), 10)}
-            </a>
+            </a> */}
           </div>
           <div className='flex items-center'>
             <DownloadIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
