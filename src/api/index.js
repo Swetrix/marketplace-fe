@@ -109,7 +109,7 @@ export const getExtensions = (limit = 0, offset = 0) =>
 
 export const getInstallExtensions = (limit = 0, offset = 0) =>
   api
-    .get(`/extensions/install?limit=${limit}&offset=${offset}`)
+    .get(`/extensions/installed?limit=${limit}&offset=${offset}`)
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
@@ -220,7 +220,7 @@ export const changeUserDetails = (data) =>
 
 export const installExtension = (extensionId) =>
   api
-    .post(`${extensionId}/install`)
+    .post(`/extensions/${extensionId}/install`)
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
@@ -231,7 +231,7 @@ export const installExtension = (extensionId) =>
 
 export const uninstallExtension = (extensionId) =>
   api
-    .post(`${extensionId}/uninstall`)
+    .post(`/extensions/${extensionId}/uninstall`)
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)

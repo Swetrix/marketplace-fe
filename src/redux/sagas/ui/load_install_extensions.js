@@ -20,21 +20,8 @@ export default function* loadInstallExtensions({ payload: { take = ENTRIES_PER_P
       // eslint-disable-next-line prefer-const
       extensions, count,
     } = yield call(getInstallExtensions, take, skip)
-    const projectsWithShared = _map(extensions, (project) => {
-      return {
-        ...project,
-        project: {
-          ...project.project,
-        },
-      }
-    })
+    console.log(extensions)
 
-    extensions = _map(projectsWithShared, res => ({
-      ...res,
-      project: {
-        ...res.project,
-      },
-    }))
 
     yield put(UIActions.setExtensions(extensions))
     yield put(UIActions.setTotal(count))
