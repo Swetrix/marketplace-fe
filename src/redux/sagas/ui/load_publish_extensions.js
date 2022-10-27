@@ -29,7 +29,7 @@ export default function* loadPublishExtensions({ payload: { take = ENTRIES_PER_P
         },
       }
     })
-    const pids = _map(projectsWithShared, ({ project }) => project.id)
+    const pids = _map(extensions, ({ project }) => project.id)
 
     yield put(UIActions.setExtensions(extensions, true))
     yield put(UIActions.setTotal(count, true))
