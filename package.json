@@ -57,7 +57,6 @@
     "extends": [
       "react-app",
       "react-app/jest",
-      "airbnb",
       "eslint:recommended",
       "plugin:react/recommended"
     ],
@@ -134,7 +133,6 @@
   },
   "devDependencies": {
     "eslint": "^8.21.0",
-    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.6.1",
