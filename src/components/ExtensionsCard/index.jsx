@@ -32,7 +32,7 @@ const ExtensionsCard = ({
         <h3 className='text-center text-lg font-semibold leading-5 text-gray-700 dark:text-gray-300'>
           <p>
             {subStr(name, 17)}
-          </з>
+          </p>
         </h3>
         <div className='flex items-center justify-between mt-2'>
           <div className='flex flex-col'>
