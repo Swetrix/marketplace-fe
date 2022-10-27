@@ -151,17 +151,6 @@ export const deleteExtension = (id) =>
         : error.response.data.message
     })
 
-export const getOverallStats = (pids) =>
-  api
-    .get(`log/birdseye?pids=[${_map(pids, (pid) => `"${pid}"`).join(',')}]`)
-    .then((response) => response.data)
-    .catch((error) => {
-      debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
-    })
-
 export const getLiveVisitors = (pids) =>
   api
     .get(`log/hb?pids=[${_map(pids, (pid) => `"${pid}"`).join(',')}]`)
