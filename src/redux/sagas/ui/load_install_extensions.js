@@ -20,7 +20,6 @@ export default function* loadInstallExtensions({ payload: { take = ENTRIES_PER_P
       // eslint-disable-next-line prefer-const
       extensions, count,
     } = yield call(getInstallExtensions, take, skip)
-    console.log(extensions)
 
 
     yield put(UIActions.setExtensions(extensions))

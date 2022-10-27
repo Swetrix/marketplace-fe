@@ -76,16 +76,23 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
 
       return {
         ...state,
-        installTotal: total,
+        total,
       }
     }
 
     case types.SET_TOTAL: {
-      const { total } = payload
+      const { total, publish } = payload
+
+      if (publish) {
+        return {
+          ...state,
+          publishTotal: total,
+        }
+      }
 
       return {
         ...state,
-        total,
+        installTotal: total,
       }
     }
 

@@ -145,7 +145,7 @@ const Dashboard = ({
   const { t, i18n: { language } } = useTranslation('common')
   const [showActivateEmailModal, setShowActivateEmailModal] = useState(false)
   const history = useHistory()
-  const [tabextensions, setTabextensions] = useState(dashboardTabs)
+  const [tabExtensions, setTabExtensions] = useState(dashboardTabs)
   const pageAmount = useMemo(() => (dashboardTabs === tabForPublishExtensions ? _ceil(publishTotal / ENTRIES_PER_PAGE_DASHBOARD) : _ceil(total / ENTRIES_PER_PAGE_DASHBOARD)), [total, publishTotal, dashboardTabs])
 
   const onNewExtension = () => {
@@ -155,21 +155,21 @@ const Dashboard = ({
       setShowActivateEmailModal(true)
     }
   }
-  console.log('extensions', extensions)
+
   useEffect(() => {
     if (publishTotal <= 0) {
       setDashboardTabs(tabForInstallExtension)
-      setTabextensions(tabForInstallExtension)
+      setTabExtensions(tabForInstallExtension)
     }
 
-    setDashboardTabs(tabextensions)
-  }, [tabextensions, setDashboardTabs, publishTotal])
+    setDashboardTabs(tabExtensions)
+  }, [tabExtensions, setDashboardTabs, publishTotal])
 
   useEffect(() => {
-    if (tabextensions === tabForInstallExtension) {
+    if (tabExtensions === tabForInstallExtension) {
       loadExtensions(ENTRIES_PER_PAGE_DASHBOARD, (dashboardPaginationPage - 1) * ENTRIES_PER_PAGE_DASHBOARD)
     }
-    if (tabextensions === tabForPublishExtensions) {
+    if (tabExtensions === tabForPublishExtensions) {
       loadPublishExtensions(ENTRIES_PER_PAGE_DASHBOARD, (dashboardPaginationPagePublish - 1) * ENTRIES_PER_PAGE_DASHBOARD)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -215,12 +215,12 @@ const Dashboard = ({
                   <button
                     key={tab.name}
                     type='button'
-                    onClick={() => setTabextensions(tab.name)}
+                    onClick={() => setTabExtensions(tab.name)}
                     className={cx('whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-md', {
-                      'border-indigo-500 text-indigo-600 dark:text-indigo-500': tabextensions === tab.name,
-                      'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-300': tabextensions !== tab.name,
+                      'border-indigo-500 text-indigo-600 dark:text-indigo-500': tabExtensions === tab.name,
+                      'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-300': tabExtensions !== tab.name,
                     })}
-                    aria-current={tab.name === tabextensions ? 'page' : undefined}
+                    aria-current={tab.name === tabExtensions ? 'page' : undefined}
                   >
                     {t(tab.label)}
                   </button>
@@ -237,7 +237,7 @@ const Dashboard = ({
             ) : (
               <>
 
-                {tabextensions === tabForInstallExtension && (
+                {tabExtensions === tabForInstallExtension && (
                 <div>
                   {_isEmpty(_filter(extensions, ({ uiHidden }) => !uiHidden)) ? (
                     <Noextensions t={t} />
@@ -270,7 +270,7 @@ const Dashboard = ({
                 </div>
                 )}
 
-                {tabextensions === tabForPublishExtensions && (
+                {tabExtensions === tabForPublishExtensions && (
                 <div>
                   {_isEmpty(publishExtensions) ? (
                     <Noextensions t={t} />
@@ -304,7 +304,7 @@ const Dashboard = ({
 
             {
                 pageAmount > 1 && (
-                  <Pagination page={tabextensions === tabForPublishExtensions ? dashboardPaginationPagePublish : dashboardPaginationPage} setPage={tabextensions === tabForPublishExtensions ? (page) => setDashboardPaginationPagePublish(page) : (page) => setDashboardPaginationPage(page)} pageAmount={pageAmount || 0} total={tabextensions === tabForPublishExtensions ? publishTotal : total} />
+                  <Pagination page={tabExtensions === tabForPublishExtensions ? dashboardPaginationPagePublish : dashboardPaginationPage} setPage={tabExtensions === tabForPublishExtensions ? (page) => setDashboardPaginationPagePublish(page) : (page) => setDashboardPaginationPage(page)} pageAmount={pageAmount || 0} total={tabExtensions === tabForPublishExtensions ? publishTotal : total} />
                 )
               }
           </div>

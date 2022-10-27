@@ -6,11 +6,12 @@ import { alertsActions } from 'redux/actions/alerts'
 import Dashboard from './Dashboard'
 
 const mapStateToProps = (state) => ({
-  extensions: state.ui.extensions.extensions,
+  extensions: state.ui.extensions.installExtensions,
   publishExtensions: state.ui.extensions.publishExtensions,
   user: state.auth.user,
-  isLoading: state.ui.extensions.isLoading,
-  total: state.ui.extensions.total,
+  isLoading: state.ui.extensions.isLoadingInstall,
+  isLoadingPublish: state.ui.extensions.isLoadingPublish,
+  total: state.ui.extensions.installTotal,
   publishTotal: state.ui.extensions.publishTotal,
   error: state.ui.extensions.error,
   dashboardPaginationPage: state.ui.extensions.dashboardPaginationPage,
@@ -20,7 +21,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   loadExtensions: (take, skip) => {
-    dispatch(UIActions.loadExtensions(take, skip))
+    dispatch(UIActions.loadInstallExtensions(take, skip))
   },
   loadPublishExtensions: (take, skip) => {
     dispatch(UIActions.loadPublishExtensions(take, skip))

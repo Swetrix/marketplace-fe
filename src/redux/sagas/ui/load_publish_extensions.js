@@ -20,15 +20,6 @@ export default function* loadPublishExtensions({ payload: { take = ENTRIES_PER_P
       // eslint-disable-next-line prefer-const
       extensions, count,
     } = yield call(getPublishExtensions, take, skip)
-    console.log(extensions)
-    extensions = _map(extensions, (extension) => {
-      return {
-        ...extension,
-        project: {
-          ...extension.project,
-        },
-      }
-    })
 
     yield put(UIActions.setExtensions(extensions, true))
     yield put(UIActions.setTotal(count, true))
