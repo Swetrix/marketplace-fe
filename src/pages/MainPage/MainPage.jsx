@@ -30,7 +30,7 @@ const MainPage = ({ extensions }) => {
 
   return (
     <Title title={t('titles.main')}>
-      <div className='dark:bg-gray-900'>
+      <div className='min-h-min-footer dark:bg-gray-900'>
         <div>
           <h1 className='text-center pt-16 font-extrabold text-3xl dark:text-white text-gray-700'>
             Extensions for Swetrix Analytics
