@@ -8,7 +8,7 @@ import Flag from 'react-flagkit'
 import i18next from 'i18next'
 import { Popover, Transition } from '@headlessui/react'
 import {
-  MenuIcon, XIcon, DocumentTextIcon, CreditCardIcon, CollectionIcon, RssIcon,
+  MenuIcon, XIcon, DocumentTextIcon, CreditCardIcon, RssIcon,
 } from '@heroicons/react/outline'
 import { MoonIcon, SunIcon } from '@heroicons/react/solid'
 
