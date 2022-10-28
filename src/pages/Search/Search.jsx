@@ -87,7 +87,7 @@ const Search = ({
           </form>
           <div className='flex items-center justify-between mt-8'>
             <div>
-              <span className='text-gray-500 dark:text-gray-300 text-lg font-medium'>1538 Results</span>
+              <span className='text-gray-500 dark:text-gray-300 text-lg font-medium'>{total} Results</span>
             </div>
             <div className='flex items-center justify-between'>
               <div className='mr-5'>
