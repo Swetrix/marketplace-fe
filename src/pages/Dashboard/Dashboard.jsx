@@ -240,9 +240,7 @@ const Dashboard = ({
                                 created={extension.created}
                                 publish={extension}
                                 status={extension.status}
-                                isPublic={extension.public}
-                                overall={extension.overall}
-                                live={_isNumber(extension.live) ? extension.live : 'N/A'}
+                                version={extension.version}
                               />
                             </Link>
                           </div>
