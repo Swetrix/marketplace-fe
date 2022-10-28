@@ -14,7 +14,6 @@ import routes from 'routes'
 
 const navigation = {
   support: [
-    (authenticated) => (authenticated ? { key: 'billing', href: routes.billing } : { key: 'pricing', href: `${routes.main}#pricing` }),
     () => ({ key: 'docs', href: routes.docs }),
     () => ({ key: 'guides', href: `${routes.docs}#docs-ht` }),
   ],

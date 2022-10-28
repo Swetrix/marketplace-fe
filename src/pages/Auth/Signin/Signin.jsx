@@ -196,10 +196,6 @@ const Signin = ({ login, loginSuccess, loginFailed }) => {
           />
           <div className='flex justify-between mt-3'>
             <div className='pt-1'>
-              <Link to={routes.reset_password} className='underline text-blue-600 hover:text-indigo-800 dark:text-blue-400 dark:hover:text-blue-500'>
-                {t('auth.signin.forgot')}
-              </Link>
-              <span className='text-gray-900 dark:text-gray-50'>&nbsp;|&nbsp;</span>
               <Link to={routes.signup} className='underline text-blue-600 hover:text-indigo-800 dark:text-blue-400 dark:hover:text-blue-500'>
                 {t('auth.common.signupInstead')}
               </Link>
