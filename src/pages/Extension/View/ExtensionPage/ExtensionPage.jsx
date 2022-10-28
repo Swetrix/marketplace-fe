@@ -90,7 +90,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
               <div className='flex flex-row items-end pl-12'>
                 {isInstalled ? (
                   <Button type='submit' loading={deleteLoading} onClick={deleted} danger regular>
-                    Delete extension
+                    Uninstall
                   </Button>
                 ) : (
                   <Button
@@ -100,7 +100,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                     primary
                     onClick={install}
                   >
-                    Install extension
+                    Install
                   </Button>
                 )}
               </div>
