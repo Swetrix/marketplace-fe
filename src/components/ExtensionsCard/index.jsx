@@ -26,7 +26,7 @@ const ExtensionsCard = ({
   return (
     <div className='group w-[210px] relative border-2 border-white rounded-lg p-3 bg-gray-100 dark:bg-gray-800 dark:border-gray-900 cursor-pointer' onClick={openExtension}>
       <div className='h-28 w-28 mx-auto aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:aspect-none'>
-        <img src={`${process.env.REACT_APP_SDN_URL}file/${mainImage}`} alt={companyName} className='w-full h-full object-center object-cover lg:w-full lg:h-full' />
+        <img src={mainImage ? `${process.env.REACT_APP_SDN_URL}file/${mainImage}` : 'https://via.placeholder.com/150'} alt={companyName} className='w-full h-full object-center object-cover lg:w-full lg:h-full' />
       </div>
       <div className='mt-4'>
         <h3 className='text-center text-lg font-semibold leading-5 text-gray-700 dark:text-gray-300'>
@@ -49,18 +49,17 @@ const ExtensionsCard = ({
             <DownloadIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
             <p className='pl-1 text-gray-400'>
               {downloads}
-              k
             </p>
           </div>
         </div>
         <div className='flex justify-between items-center mt-1'>
           <StarsRaiting stars={stars} />
-          <div>
+          {/* <div>
             <p className='text-indigo-700 dark:text-indigo-500 font-semibold'>
               {price === 0 ? 'Free' : `${price}$`}
             </p>
             <span className='sr-only'>pricing</span>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

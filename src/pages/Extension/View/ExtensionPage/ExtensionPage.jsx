@@ -1,25 +1,50 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import StarsRaiting from 'ui/StarsRaiting'
 import Glider from 'react-glider'
 import _find from 'lodash/find'
 import _map from 'lodash/map'
-import { installExtension } from 'api'
+import _isEmputy from 'lodash/isEmpty'
+import _filter from 'lodash/filter'
+import { installExtension, deleteInstallExtension } from 'api'
 import '../../../../glider.css'
+import Button from 'ui/Button'
 
-const ExtensionPage = ({ extensions, showError, setExtensions }) => {
+const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions, authenticated }) => {
   const { id } = useParams()
   const extension = useMemo(() => _find(extensions, p => p.id === id) || {}, [extensions, id])
+  const [deleteLoading, setDeleteLoading] = useState(false)
+  const [installLoading, setInstallLoading] = useState(false)
+  const isInstalled = useMemo(() => !_isEmputy(_find(installExtensions, p => p.id === id) || {}), [installExtensions, id])
 
   const install = async () => {
+    if (!authenticated) {
+      showError('You must be logged in to install extensions')
+      return
+    }
+    setInstallLoading(true)
     await installExtension(extension.id)
       .then((response) => {
-        console.log(response)
-        console.log('installed')
+        setExtensions([...installExtensions, extension], false)
       }).catch((err) => {
-        console.log(err)
-        showError('Error installing extension')
+        showError(`Error installing extension: ${err.message}`)
       })
+    setInstallLoading(false)
+  }
+
+  const deleted = async () => {
+    if (!authenticated) {
+      showError('You must be logged in to install extensions')
+      return
+    }
+    setDeleteLoading(true)
+    await deleteInstallExtension(extension.id)
+      .then((response) => {
+        setExtensions(_filter(extensions, p => p.id !== id), false)
+      }).catch((err) => {
+        showError(`Error deleting extension: ${err.message}`)
+      })
+    setDeleteLoading(false)
   }
 
   return (
@@ -59,13 +84,21 @@ const ExtensionPage = ({ extensions, showError, setExtensions }) => {
               </div>
             </div>
             <div className='flex flex-row items-end pl-12'>
-              <button
-                className='rounded-md border !duration-300 transition-all w-full sm:max-w-[210px] h-9 flex items-center justify-center sm:mr-6 shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 border-transparent px-3'
-                type='button'
-                onClick={install}
-              >
-                Install extension
-              </button>
+              {isInstalled ? (
+                <Button type='submit' loading={deleteLoading} onClick={deleted} danger regular>
+                  Delete extension
+                </Button>
+              ) : (
+                <Button
+                  type='button'
+                  loading={installLoading}
+                  regular
+                  primary
+                  onClick={install}
+                  >
+                  Install extension
+                </Button>
+              )}
             </div>
           </div>
           <div className='w-full max-w-[1200px] py-4'>

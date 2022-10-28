@@ -77,10 +77,10 @@ const MainPage = ({ extensions }) => {
                   id={extension.id}
                   name={extension.name}
                   stars={3}
-                  downloads={extension.installs}
+                  downloads={extension.usersQuantity}
                   imagePath={extension.mainImage}
-                  price={extension.price}
-                  companyLink='https://simpson.com'
+                  // price={extension.price}
+                  // companyLink='https://simpson.com'
                   companyName={extension.owner?.nickname || 'Unknown'}
                 />
               ))}

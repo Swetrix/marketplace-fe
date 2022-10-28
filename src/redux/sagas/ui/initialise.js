@@ -11,8 +11,8 @@ export default function* initialise() {
     const token = yield call(getAccessToken)
 
     yield put(UIActions.loadCategory())
+    yield put(UIActions.loadExtensions())
     if (token) {
-      yield put(UIActions.loadExtensions())
       yield put(UIActions.loadPublishExtensions())
       yield put(UIActions.loadInstallExtensions())
     }
