@@ -29,7 +29,7 @@ import {
 import Pagination from 'ui/Pagination'
 
 const ProjectCart = ({
-  name, created, status, t, language, isPublic, installed, publish, version,
+  name, created, status, t, language, installed, publish, version,
 }) => {
   return (
     <li>
@@ -53,9 +53,6 @@ const ProjectCart = ({
                   <ActivePin label={t('dashboard.active')} />
                 )
               }
-              {isPublic && (
-              <ActivePin label={t('dashboard.public')} className='ml-2' />
-              )}
             </div>
           </div>
           <div className='mt-2 sm:flex sm:justify-between'>
@@ -203,7 +200,7 @@ const Dashboard = ({
                     <div className='shadow overflow-hidden sm:rounded-md'>
                       <ul className='divide-y divide-gray-200 dark:divide-gray-500'>
                         {_map(_filter(extensions, ({ uiHidden }) => !uiHidden), ({
-                          name, id, created, status, version, public: isPublic, publish = false, installed,
+                          name, id, created, status, version, publish = false, installed,
                         }) => (
                           <div key={id}>
                             <Link to={_replace(routes.project, ':id', id)}>
@@ -214,7 +211,6 @@ const Dashboard = ({
                                 created={created}
                                 publish={publish}
                                 status={status}
-                                isPublic={isPublic}
                                 installed={installed}
                                 version={version}
                               />
