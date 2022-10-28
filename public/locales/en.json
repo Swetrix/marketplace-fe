@@ -107,6 +107,7 @@
     "installed": "Installed extensions"
   },
   "extension": {
+    "noExist": "The selected extension does not exist",
     "settings": {
       "create": "Create an extension",
       "name": "Name",
@@ -116,7 +117,9 @@
       "category": "Category",
       "mainImage": "Main image",
       "additionalImages": "Additional images",
-      "createHint": "*you will be able to set up your extension more thoroughly after you have created it"
+      "createHint": "*you will be able to set up your extension more thoroughly after you have created it",
+      "noNameError": "Please enter an extension name.",
+      "verify": "Please, verify your email address first"
     }
   },
   "footer": {
