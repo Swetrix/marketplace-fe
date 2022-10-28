@@ -41,7 +41,8 @@
   },
   "dashboard": {
     "create": "Create extension",
-    "createdOn": "Created on"
+    "createdOn": "Created on",
+    "version": "Version"
   },
   "auth": {
     "signin": {

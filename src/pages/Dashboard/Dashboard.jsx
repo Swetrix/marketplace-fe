@@ -13,15 +13,14 @@ import _map from 'lodash/map'
 import _filter from 'lodash/filter'
 import _ceil from 'lodash/ceil'
 import { useTranslation } from 'react-i18next'
-import { EyeIcon, CalendarIcon, FolderAddIcon } from '@heroicons/react/outline'
-import { ArrowSmUpIcon, ArrowSmDownIcon, XCircleIcon } from '@heroicons/react/solid'
+import { CalendarIcon, FolderAddIcon } from '@heroicons/react/outline'
+import { XCircleIcon } from '@heroicons/react/solid'
 
 import Modal from 'ui/Modal'
 import { withAuthentication, auth } from 'hoc/protected'
 import Title from 'components/Title'
 import Loader from 'ui/Loader'
 import { ActivePin, InactivePin, WarningPin } from 'ui/Pin'
-import PulsatingCircle from 'ui/icons/PulsatingCircle'
 import routes from 'routes'
 import {
   ENTRIES_PER_PAGE_DASHBOARD, tabsForDashboard, tabForInstallExtension, tabForPublishExtensions, extensionStatus,
@@ -30,10 +29,8 @@ import {
 import Pagination from 'ui/Pagination'
 
 const ProjectCart = ({
-  name, created, status, overall, t, language, live, isPublic, installed, publish,
+  name, created, status, t, language, isPublic, installed, publish, version,
 }) => {
-  const statsDidGrowUp = overall?.percChange >= 0
-
   return (
     <li>
       <div className='block cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-700'>
@@ -63,48 +60,9 @@ const ProjectCart = ({
           </div>
           <div className='mt-2 sm:flex sm:justify-between'>
             <div className='sm:flex flex-col'>
-              {overall && (
-                <div className='flex items-center mt-2 text-sm text-gray-500 dark:text-gray-300'>
-                  <EyeIcon className='flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400 dark:text-gray-300' />
-                  {t('dashboard.pageviews')}
-                  :
-                  &nbsp;
-                  <dd className='flex items-baseline'>
-                    <p className='h-5 mr-1'>
-                      {overall?.thisWeek}
-                    </p>
-                    <p
-                      className={cx('flex text-xs -ml-1 items-baseline', {
-                        'text-green-600': statsDidGrowUp,
-                        'text-red-600': !statsDidGrowUp,
-                      })}
-                    >
-                      {statsDidGrowUp ? (
-                        <>
-                          <ArrowSmUpIcon className='self-center flex-shrink-0 h-4 w-4 text-green-500' />
-                          <span className='sr-only'>
-                            {t('dashboard.inc')}
-                          </span>
-                        </>
-                      ) : (
-                        <>
-                          <ArrowSmDownIcon className='self-center flex-shrink-0 h-4 w-4 text-red-500' />
-                          <span className='sr-only'>
-                            {t('dashboard.dec')}
-                          </span>
-                        </>
-                      )}
-                      {overall?.percChange}
-                      %
-                    </p>
-                  </dd>
-                </div>
-              )}
               <div className='mt-2 flex items-center text-sm text-gray-500 dark:text-gray-300 sm:mt-0'>
-                <PulsatingCircle className='flex-shrink-0 mr-3 ml-1' />
-                {t('dashboard.liveVisitors')}
-                :&nbsp;
-                {live}
+                {t('dashboard.version')}
+                {`: v${version}`}
               </div>
             </div>
             <div className='mt-2 flex items-center text-sm text-gray-500 dark:text-gray-300'>
@@ -245,7 +203,7 @@ const Dashboard = ({
                     <div className='shadow overflow-hidden sm:rounded-md'>
                       <ul className='divide-y divide-gray-200 dark:divide-gray-500'>
                         {_map(_filter(extensions, ({ uiHidden }) => !uiHidden), ({
-                          name, id, created, status, overall, live, public: isPublic, publish = false, installed,
+                          name, id, created, status, version, public: isPublic, publish = false, installed,
                         }) => (
                           <div key={id}>
                             <Link to={_replace(routes.project, ':id', id)}>
@@ -258,8 +216,7 @@ const Dashboard = ({
                                 status={status}
                                 isPublic={isPublic}
                                 installed={installed}
-                                overall={overall}
-                                live={_isNumber(live) ? live : 'N/A'}
+                                version={version}
                               />
                             </Link>
                           </div>
