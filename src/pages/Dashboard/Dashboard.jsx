@@ -127,7 +127,7 @@ const Dashboard = ({
     if (tabExtensions === tabForPublishExtensions) {
       loadPublishExtensions(ENTRIES_PER_PAGE_DASHBOARD, (dashboardPaginationPagePublish - 1) * ENTRIES_PER_PAGE_DASHBOARD)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboardPaginationPage, dashboardPaginationPagePublish])
 
   if (error && !isLoading) {
@@ -165,22 +165,22 @@ const Dashboard = ({
             </div>
             <div className='mt-6'>
               {publishTotal > 0 && (
-              <nav className='-mb-px flex space-x-8'>
-                {_map(tabsForDashboard, (tab) => (
-                  <button
-                    key={tab.name}
-                    type='button'
-                    onClick={() => setTabExtensions(tab.name)}
-                    className={cx('whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-md', {
-                      'border-indigo-500 text-indigo-600 dark:text-indigo-500': tabExtensions === tab.name,
-                      'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-300': tabExtensions !== tab.name,
-                    })}
-                    aria-current={tab.name === tabExtensions ? 'page' : undefined}
-                  >
-                    {t(tab.label)}
-                  </button>
-                ))}
-              </nav>
+                <nav className='-mb-px flex space-x-8'>
+                  {_map(tabsForDashboard, (tab) => (
+                    <button
+                      key={tab.name}
+                      type='button'
+                      onClick={() => setTabExtensions(tab.name)}
+                      className={cx('whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-md', {
+                        'border-indigo-500 text-indigo-600 dark:text-indigo-500': tabExtensions === tab.name,
+                        'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-300': tabExtensions !== tab.name,
+                      })}
+                      aria-current={tab.name === tabExtensions ? 'page' : undefined}
+                    >
+                      {t(tab.label)}
+                    </button>
+                  ))}
+                </nav>
               )}
             </div>
             {isLoading ? (
@@ -193,71 +193,71 @@ const Dashboard = ({
               <>
 
                 {tabExtensions === tabForInstallExtension && (
-                <div>
-                  {_isEmpty(_filter(extensions, ({ uiHidden }) => !uiHidden)) ? (
-                    <Noextensions t={t} />
-                  ) : (
-                    <div className='shadow overflow-hidden sm:rounded-md'>
-                      <ul className='divide-y divide-gray-200 dark:divide-gray-500'>
-                        {_map(_filter(extensions, ({ uiHidden }) => !uiHidden), ({
-                          name, id, created, status, version, publish = false, installed,
-                        }) => (
-                          <div key={id}>
-                            <Link to={_replace(routes.project, ':id', id)}>
-                              <ProjectCart
-                                t={t}
-                                language={language}
-                                name={name}
-                                created={created}
-                                publish={publish}
-                                status={status}
-                                installed={installed}
-                                version={version}
-                              />
-                            </Link>
-                          </div>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
+                  <div>
+                    {_isEmpty(_filter(extensions, ({ uiHidden }) => !uiHidden)) ? (
+                      <Noextensions t={t} />
+                    ) : (
+                      <div className='shadow overflow-hidden sm:rounded-md'>
+                        <ul className='divide-y divide-gray-200 dark:divide-gray-500'>
+                          {_map(_filter(extensions, ({ uiHidden }) => !uiHidden), ({
+                            name, id, created, status, version, publish = false, installed,
+                          }) => (
+                            <div key={id}>
+                              <Link to={_replace(routes.project, ':id', id)}>
+                                <ProjectCart
+                                  t={t}
+                                  language={language}
+                                  name={name}
+                                  created={created}
+                                  publish={publish}
+                                  status={status}
+                                  installed={installed}
+                                  version={version}
+                                />
+                              </Link>
+                            </div>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 )}
 
                 {tabExtensions === tabForPublishExtensions && (
-                <div>
-                  {_isEmpty(publishExtensions) ? (
-                    <Noextensions t={t} />
-                  ) : (
-                    <div className='shadow overflow-hidden sm:rounded-md'>
-                      <ul className='divide-y divide-gray-200 dark:divide-gray-500'>
-                        {_map(publishExtensions, (extension) => (
-                          <div key={extension.id}>
-                            <Link to={_replace(routes.project, ':id', extension.id)}>
-                              <ProjectCart
-                                t={t}
-                                language={language}
-                                name={extension.name}
-                                created={extension.created}
-                                publish={extension}
-                                status={extension.status}
-                                version={extension.version}
-                              />
-                            </Link>
-                          </div>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
+                  <div>
+                    {_isEmpty(publishExtensions) ? (
+                      <Noextensions t={t} />
+                    ) : (
+                      <div className='shadow overflow-hidden sm:rounded-md'>
+                        <ul className='divide-y divide-gray-200 dark:divide-gray-500'>
+                          {_map(publishExtensions, (extension) => (
+                            <div key={extension.id}>
+                              <Link to={_replace(routes.project, ':id', extension.id)}>
+                                <ProjectCart
+                                  t={t}
+                                  language={language}
+                                  name={extension.name}
+                                  created={extension.created}
+                                  publish={extension}
+                                  status={extension.status}
+                                  version={extension.version}
+                                />
+                              </Link>
+                            </div>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 )}
               </>
             )}
 
             {
-                pageAmount > 1 && (
-                  <Pagination page={tabExtensions === tabForPublishExtensions ? dashboardPaginationPagePublish : dashboardPaginationPage} setPage={tabExtensions === tabForPublishExtensions ? (page) => setDashboardPaginationPagePublish(page) : (page) => setDashboardPaginationPage(page)} pageAmount={pageAmount || 0} total={tabExtensions === tabForPublishExtensions ? publishTotal : total} />
-                )
-              }
+              pageAmount > 1 && (
+                <Pagination page={tabExtensions === tabForPublishExtensions ? dashboardPaginationPagePublish : dashboardPaginationPage} setPage={tabExtensions === tabForPublishExtensions ? (page) => setDashboardPaginationPagePublish(page) : (page) => setDashboardPaginationPage(page)} pageAmount={pageAmount || 0} total={tabExtensions === tabForPublishExtensions ? publishTotal : total} />
+              )
+            }
           </div>
         </div>
       </div>
