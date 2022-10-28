@@ -36,7 +36,7 @@ const MainPage = ({ extensions }) => {
             Extensions for Swetrix Analytics
           </h1>
           <form
-            className='mt-5 mx-auto flex rounded-md shadow-sm !max-w-[360px] !w-full'
+            className='mt-5 mx-auto flex rounded-md !max-w-[360px] !w-full'
             onSubmit={searchSubmit}
           >
             <Input
