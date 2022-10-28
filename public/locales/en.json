@@ -101,7 +101,9 @@
     "general": "General settings",
     "update": "Update profile",
     "noLink": "Didn't receive a link to confirm the email address? Request a new one!",
-    "other": "Other settings"
+    "other": "Other settings",
+    "owned": "Your extensions",
+    "installed": "Installed extensions"
   },
   "extension": {
     "settings": {

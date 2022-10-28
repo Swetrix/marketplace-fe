@@ -43,11 +43,11 @@ export const tabForPublishExtensions = 'published'
 export const tabsForDashboard = [
   {
     name: tabForInstallExtension,
-    label: 'profileSettings.owned',
+    label: 'profileSettings.installed',
   },
   {
     name: tabForPublishExtensions,
-    label: 'profileSettings.shared',
+    label: 'profileSettings.owned',
   },
 ]
 
