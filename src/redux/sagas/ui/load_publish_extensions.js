@@ -1,5 +1,4 @@
 import { put, call } from 'redux-saga/effects'
-import _map from 'lodash/map'
 import _isString from 'lodash/isString'
 import Debug from 'debug'
 

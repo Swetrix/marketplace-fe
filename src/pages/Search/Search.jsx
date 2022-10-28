@@ -56,7 +56,7 @@ const Search = ({
 
   useEffect(() => {
     getExtensions()
-  }, [search, filterCategory, filterSortBy, offset, limit])
+  }, [search, filterCategory, filterSortBy, offset, limit]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     history.push(`/search?term=${search}&category=${_isEmpty(filterCategory) ? '' : filterCategory}&sortBy=${filterSortBy}`)

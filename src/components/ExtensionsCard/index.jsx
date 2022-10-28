@@ -2,7 +2,6 @@ import React from 'react'
 
 import StarsRaiting from 'ui/StarsRaiting'
 import _replace from 'lodash/replace'
-import _includes from 'lodash/includes'
 import { DownloadIcon } from '@heroicons/react/outline'
 import { useHistory } from 'react-router-dom'
 import routes from 'routes'
@@ -31,7 +30,7 @@ const ExtensionsCard = ({
       <div className='mt-4'>
         <h3 className='text-center text-lg font-semibold leading-5 text-gray-700 dark:text-gray-300'>
           <p>
-            {subStr(name, 17)}
+            {subStr(name, 15)}
           </p>
         </h3>
         <div className='flex items-center justify-between mt-2'>
@@ -54,12 +53,12 @@ const ExtensionsCard = ({
         </div>
         <div className='flex justify-between items-center mt-1'>
           <StarsRaiting stars={stars} />
-          {/* <div>
+          <div>
             <p className='text-indigo-700 dark:text-indigo-500 font-semibold'>
               {price === 0 ? 'Free' : `${price}$`}
             </p>
             <span className='sr-only'>pricing</span>
-          </div> */}
+          </div>
         </div>
       </div>
     </div>
