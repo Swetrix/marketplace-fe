@@ -1,70 +1,36 @@
-# Getting Started with Create React App
+<img src="/public/assets/logo_blue.svg" alt="" height="100" />
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/swetrix/marketplace-fe/issues)
 
-## Available Scripts
+## Description
 
-In the project directory, you can run:
+Swetrix Marketplace is a great way to customise Swetrix functionality with extensions.\
+You can install community-made or publish your own extensions and get new functionality on Swetrix!
 
-### `npm start`
+## License
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Swetrix is released under the AGPL v3.0 licence, see [LICENSE](LICENSE).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Install Swetrix
 
-### `npm test`
+See the API installation process at https://github.com/Swetrix/swetrix-api#readme. \
+To selfhost the frontend part of Swetrix, you simply need to set up `.env` variables, install the dependencies (`npm i`), build the code (`npm run build`) and host it as a regular React application ([how to host react apps](https://create-react-app.dev/docs/deployment/)).\
+On production, swetrix.com uses Cloudflare Pages to host the frontend part of the application.\
+The minimum supported NodeJS version is v14.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Bugs and security
 
-### `npm run build`
+Swetrix is open to pull-requests. Feel free to propose new features or submit bug requests via pull reuqests.\
+For severe security issues, please contact us at security@swetrix.com
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Contributions
+Contributions are welcome! You can find and pick any task on our [public roadmap](https://github.com/orgs/Swetrix/projects/2) page.\
+Feel free to also offer any feature or improvement proposal, all of it is highly appreciated!
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Contact
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+You can contact us via email at contact@swetrix.com
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Donate
+You can support the project by donating us at https://ko-fi.com/andriir \
+We can only run our services by once again asking for your financial support!
