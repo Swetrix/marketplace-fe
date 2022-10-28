@@ -9,7 +9,7 @@ import {
   getPublishExtensions,
 } from '../../../api'
 
-const debug = Debug('swetrix:rx:s:load-projects')
+const debug = Debug('swetrix:rx:s:load-publish-extensions')
 
 export default function* loadPublishExtensions({ payload: { take = ENTRIES_PER_PAGE_DASHBOARD, skip = 0 } }) {
   try {
@@ -26,6 +26,6 @@ export default function* loadPublishExtensions({ payload: { take = ENTRIES_PER_P
     if (_isString(message)) {
       yield put(UIActions.setExtensionsError(message))
     }
-    debug('failed to load projects: %s', message)
+    debug('failed to load publish extensions: %s', message)
   }
 }

@@ -9,7 +9,7 @@ import {
   getInstallExtensions,
 } from '../../../api'
 
-const debug = Debug('swetrix:rx:s:load-projects')
+const debug = Debug('swetrix:rx:s:load-installed-extensions')
 
 export default function* loadInstallExtensions({ payload: { take = ENTRIES_PER_PAGE_DASHBOARD, skip = 0 } }) {
   try {
@@ -27,6 +27,6 @@ export default function* loadInstallExtensions({ payload: { take = ENTRIES_PER_P
     if (_isString(message)) {
       yield put(UIActions.setExtensionsError(message))
     }
-    debug('failed to load projects: %s', message)
+    debug('failed to load installed extensions: %s', message)
   }
 }

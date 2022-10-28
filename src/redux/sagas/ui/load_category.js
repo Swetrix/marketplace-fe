@@ -8,9 +8,9 @@ import {
   getCategories,
 } from '../../../api'
 
-const debug = Debug('swetrix:rx:s:load-projects')
+const debug = Debug('swetrix:rx:s:load-category')
 
-export default function* loadExtensions() {
+export default function* loadCategory() {
   try {
     const {
       category,
@@ -21,6 +21,6 @@ export default function* loadExtensions() {
     if (_isString(message)) {
       yield put(UIActions.setExtensionsError(message))
     }
-    debug('failed to load projects: %s', message)
+    debug('failed to load category: %s', message)
   }
 }
