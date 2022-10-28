@@ -32,6 +32,12 @@ const mapDispatchToProps = (dispatch) => ({
   setDashboardTabs: (tab) => {
     dispatch(UIActions.setDashboardTabs(tab))
   },
+  setExtensions: (extensions, isInstall) => {
+    dispatch(UIActions.setExtensions(extensions, isInstall))
+  },
+  showError: (message) => {
+    dispatch(UIActions.showError(message))
+  }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

@@ -19,16 +19,18 @@ import Modal from 'ui/Modal'
 import { withAuthentication, auth } from 'hoc/protected'
 import Title from 'components/Title'
 import Loader from 'ui/Loader'
-import { ActivePin, InactivePin, WarningPin } from 'ui/Pin'
+import { ActivePin, InactivePin } from 'ui/Pin'
 import routes from 'routes'
 import {
   ENTRIES_PER_PAGE_DASHBOARD, tabsForDashboard, tabForInstallExtension, tabForPublishExtensions, extensionStatus,
 } from 'redux/constants'
+import { deleteInstallExtension } from 'api'
 
 import Pagination from 'ui/Pagination'
+import Button from 'ui/Button'
 
 const ProjectCart = ({
-  name, created, status, t, language, installed, publish, version,
+  name, created, status, t, language, installed, publish, version, onDelete,
 }) => {
   return (
     <li>
@@ -44,7 +46,20 @@ const ProjectCart = ({
                   installed ? (
                     <ActivePin className='mr-2' label='installed' />
                   ) : (
-                    <WarningPin className='mr-2' label='disabled' />
+                    <>
+                      <Button
+                        className='mr-2' 
+                        primary 
+                        large 
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          e.preventDefault()
+                          onDelete()
+                        }}
+                      >
+                        delete
+                      </Button>
+                    </>
                   )
                 ) : status === extensionStatus[0] ? (
                   <InactivePin label={extensionStatus[0]} />
@@ -94,7 +109,7 @@ const Noextensions = ({ t }) => (
 const Dashboard = ({
   extensions, isLoading, error, user, loadExtensions, loadPublishExtensions,
   total, setDashboardPaginationPage, dashboardPaginationPage, publishExtensions, dashboardTabs,
-  setDashboardTabs, publishTotal, setDashboardPaginationPagePublish, dashboardPaginationPagePublish,
+  setDashboardTabs, publishTotal, setDashboardPaginationPagePublish, dashboardPaginationPagePublish, setExtensions, showError,
 }) => {
   const { t, i18n: { language } } = useTranslation('common')
   const [showActivateEmailModal, setShowActivateEmailModal] = useState(false)
@@ -109,6 +124,16 @@ const Dashboard = ({
       setShowActivateEmailModal(true)
     }
   }
+
+  const onDeleteInstallExtensions = async (id) => {
+      await deleteInstallExtension(id)
+        .then((response) => {
+          setExtensions(_filter(extensions, p => p.id !== id), false)
+        }).catch((err) => {
+          showError(`Error deleting extension: ${err.message}`)
+        })
+  }
+  
 
   useEffect(() => {
     if (publishTotal <= 0) {
@@ -202,13 +227,14 @@ const Dashboard = ({
                             name, id, created, status, version, publish = false, installed,
                           }) => (
                             <div key={id}>
-                              <Link to={_replace(routes.project, ':id', id)}>
+                              <Link to={_replace(routes.extension, ':id', id)}>
                                 <ProjectCart
                                   t={t}
                                   language={language}
                                   name={name}
                                   created={created}
                                   publish={publish}
+                                  onDelete={() => onDeleteInstallExtensions(id)}
                                   status={status}
                                   installed={installed}
                                   version={version}
@@ -238,6 +264,7 @@ const Dashboard = ({
                                   name={extension.name}
                                   created={extension.created}
                                   publish={extension}
+                                  onDelete={() => {}}
                                   status={extension.status}
                                   version={extension.version}
                                 />
