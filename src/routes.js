@@ -18,7 +18,6 @@ const routes = Object.freeze({
   privacy: '/privacy',
   terms: '/terms',
   contact: '/contact',
-  about: '/about',
   search: '/search',
   viewExtensions: '/extensions/:id',
 })

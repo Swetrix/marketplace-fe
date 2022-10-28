@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 
 import {
   DONATE_URL, FIREFOX_ADDON_URL, CHROME_EXTENSION_URL, GITHUB_URL,
-  LINKEDIN_URL, STATUSPAGE_URL, TWITTER_URL, BLOG_URL,
+  LINKEDIN_URL, STATUSPAGE_URL, TWITTER_URL, BLOG_URL, ABOUT_PAGE_URL,
 } from 'redux/constants'
 import routes from 'routes'
 
@@ -19,7 +19,7 @@ const navigation = {
     () => ({ key: 'guides', href: `${routes.docs}#docs-ht` }),
   ],
   company: [
-    { key: 'about', href: routes.about, internal: true },
+    { key: 'about', href: ABOUT_PAGE_URL },
     { key: 'contact', href: routes.contact, internal: true },
     { key: 'status', href: STATUSPAGE_URL },
     { key: 'donate', href: DONATE_URL },
@@ -105,9 +105,9 @@ const Footer = ({ minimal, authenticated }) => {
               </Link>
             </div>
             <div className='px-5 py-2'>
-              <Link to={routes.about} className='text-base text-gray-300 hover:text-white'>
+              <a href={ABOUT_PAGE_URL} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
                 {t('footer.about')}
-              </Link>
+              </a>
             </div>
             <div className='px-5 py-2'>
               <a href={STATUSPAGE_URL} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>

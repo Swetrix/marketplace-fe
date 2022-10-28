@@ -8,6 +8,7 @@ export const LINKEDIN_URL = 'https://www.linkedin.com/company/swetrix/'
 export const GITHUB_URL = 'https://github.com/Swetrix'
 export const TWITTER_URL = 'https://twitter.com/swetrix'
 export const STATUSPAGE_URL = 'https://stats.uptimerobot.com/33rvmiXXEz'
+export const ABOUT_PAGE_URL = 'https://swetrix.com/about'
 export const BLOG_URL = 'https://blog.swetrix.com'
 export const UTM_GENERATOR_URL = 'https://url.swetrix.com'
 
