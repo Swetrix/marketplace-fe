@@ -111,7 +111,6 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                   hasArrows
                   slidesToScroll={1}
                   slidesToShow={2}
-                  scrollLock
                   resizeLock
                   // exactWidth
                   rewind

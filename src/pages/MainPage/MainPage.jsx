@@ -70,7 +70,6 @@ const MainPage = ({ extensions }) => {
               <Glider
                 hasArrows
                 slidesToScroll={6}
-                scrollLock
                 resizeLock
                 exactWidth
                 itemWidth={210}
