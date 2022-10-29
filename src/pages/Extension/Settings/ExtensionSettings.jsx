@@ -126,7 +126,7 @@ const ExtensionSettings = ({
           newExtension(t('extension.settings.updated'))
         } else {
           await createExtension(formData)
-          trackCustom('extension_CREATED')
+          trackCustom('EXTENSION_CREATED')
           newExtension(t('extension.settings.created'))
         }
 
