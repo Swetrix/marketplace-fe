@@ -37,6 +37,7 @@ const Search = ({
 
   const getExtensions = async () => {
     setLoading(true)
+    if (loading) return
     await getExtensionsSearch(search, filterCategory, filterSortBy, offset, limit)
       .then(results => {
         setExtensions(results.extensions)
@@ -66,7 +67,7 @@ const Search = ({
     <Title title='Search'>
       <div className='dark:bg-gray-900 py-10 px-2 sm:px-10 min-h-page'>
         <div className='mx-auto max-w-7xl'>
-          <form className='flex rounded-md shadow-sm !max-w-[360px] !w-full' onSubmit={() => { }}>
+          <div className='flex rounded-md shadow-sm !max-w-[360px] !w-full'>
             <Input
               type='text'
               label=''
@@ -79,12 +80,13 @@ const Search = ({
               error={false}
             />
             <button
+              onClick={() => getExtensions()}
               type='submit'
               className='-ml-px mb-2 mt-1 relative inline-flex items-center space-x-2 px-4 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 dark:bg-gray-800 dark:border-0 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'
             >
               <SearchIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
             </button>
-          </form>
+          </div>
           <div className='flex items-center justify-between mt-8'>
             <div>
               <span className='text-gray-500 dark:text-gray-300 text-lg font-medium'>{total} Results</span>
