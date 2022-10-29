@@ -61,10 +61,13 @@ const ExtensionSettings = ({
 
   useEffect(() => {
     getCategories()
-      .then((res) => {
-        setCategories(res)
+      .then(({ categories: resCategories }) => {
+        setCategories(resCategories)
       })
-  }, [])
+      .catch(() => {
+        showError(t('apiNotifications.somethingWentWrong'))
+      })
+  }, [showError]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!user.isActive) {
@@ -120,7 +123,10 @@ const ExtensionSettings = ({
         })
         formData.append('version', data.version)
         data.description && formData.append('description', data.description)
-        data.categories && formData.append('categoriesIds', data.categories)
+        if (data.category) {
+          const categoryID = _find(categories, ({ name }) => name === form.category)?.id
+          categoryID && formData.append('categoryID', categoryID)
+        }
         if (isSettings) {
           await updateExtension(id, formData)
           newExtension(t('extension.settings.updated'))
@@ -289,12 +295,14 @@ const ExtensionSettings = ({
             error={beenSubmitted ? errors.price : null}
           /> */}
           <Select
-            title={t('extension.settings.category')}
+            title={form.category || 'Select a category'}
             label={t('extension.settings.category')}
             hint='Select a category your extension belongs to.'
             className='w-full'
-            items={categories.categories}
-            onSelect={(category) => setForm({ ...form, categories: category })}
+            items={categories}
+            keyExtractor={item => item.id}
+            labelExtractor={item => item.name}
+            onSelect={(category) => setForm({ ...form, category })}
           />
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
