@@ -6,7 +6,7 @@ import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
 import _map from 'lodash/map'
 
 const Select = ({
-  title, label, className, items, labelExtractor, keyExtractor, onSelect,
+  title, label, className, items, labelExtractor, keyExtractor, onSelect, hint,
 }) => (
   <Listbox className={className} value={title} onChange={onSelect}>
     {({ open }) => (
@@ -66,6 +66,9 @@ const Select = ({
             </Listbox.Options>
           </Transition>
         </div>
+        {hint && (
+          <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>{hint}</p>
+        )}
       </>
     )}
   </Listbox>
@@ -77,6 +80,9 @@ Select.propTypes = {
   items: PropTypes.arrayOf(PropTypes.oneOfType([
     PropTypes.string, PropTypes.object,
   ])),
+  hint: PropTypes.oneOfType([
+    PropTypes.string, PropTypes.node,
+  ]),
   className: PropTypes.string,
   labelExtractor: PropTypes.func,
   keyExtractor: PropTypes.func,
@@ -89,6 +95,7 @@ Select.defaultProps = {
   keyExtractor: null,
   label: '',
   items: [],
+  hint: null,
 }
 
 export default memo(Select)
