@@ -50,6 +50,7 @@ const ExtensionSettings = ({
     name: '',
     additionalImages: [],
     mainImage: {},
+    file: {},
     price: 0,
   })
   const [validated, setValidated] = useState(false)
@@ -85,12 +86,18 @@ const ExtensionSettings = ({
     }
   }, [user, extension, isLoading, isSettings, history, showError, extensionDeleting, t])
 
-  const removeFile = (rFiles, isMainImage) => {
+  const removeFile = (rFiles, isMainImage, isFile) => {
     setForm((items) => {
+      if (isFile) {
+        return {
+          ...items,
+          file: {},
+        }
+      }
       if (isMainImage) {
         return {
           ...items,
-          mainImage: null,
+          mainImage: {},
         }
       }
       return {
@@ -109,6 +116,7 @@ const ExtensionSettings = ({
         const formData = new FormData()
         formData.append('name', data.name)
         formData.append('mainImage', data.mainImage)
+        formData.append('file', data.file)
         _forEach(data.additionalImages, (file) => {
           formData.append('additionalImages', file)
         })
@@ -127,6 +135,7 @@ const ExtensionSettings = ({
         loadExtensions(isPublishExtension)
         history.push(routes.dashboard)
       } catch (e) {
+        console.log(e, 'error in extension settings')
         if (isSettings) {
           updateExtensionFailed(e)
         } else {
@@ -302,6 +311,19 @@ const ExtensionSettings = ({
               removeFile={removeFile}
             />
             <ImageList files={form.additionalImages} removeFile={removeFile} />
+          </div>
+          <div>
+            <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mb-2 mt-3'>
+              file upload
+            </div>
+            <ImageUpload
+              files={form.file}
+              setFiles={(files) => {
+                setForm((items) => ({ ...items, file: files }))
+              }}
+              removeFile={removeFile}
+            />
+            <ImageList isFile files={form.file} removeFile={(file) => removeFile(file, false, true)} />
           </div>
           {isSettings ? (
             <>

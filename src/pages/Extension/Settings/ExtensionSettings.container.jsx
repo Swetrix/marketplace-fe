@@ -25,17 +25,18 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(alertsActions.newExtension(message))
   },
   extensionDelete: (message) => {
-    dispatch(alertsActions.extensionDelete(message))
+    dispatch(alertsActions.extensionDeleted(message))
   },
   deleteExtensionFailed: (message) => {
     dispatch(errorsActions.deleteExtensionFailed(message))
   },
   loadExtensions: (shared) => {
     if (shared) {
-      dispatch(UIActions.loadSharedProjects())
+      dispatch(UIActions.loadPublishExtensions())
     } else {
-      dispatch(UIActions.loadExtensions())
+      dispatch(UIActions.loadInstallExtensions())
     }
+    dispatch(UIActions.loadExtensions())
   },
   removeExtension: (pid, shared) => {
     dispatch(UIActions.removeExtension(pid, shared))
