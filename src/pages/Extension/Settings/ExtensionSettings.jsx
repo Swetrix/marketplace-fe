@@ -279,9 +279,11 @@ const ExtensionSettings = ({
             error={beenSubmitted ? errors.price : null}
           /> */}
           <Select
-            title={t('extension.settings.category')}
+            title={form.categories || t('extension.settings.category')}
             label={t('extension.settings.category')}
-            className='w-full'
+            className='mt-4'
+            keyExtractor={category => category.id}
+            labelExtractor={category => category.name}
             items={categories.categories}
             onSelect={(category) => setForm({ ...form, categories: category })}
           />
