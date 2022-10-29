@@ -81,7 +81,7 @@ const MainPage = ({ extensions }) => {
                     name={extension.name}
                     stars={3}
                     downloads={extension.usersQuantity}
-                    imagePath={extension.mainImage}
+                    mainImage={extension.mainImage}
                     price={extension.price}
                     // companyLink='https://simpson.com'
                     companyName={extension.owner?.nickname || 'Unknown'}

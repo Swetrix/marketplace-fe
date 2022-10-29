@@ -4,7 +4,7 @@ import StarsRaiting from 'ui/StarsRaiting'
 import Glider from 'react-glider'
 import _find from 'lodash/find'
 import _map from 'lodash/map'
-import _isEmputy from 'lodash/isEmpty'
+import _isEmpty from 'lodash/isEmpty'
 import _filter from 'lodash/filter'
 import { installExtension, deleteInstallExtension } from 'api'
 import '../../../../glider.css'
@@ -16,7 +16,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
   const extension = useMemo(() => _find(extensions, p => p.id === id) || {}, [extensions, id])
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [installLoading, setInstallLoading] = useState(false)
-  const isInstalled = useMemo(() => !_isEmputy(_find(installExtensions, p => p.id === id) || {}), [installExtensions, id])
+  const isInstalled = useMemo(() => !_isEmpty(_find(installExtensions, p => p.id === id) || {}), [installExtensions, id])
 
   const install = async () => {
     if (!authenticated) {
@@ -58,7 +58,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                 <img
                   alt='mainImage'
                   className='h-24 w-24 rounded-lg'
-                  src={extension.mainImage || 'https://via.placeholder.com/150'}
+                  src={extension.mainImage ? `${process.env.REACT_APP_CDN_URL}file/${extension.mainImage}` : `https://via.placeholder.com/150?text=${extension.name}`}
                   width='150'
                   height='70'
                 />
@@ -104,7 +104,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
               </div>
             </div>
             <div className='w-full max-w-[1200px] py-4'>
-              {extensions.additionalImages?.length > 0 ? (
+              {!_isEmpty(extension.additionalImages) && (
                 <Glider
                   hasArrows
                   slidesToScroll={1}
@@ -116,23 +116,15 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                   {_map(extension.additionalImages, ((image) => (
                     <div className='glider-block border-2 border-white rounded-lg bg-gray-100 dark:bg-gray-800 dark:border-gray-900'>
                       <img
+                        key={image}
                         height='320'
-                        alt='Qries'
+                        alt=''
                         className='rounded-lg'
-                        src={image.src || 'https://via.placeholder.com/150'}
+                        src={`${process.env.REACT_APP_CDN_URL}file/${image}` || 'https://via.placeholder.com/150'}
                       />
                     </div>
                   )))}
                 </Glider>
-              ) : (
-                <div className='glider-block border-2 border-white rounded-lg bg-gray-100 dark:bg-gray-800 dark:border-gray-900'>
-                  <img
-                    height='320'
-                    alt='Qries'
-                    className='rounded-lg'
-                    src='https://via.placeholder.com/150'
-                  />
-                </div>
               )}
             </div>
           </div>

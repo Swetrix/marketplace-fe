@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Button from 'ui/Button'
 import { nanoid } from 'nanoid'
-import _isEmputy from 'lodash/isEmpty'
+import _isEmpty from 'lodash/isEmpty'
 
 const ImageUpload = ({ files, setFiles, isMainImage, fileType }) => {
   const uploadHandler = async (event) => {
@@ -27,7 +27,7 @@ const ImageUpload = ({ files, setFiles, isMainImage, fileType }) => {
       <div className='flex flex-col justify-center items-center'>
         <div className='relative mb-4'>
           <Button type='button' className={`${files?.length >= 5 ? 'cursor-not-allowed' : ''}`} primary regular>
-            {isMainImage && !_isEmputy(files) ? 'Reset Image' : 'Upload Images'}
+            {isMainImage && !_isEmpty(files) ? 'Reset Image' : 'Upload Images'}
           </Button>
         </div>
 
