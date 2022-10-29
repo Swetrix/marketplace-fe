@@ -67,7 +67,7 @@ const Search = ({
     <Title title='Search'>
       <div className='dark:bg-gray-900 py-10 px-2 sm:px-10 min-h-page'>
         <div className='mx-auto max-w-7xl'>
-          <div className='flex rounded-md shadow-sm !max-w-[360px] !w-full'>
+          <div className='flex rounded-md !max-w-[360px] !w-full'>
             <Input
               type='text'
               label=''
