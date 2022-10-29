@@ -49,8 +49,6 @@ const ExtensionSettings = ({
   const [form, setForm] = useState({
     name: '',
     additionalImages: [],
-    mainImage: {},
-    file: {},
     price: 0,
   })
   const [validated, setValidated] = useState(false)
@@ -115,14 +113,14 @@ const ExtensionSettings = ({
       try {
         const formData = new FormData()
         formData.append('name', data.name)
-        formData.append('mainImage', data.mainImage)
-        formData.append('file', data.file)
+        data.mainImage && formData.append('mainImage', data.mainImage)
+        data.file && formData.append('file', data.file)
         _forEach(data.additionalImages, (file) => {
           formData.append('additionalImages', file)
         })
         formData.append('version', data.version)
-        formData.append('description', data.description)
-        formData.append('categoriesIds', data.categories)
+        data.description && formData.append('description', data.description)
+        data.categories && formData.append('categoriesIds', data.categories)
         if (isSettings) {
           await updateExtension(id, formData)
           newExtension(t('extension.settings.updated'))
@@ -135,7 +133,7 @@ const ExtensionSettings = ({
         loadExtensions(isPublishExtension)
         history.push(routes.dashboard)
       } catch (e) {
-        console.log(e, 'error in extension settings')
+        console.error(e, 'error in extension settings')
         if (isSettings) {
           updateExtensionFailed(e)
         } else {
