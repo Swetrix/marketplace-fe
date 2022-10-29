@@ -312,7 +312,7 @@ const ExtensionSettings = ({
           </div>
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mb-2 mt-3'>
-              file upload
+              The extension .js file
             </div>
             <ImageUpload
               files={form.file}
@@ -320,6 +320,7 @@ const ExtensionSettings = ({
                 setForm((items) => ({ ...items, file: files }))
               }}
               removeFile={removeFile}
+              fileType='javascript'
             />
             <ImageList isFile files={form.file} removeFile={(file) => removeFile(file, false, true)} />
           </div>
