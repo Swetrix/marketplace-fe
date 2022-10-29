@@ -237,6 +237,7 @@ const ExtensionSettings = ({
             id='name'
             type='text'
             label={t('extension.settings.name')}
+            hint={'Your extension\'s name without slogans or phrases (e.g. JSON Exporter, Map Beautifier).'}
             value={form.name}
             placeholder='My awesome extension'
             className='mt-4'
@@ -249,7 +250,8 @@ const ExtensionSettings = ({
             type='text'
             label={t('extension.settings.description')}
             value={form.description || ''}
-            placeholder='My awesome extension'
+            placeholder={'My extension does blah blah blah, it provides such great features as blah and blah.'}
+            hint={'Here you should describe your extension in details. What does it do? How does it work? Add a features list, changelog, or whatever else you think best describes it.'}
             className='mt-4'
             onChange={handleInput}
             error={beenSubmitted ? errors.description : null}
@@ -258,10 +260,20 @@ const ExtensionSettings = ({
             name='version'
             id='version'
             type='text'
+            hint={(
+              <span>
+                This is the version identifier your customers will see when they install or upgrade to this version of your extension.
+                <br />
+                It should be specified using
+                {' '}
+                <a href='https://semver.org/' className='dark:text-indigo-400 text-indigo-700' target='_blank' rel='noopener noreferrer'>SemVer</a>
+                .
+              </span>
+            )}
             label={t('extension.settings.version')}
             value={form.version || ''}
             placeholder='0.0.1'
-            className='mt-4'
+            className='mt-4 mb-4'
             onChange={handleInput}
             error={beenSubmitted ? errors.version : null}
           />
@@ -272,19 +284,20 @@ const ExtensionSettings = ({
             label={t('extension.settings.price')}
             value={`${form.price}` || ''}
             placeholder='0 (free), 1 (1$), 2 (2$)'
-            className='mt-4'
+            className='mb-4'
             onChange={handleInput}
             error={beenSubmitted ? errors.price : null}
           /> */}
           <Select
             title={t('extension.settings.category')}
             label={t('extension.settings.category')}
+            hint='Select a category your extension belongs to.'
             className='w-full'
             items={categories.categories}
             onSelect={(category) => setForm({ ...form, categories: category })}
           />
           <div>
-            <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mb-2 mt-2'>
+            <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               {t('extension.settings.mainImage')}
             </div>
             <ImageUpload
@@ -296,9 +309,16 @@ const ExtensionSettings = ({
               isMainImage
             />
             <ImageList isMainImage files={form.mainImage} removeFile={(file) => removeFile(file, true)} />
+            <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
+              The primary visual identity of your app.
+              <br />
+               - Please use a square image of at least <b>150x150</b> dimensions.
+              <br />
+                - The image <b>should not</b> be larger than <b>1000x1000</b> pixels.
+            </p>
           </div>
           <div>
-            <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mb-2 mt-3'>
+            <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               {t('extension.settings.additionalImages')}
             </div>
             <ImageUpload
@@ -309,9 +329,23 @@ const ExtensionSettings = ({
               removeFile={removeFile}
             />
             <ImageList files={form.additionalImages} removeFile={removeFile} />
+            <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
+              Add up to 5 images to display on your extension&apos;s summary page.
+              <br />
+              Most customers will decide to try an extension based off its gallery images.
+              <br />
+              <br />
+              We recommend at least one screenshot which shows the extension on a site, and another which shows a closeup of the extensions visual components.
+              <br />
+              You can also create a sequence of images which walk the customer through the features of the app like slides in a slide deck.
+              <br />
+              - Avoid full screenshots as most customers will not be able to determine where the app appears.
+              <br />
+              - Trim excessive empty space around slide decks.
+            </p>
           </div>
           <div>
-            <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mb-2 mt-3'>
+            <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               The extension .js file
             </div>
             <ImageUpload
@@ -323,6 +357,9 @@ const ExtensionSettings = ({
               fileType='javascript'
             />
             <ImageList isFile files={form.file} removeFile={(file) => removeFile(file, false, true)} />
+            <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
+              The extension .js file.
+            </p>
           </div>
           {isSettings ? (
             <>

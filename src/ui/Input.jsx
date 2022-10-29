@@ -61,7 +61,9 @@ Input.propTypes = {
     PropTypes.string, PropTypes.number,
   ]).isRequired,
   label: PropTypes.string,
-  hint: PropTypes.string,
+  hint: PropTypes.oneOfType([
+    PropTypes.string, PropTypes.node,
+  ]),
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   onKeyDown: PropTypes.func,

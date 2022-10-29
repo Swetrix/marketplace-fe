@@ -116,7 +116,7 @@
       "version": "Version",
       "price": "Price",
       "category": "Category",
-      "mainImage": "Main image",
+      "mainImage": "Extension icon",
       "additionalImages": "Additional images",
       "createHint": "*you will be able to set up your extension more thoroughly after you have created it",
       "noNameError": "Please enter an extension name.",
