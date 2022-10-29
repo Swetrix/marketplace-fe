@@ -48,9 +48,9 @@ const ProjectCart = ({
                   ) : (
                     <>
                       <Button
-                        className='mr-2' 
-                        primary 
-                        large 
+                        className='mr-2'
+                        primary
+                        large
                         onClick={(e) => {
                           e.stopPropagation()
                           e.preventDefault()
@@ -96,14 +96,9 @@ const ProjectCart = ({
 }
 
 const Noextensions = ({ t }) => (
-  <div className='mt-5'>
-    <h3 className='text-center dark:text-gray-50'>
-      {t('dashboard.noextensions')}
-    </h3>
-    <p className='text-center dark:text-gray-50'>
-      {t('dashboard.createProject')}
-    </p>
-  </div>
+  <p className='mt-5 text-center dark:text-gray-50'>
+    {t('dashboard.noextensions')}
+  </p>
 )
 
 const Dashboard = ({
@@ -126,14 +121,14 @@ const Dashboard = ({
   }
 
   const onDeleteInstallExtensions = async (id) => {
-      await deleteInstallExtension(id)
-        .then((response) => {
-          setExtensions(_filter(extensions, p => p.id !== id), false)
-        }).catch((err) => {
-          showError(`Error deleting extension: ${err.message}`)
-        })
+    await deleteInstallExtension(id)
+      .then((response) => {
+        setExtensions(_filter(extensions, p => p.id !== id), false)
+      }).catch((err) => {
+        showError(`Error deleting extension: ${err.message}`)
+      })
   }
-  
+
 
   useEffect(() => {
     if (publishTotal <= 0) {
@@ -264,7 +259,7 @@ const Dashboard = ({
                                   name={extension.name}
                                   created={extension.created}
                                   publish={extension}
-                                  onDelete={() => {}}
+                                  onDelete={() => { }}
                                   status={extension.status}
                                   version={extension.version}
                                 />
