@@ -5,14 +5,14 @@ import Debug from 'debug'
 
 import UIActions from 'redux/actions/ui'
 
-import { ENTRIES_PER_PAGE_DASHBOARD } from 'redux/constants'
+import { ENTRIES_PER_PAGE_EXTENSIONS } from 'redux/constants'
 import {
   getExtensions,
 } from '../../../api'
 
 const debug = Debug('swetrix:rx:s:load-extensions')
 
-export default function* loadExtensions({ payload: { take = ENTRIES_PER_PAGE_DASHBOARD, skip = 0 } }) {
+export default function* loadExtensions({ payload: { take = ENTRIES_PER_PAGE_EXTENSIONS, skip = 0 } }) {
   try {
     yield put(UIActions.setAllExtensionsLoading(true))
 
