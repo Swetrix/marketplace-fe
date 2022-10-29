@@ -119,7 +119,9 @@
       "additionalImages": "Additional images",
       "createHint": "*you will be able to set up your extension more thoroughly after you have created it",
       "noNameError": "Please enter an extension name.",
-      "verify": "Please, verify your email address first"
+      "verify": "Please, verify your email address first",
+      "created": "Extension created",
+      "updated": "Extension updated"
     }
   },
   "footer": {
