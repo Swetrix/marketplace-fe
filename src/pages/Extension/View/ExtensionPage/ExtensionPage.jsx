@@ -77,10 +77,10 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                     {' '}
                     users
                   </p>
-                  <span> | </span>
+                  {/* <span> | </span>
                   <div className='flex flex-row items-center gap-1'>
                     <StarsRaiting stars='3.5' />
-                  </div>
+                  </div> */}
                   {/* <span> | </span>
               <p className='text-base text-gray-900 dark:text-gray-50'>9$</p> */}
                 </div>

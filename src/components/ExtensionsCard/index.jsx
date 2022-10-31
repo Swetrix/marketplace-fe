@@ -52,7 +52,7 @@ const ExtensionsCard = ({
           </div>
         </div>
         <div className='flex justify-between items-center mt-1'>
-          <StarsRaiting stars={stars} />
+          {/* <StarsRaiting stars={stars} /> */}
           <div>
             <p className='text-indigo-700 dark:text-indigo-500 font-semibold'>
               {price === 0 ? 'Free' : `${price}$`}
