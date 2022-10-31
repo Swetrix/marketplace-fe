@@ -13,6 +13,9 @@ import _keys from 'lodash/keys'
 import _toNumber from 'lodash/toNumber'
 import _filter from 'lodash/filter'
 import _forEach from 'lodash/forEach'
+import _join from 'lodash/join'
+import _without from 'lodash/without'
+import _includes from 'lodash/includes'
 import PropTypes from 'prop-types'
 import { ExclamationIcon } from '@heroicons/react/outline'
 
@@ -29,9 +32,9 @@ import Textarea from 'ui/Textarea'
 import Button from 'ui/Button'
 import Checkbox from 'ui/Checkbox'
 import Modal from 'ui/Modal'
-import Select from 'ui/Select'
 import { trackCustom } from 'utils/analytics'
 import routes from 'routes'
+import MultiSelect from 'ui/MultiSelect'
 
 const MAX_NAME_LENGTH = 50
 const MAX_VERSION_LENGTH = 6
@@ -50,6 +53,7 @@ const ExtensionSettings = ({
     name: '',
     additionalImages: [],
     price: 0,
+    category: []
   })
   const [validated, setValidated] = useState(false)
   const [errors, setErrors] = useState({})
@@ -294,15 +298,31 @@ const ExtensionSettings = ({
             onChange={handleInput}
             error={beenSubmitted ? errors.price : null}
           /> */}
-          <Select
-            title={form.category || 'Select a category'}
-            label={t('extension.settings.category')}
+          <MultiSelect
+            label={form.category}
             hint='Select a category your extension belongs to.'
             className='w-full'
             items={categories}
             keyExtractor={item => item.id}
             labelExtractor={item => item.name}
-            onSelect={(category) => setForm({ ...form, category })}
+            onSelect={(category) => setForm(oldForm => {
+              if (!_includes(oldForm.category, category)) {
+                return {
+                  ...oldForm,
+                  category: [...oldForm.category, category],
+                }
+              }
+              return oldForm
+              })}
+            onRemove={(category) => setForm(oldForm => {
+              if (_includes(oldForm.category, category)) {
+                return {
+                  ...oldForm,
+                  category: _without(oldForm.category, category),
+                }
+              }
+              return oldForm
+            })}
           />
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
