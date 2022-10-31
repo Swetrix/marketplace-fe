@@ -137,6 +137,11 @@ const App = () => {
                 exact
               />
               <Route
+                path={routes.extension_settings}
+                component={ProjectSettings}
+                exact
+              />
+              <Route
                 path={routes.viewExtensions}
                 component={ExtensionPage}
                 exact

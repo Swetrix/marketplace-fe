@@ -61,10 +61,15 @@ const ProjectCart = ({
                       </Button>
                     </>
                   )
-                ) : status === extensionStatus[0] ? (
-                  <InactivePin label={extensionStatus[0]} />
                 ) : (
-                  <ActivePin label={t('dashboard.active')} />
+                    <>
+                      <Link to={`/extensions/settings/${publish.id}`}>settings</Link>
+                      {status === extensionStatus[0] ? (
+                        <InactivePin label={extensionStatus[0]} />
+                      ) : (
+                        <ActivePin label={t('dashboard.active')} />
+                      )}
+                    </>
                 )
               }
             </div>

@@ -370,17 +370,8 @@ const ExtensionSettings = ({
               The extension .js file.
             </p>
           </div>
-          {isSettings ? (
+          {isSettings && (
             <>
-              <Checkbox
-                checked={Boolean(form.active)}
-                onChange={handleInput}
-                name='active'
-                id='active'
-                className='mt-4'
-                label={t('extension.settings.enabled')}
-                hint={t('extension.settings.enabledHint')}
-              />
               <div className='flex justify-between mt-8 h-20 sm:h-min'>
                 <div className='flex flex-wrap items-center'>
                   <Button className='mr-2 border-indigo-100 dark:text-gray-50 dark:border-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600' onClick={onCancel} secondary regular>
@@ -399,10 +390,6 @@ const ExtensionSettings = ({
               </div>
               <hr className='mt-2 sm:mt-5' />
             </>
-          ) : (
-            <p className='text-gray-500 dark:text-gray-300 italic mt-1 mb-4 text-sm'>
-              {t('extension.settings.createHint')}
-            </p>
           )}
 
           {!isSettings && (
@@ -418,7 +405,11 @@ const ExtensionSettings = ({
         </form>
         <Modal
           onClose={() => setShowDelete(false)}
-          onSubmit={onDelete}
+          onSubmit={(e) => {
+            e.stopPropagation()
+            e.preventDefault()
+            onDelete()
+          }}
           submitText={t('extension.settings.delete')}
           closeText={t('common.close')}
           title={t('extension.settings.qDelete')}
