@@ -20,6 +20,7 @@ const MainPage = ({ extensions, category }) => {
   console.log(category)
 
   const searchSubmit = (e) => {
+    e.stopPropagation()
     e.preventDefault()
     if (!_isEmpty(search)) {
       history.push(
@@ -53,7 +54,7 @@ const MainPage = ({ extensions, category }) => {
               error={false}
             />
             <button
-              type='button'
+              type='submit'
               className='-ml-px mb-2 mt-1 relative inline-flex items-center space-x-2 px-4 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 dark:bg-gray-800 dark:border-0 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'
             >
               <SearchIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
@@ -71,12 +72,16 @@ const MainPage = ({ extensions, category }) => {
                   )
                   if (!_isEmpty(extensionForCategory)) {
                     return (
-                      <div key={extensionForCategory.id} className='my-4'>
+                      <div key={item.id} className='my-4'>
                         <div className='flex items-center justify-between'>
                           <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>
                             {item.name}
                           </h2>
-                          <Button onClick={() => { }} text='See more' primary regular />
+                          <Button onClick={() => { 
+                            history.push(
+                              `/search?term=&category=${item.name}&sortBy=${sortByConstans.CREATED_AT}`,
+                            )
+                          }} text='See more' primary regular />
                         </div>
                         <Glider
                           hasArrows
