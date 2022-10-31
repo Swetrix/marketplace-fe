@@ -50,6 +50,7 @@ const ExtensionSettings = ({
     name: '',
     additionalImages: [],
     price: 0,
+    category: null,
   })
   const [validated, setValidated] = useState(false)
   const [errors, setErrors] = useState({})

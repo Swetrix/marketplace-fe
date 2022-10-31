@@ -27,7 +27,7 @@ const Search = ({
   const [filterCategory, setFilterCategory] = useState(params.get('category'))
   const [filterSortBy, setFilterSortBy] = useState(params.get('sortBy'))
   const [extensions, setExtensions] = useState()
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [page, setPage] = useState((offset / limit) + 1)
   // eslint-disable-next-line no-unsafe-optional-chaining
   const [total, setTotal] = useState(0)
@@ -37,9 +37,9 @@ const Search = ({
 
   const getExtensions = async () => {
     setLoading(true)
-    if (loading) return
     await getExtensionsSearch(search, filterCategory, filterSortBy, offset, limit)
       .then(results => {
+        console.log(results)
         setExtensions(results.extensions)
         setTotal(results.count)
       })
@@ -56,7 +56,9 @@ const Search = ({
   }, [page, limit, setOffset])
 
   useEffect(() => {
-    getExtensions()
+    if (!loading) {
+      getExtensions()
+    }
   }, [search, filterCategory, filterSortBy, offset, limit]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -95,11 +97,16 @@ const Search = ({
               <div className='mr-5'>
                 <span className='mr-3 dark:text-gray-200'>Showing:</span>
                 <Dropdown
-                  items={_values(category)}
-                  title={filterCategory}
+                  items={_values([{ name: 'All', id: 'all' }, ...category])}
+                  labelExtractor={item => item.name}
+                  keyExtractor={item => item.id}
+                  title={filterCategory || 'All'}
                   buttonClassName='flex items-center w-full rounded-md border border-gray-300 shadow-sm px-1 md:px-2 py-1 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
                   selectItemClassName='text-gray-700 block px-2 py-1 text-base cursor-pointer hover:bg-gray-200 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
-                  onSelect={setFilterCategory}
+                  onSelect={(item) => {
+                    if (item.id === 'all') return setFilterCategory('') 
+                    else return setFilterCategory(item.name)}
+                  }
                 />
               </div>
               <div>
@@ -114,7 +121,7 @@ const Search = ({
               </div>
             </div>
           </div>
-          <div className='flex items-center flex-wrap justify-center md:justify-between mt-4 gap-1'>
+          <div className='grid auto-rows-min grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 mt-4 gap-1'>
             {loading
               ? (
                 <div className='mx-auto'>
@@ -122,12 +129,12 @@ const Search = ({
                 </div>
               )
               : _map(extensions, ((item) => (
-                <ExtensionsCard key={item.id} name={item.name} stars={4} downloads={1000} price={item.price} companyLink='swetrix' companyName='companyName' mainImage={item.mainImage} />
+                <ExtensionsCard key={item.id} id={item.id} name={item.name} stars={4} downloads={item.usersQuantity} price={item.price} companyName={item.owner?.nickname || ''} mainImage={item.mainImage} />
               )))}
           </div>
           {pageAmount > 1 && (
             <div className='mt-2'>
-              <Pagination page={page} setPage={setPage} pageAmount={pageAmount} total={total} />
+              <Pagination page={page} setPage={setPage} pageAmount={pageAmount} total={total} limit={limit}/>
             </div>
           )}
         </div>
