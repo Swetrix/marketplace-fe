@@ -1,6 +1,6 @@
 import React from 'react'
 
-import StarsRaiting from 'ui/StarsRaiting'
+// import StarsRaiting from 'ui/StarsRaiting'
 import _replace from 'lodash/replace'
 import { DownloadIcon } from '@heroicons/react/outline'
 import { useHistory } from 'react-router-dom'

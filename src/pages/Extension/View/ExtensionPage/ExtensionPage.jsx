@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import StarsRaiting from 'ui/StarsRaiting'
+// import StarsRaiting from 'ui/StarsRaiting'
 import Glider from 'react-glider'
 import _find from 'lodash/find'
 import _map from 'lodash/map'
