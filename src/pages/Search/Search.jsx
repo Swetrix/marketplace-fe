@@ -8,7 +8,7 @@ import ExtensionsCard from 'components/ExtensionsCard'
 import Pagination from 'ui/Pagination'
 import Loader from 'ui/Loader'
 
-import { sortByConstans } from 'redux/constants'
+// import { sortByConstans } from 'redux/constants'
 
 import _values from 'lodash/values'
 import _map from 'lodash/map'
@@ -25,7 +25,7 @@ const Search = ({
 
   const [search, setSearch] = useState(params.get('term'))
   const [filterCategory, setFilterCategory] = useState(params.get('category'))
-  const [filterSortBy, setFilterSortBy] = useState(params.get('sortBy'))
+  // const [filterSortBy, setFilterSortBy] = useState(params.get('sortBy'))
   const [extensions, setExtensions] = useState()
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState((offset / limit) + 1)
@@ -37,7 +37,7 @@ const Search = ({
 
   const getExtensions = async () => {
     setLoading(true)
-    await getExtensionsSearch(search, filterCategory, filterSortBy, offset, limit)
+    await getExtensionsSearch(search, filterCategory, 'updatedAt', offset, limit)
       .then(results => {
         console.log(results)
         setExtensions(results.extensions)
@@ -59,11 +59,11 @@ const Search = ({
     if (!loading) {
       getExtensions()
     }
-  }, [search, filterCategory, filterSortBy, offset, limit]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [search, filterCategory, offset, limit]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    history.push(`/search?term=${search}&category=${_isEmpty(filterCategory) ? '' : filterCategory}&sortBy=${filterSortBy}`)
-  }, [search, filterCategory, filterSortBy, history])
+    history.push(`/search?term=${search}&category=${_isEmpty(filterCategory) ? '' : filterCategory}`)
+  }, [search, filterCategory, history])
 
   return (
     <Title title='Search'>
@@ -95,7 +95,7 @@ const Search = ({
             </div>
             <div className='flex items-center justify-between'>
               <div className='mr-5'>
-                <span className='mr-3 dark:text-gray-200'>Showing:</span>
+                <span className='mr-3 dark:text-gray-200'>Category:</span>
                 <Dropdown
                   items={_values([{ name: 'All', id: 'all' }, ...category])}
                   labelExtractor={item => item.name}
@@ -109,7 +109,7 @@ const Search = ({
                   }
                 />
               </div>
-              <div>
+              {/* <div>
                 <span className='mr-3  dark:text-gray-200'>Sort By:</span>
                 <Dropdown
                   items={_values(sortByConstans)}
@@ -118,7 +118,7 @@ const Search = ({
                   selectItemClassName='text-gray-700 block px-2 py-1 text-base cursor-pointer hover:bg-gray-200 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
                   onSelect={setFilterSortBy}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
           <div className='grid auto-rows-min grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 mt-4 gap-1'>
