@@ -8,13 +8,13 @@ import { HelmetProvider } from 'react-helmet-async'
 import { transitions, positions, Provider as AlertProvider } from '@blaumaus/react-alert'
 
 import CrashHandler from 'pages/CrashHandler'
-// import { trackViews } from 'utils/analytics'
+import { trackViews } from 'utils/analytics'
 import AlertTemplate from 'ui/Alert'
 import App from './App'
 import i18next from './i18next'
 import './index.css'
 
-// trackViews()
+trackViews()
 
 console.log('%cWelcome, hacker, glad you opened your console, you seem serious about your craft and will go a long way!\nP.S. All the bugs, feature requests are welcome to be sent to security@swetrix.com', 'color: #818cf8;background: #1f2937;font-size: 20px;text-shadow: 2px 2px black')
 
