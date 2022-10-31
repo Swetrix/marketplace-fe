@@ -12,11 +12,9 @@ const debug = Debug('swetrix:rx:s:load-category')
 
 export default function* loadCategory() {
   try {
-    const {
-      category,
-    } = yield call(getCategories)
+    const result = yield call(getCategories)
 
-    yield put(UIActions.setCategory(category))
+    yield put(UIActions.setCategory(result.categories))
   } catch ({ message }) {
     if (_isString(message)) {
       yield put(UIActions.setExtensionsError(message))

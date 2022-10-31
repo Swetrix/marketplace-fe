@@ -7,10 +7,10 @@ import PropTypes from 'prop-types'
 import { usePagination, DOTS } from 'hooks/usePagination'
 
 const Pagination = ({
-  page, setPage, pageAmount, total,
+  page, setPage, pageAmount, total, limit
 }) => {
   const { t } = useTranslation('common')
-  const paginationRange = usePagination(total, page)
+  const paginationRange = usePagination(total, page, 1, limit)
 
   return (
     <nav className='border-t-0 border-gray-200 px-4 flex items-center justify-between sm:px-0'>

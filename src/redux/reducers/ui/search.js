@@ -3,7 +3,7 @@ import { types } from 'redux/actions/ui/types'
 const getInitialState = () => {
   return {
     offset: 0,
-    limit: 24,
+    limit: 18,
   }
 }
 

@@ -23,7 +23,7 @@ const ExtensionsCard = ({
   }
 
   return (
-    <div className='group w-[210px] relative border-2 border-white rounded-lg p-3 bg-gray-100 dark:bg-gray-800 dark:border-gray-900 cursor-pointer' onClick={openExtension}>
+    <div className='group max-w-[210px] relative border-2 border-white rounded-lg p-3 bg-gray-100 dark:bg-gray-800 dark:border-gray-900 cursor-pointer' onClick={openExtension}>
       <div className='h-28 w-28 mx-auto aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:aspect-none'>
         <img src={mainImage ? `${process.env.REACT_APP_CDN_URL}file/${mainImage}` : `https://via.placeholder.com/150?text=${name}`} alt={companyName} className='w-full h-full object-center object-cover lg:w-full lg:h-full' />
       </div>

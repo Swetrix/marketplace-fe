@@ -4,6 +4,7 @@ import { SearchIcon } from '@heroicons/react/outline'
 import { useTranslation } from 'react-i18next'
 import Button from 'ui/Button'
 import _isEmpty from 'lodash/isEmpty'
+import _filter from 'lodash/filter'
 import Glider from 'react-glider'
 import '../../glider.css'
 import { useHistory } from 'react-router-dom'
@@ -12,12 +13,14 @@ import ExtensionsCard from 'components/ExtensionsCard'
 import _map from 'lodash/map'
 import Title from 'components/Title'
 
-const MainPage = ({ extensions }) => {
+const MainPage = ({ extensions, category }) => {
   const { t } = useTranslation()
   const [search, setSearch] = useState('')
   const history = useHistory()
+  console.log(category)
 
   const searchSubmit = (e) => {
+    e.stopPropagation()
     e.preventDefault()
     if (!_isEmpty(search)) {
       history.push(
@@ -51,7 +54,7 @@ const MainPage = ({ extensions }) => {
               error={false}
             />
             <button
-              type='button'
+              type='submit'
               className='-ml-px mb-2 mt-1 relative inline-flex items-center space-x-2 px-4 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 dark:bg-gray-800 dark:border-0 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'
             >
               <SearchIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
@@ -60,13 +63,57 @@ const MainPage = ({ extensions }) => {
         </div>
         <section>
           <div className='max-w-[1400px] mx-auto py-10 px-4 sm:px-6 lg:px-8'>
-            <div className='flex items-center justify-between'>
-              <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>
-                Featured
-              </h2>
-              <Button onClick={() => { }} text='See more' primary regular />
-            </div>
             <div className='mt-6 relative p-5'>
+              {!_isEmpty(category) && (
+                _map(category, (item) => {
+                  const extensionForCategory = _filter(
+                    extensions,
+                    (extension) => extension.category?.name === item.name,
+                  )
+                  if (!_isEmpty(extensionForCategory)) {
+                    return (
+                      <div key={item.id} className='my-4'>
+                        <div className='flex items-center justify-between'>
+                          <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>
+                            {item.name}
+                          </h2>
+                          <Button onClick={() => { 
+                            history.push(
+                              `/search?term=&category=${item.name}&sortBy=${sortByConstans.CREATED_AT}`,
+                            )
+                          }} text='See more' primary regular />
+                        </div>
+                        <Glider
+                          hasArrows={extensionForCategory.length >= 5}
+                          slidesToScroll={6}
+                          resizeLock
+                          exactWidth
+                          itemWidth={210}
+                        >
+                          {_map(extensionForCategory, (extension) => (
+                            <ExtensionsCard
+                              key={extension.id}
+                              id={extension.id}
+                              name={extension.name}
+                              stars={3}
+                              downloads={extension.usersQuantity}
+                              mainImage={extension.mainImage}
+                              price={extension.price}
+                              // companyLink='https://simpson.com'
+                              companyName={extension.owner?.nickname || 'Unknown'} />
+                          ))}
+                        </Glider>
+                      </div>
+                    )
+                  }
+                })
+              )}
+              <div className='flex items-center justify-between mb-2'>
+                <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>
+                  Featured
+                </h2>
+                <Button onClick={() => { }} text='See more' primary regular />
+              </div>
               <Glider
                 hasArrows
                 slidesToScroll={6}
