@@ -84,7 +84,7 @@ const MainPage = ({ extensions, category }) => {
                           }} text='See more' primary regular />
                         </div>
                         <Glider
-                          hasArrows
+                          hasArrows={extensionForCategory.length >= 5}
                           slidesToScroll={6}
                           resizeLock
                           exactWidth
