@@ -108,7 +108,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                 <Glider
                   hasArrows
                   slidesToScroll={1}
-                  slidesToShow={2}
+                  slidesToShow={1}
                   resizeLock
                   // exactWidth
                   rewind
@@ -117,7 +117,6 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                     <div className='glider-block border-2 border-white rounded-lg bg-gray-100 dark:bg-gray-800 dark:border-gray-900'>
                       <img
                         key={image}
-                        height='320'
                         alt=''
                         className='rounded-lg'
                         src={`${process.env.REACT_APP_CDN_URL}file/${image}` || 'https://via.placeholder.com/150'}
