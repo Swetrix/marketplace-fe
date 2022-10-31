@@ -129,7 +129,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
             </div>
           </div>
           <div className='flex flex-row w-full pt-5 pl-6 pb-6 gap-3'>
-            <div className='relative bg-white dark:bg-gray-750 pt-5 px-4 min-h-72 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden pb-5'>
+            <div className='relative w-full bg-white dark:bg-gray-750 pt-5 px-4 min-h-72 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden pb-5'>
               <div className='flex items-center justify-between mb-2'>
                 <h3 className='flex items-center text-lg leading-6 font-semibold text-gray-900 dark:text-gray-50'>
                   Description
@@ -139,7 +139,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                 {extension.description}
               </p>
             </div>
-            <div className='relative bg-white dark:bg-gray-750 pt-5 px-4 min-h-72 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden pb-12'>
+            {/* <div className='relative bg-white dark:bg-gray-750 pt-5 px-4 min-h-72 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden pb-12'>
               <div className='flex items-center justify-between mb-2'>
                 <h3 className='flex items-center text-lg leading-6 font-semibold text-gray-900 dark:text-gray-50'>
                   Tags
@@ -168,7 +168,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                   REST
                 </p>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
