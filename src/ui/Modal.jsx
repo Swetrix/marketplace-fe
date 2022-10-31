@@ -13,7 +13,7 @@ const Modal = ({
     <Dialog
       as='div'
       // TEMPORARY FIX UNTIL THIS ISSUE IS RESOLVED IN https://github.com/tailwindlabs/headlessui/issues/1638
-      className={cx('fixed z-10 inset-0 overflow-y-auto', { 'pointer-events-none': !isOpened }, className)}
+      className={cx('fixed z-50 inset-0 overflow-y-auto', { 'pointer-events-none': !isOpened }, className)}
       open={isOpened}
       onClose={onClose}
       static

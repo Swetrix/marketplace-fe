@@ -311,13 +311,14 @@ const ExtensionSettings = ({
             </div>
             <ImageUpload
               files={form.mainImage}
+              disabled={showDelete}
               setFiles={(files) => {
                 setForm((items) => ({ ...items, mainImage: files }))
               }}
               removeFile={(file) => removeFile(file, true)}
               isMainImage
             />
-            <ImageList isMainImage files={form.mainImage} removeFile={(file) => removeFile(file, true)} />
+            <ImageList disabled={showDelete} isMainImage files={form.mainImage} removeFile={(file) => removeFile(file, true)} />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               The primary visual identity of your app.
               <br />
@@ -331,13 +332,14 @@ const ExtensionSettings = ({
               {t('extension.settings.additionalImages')}
             </div>
             <ImageUpload
+              disabled={showDelete}
               files={form.additionalImages}
               setFiles={(files) => {
                 setForm((items) => ({ ...items, additionalImages: [...items.additionalImages, files] }))
               }}
               removeFile={removeFile}
             />
-            <ImageList files={form.additionalImages} removeFile={removeFile} />
+            <ImageList disabled={showDelete} files={form.additionalImages} removeFile={removeFile} />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               Add up to 5 images to display on your extension&apos;s summary page.
               <br />
@@ -358,6 +360,7 @@ const ExtensionSettings = ({
               The extension .js file
             </div>
             <ImageUpload
+              disabled={showDelete}
               files={form.file}
               setFiles={(files) => {
                 setForm((items) => ({ ...items, file: files }))
@@ -365,7 +368,7 @@ const ExtensionSettings = ({
               removeFile={removeFile}
               fileType='javascript'
             />
-            <ImageList isFile files={form.file} removeFile={(file) => removeFile(file, false, true)} />
+            <ImageList disabled={showDelete} isFile files={form.file} removeFile={(file) => removeFile(file, false, true)} />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               The extension .js file.
             </p>
