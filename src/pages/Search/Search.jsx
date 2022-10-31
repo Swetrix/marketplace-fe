@@ -56,7 +56,7 @@ const Search = ({
   }, [page, limit, setOffset])
 
   useEffect(() => {
-    if (!loading && filterCategory !== 'All') {
+    if (!loading) {
       getExtensions()
     }
   }, [search, filterCategory, filterSortBy, offset, limit]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -103,7 +103,10 @@ const Search = ({
                   title={filterCategory || 'All'}
                   buttonClassName='flex items-center w-full rounded-md border border-gray-300 shadow-sm px-1 md:px-2 py-1 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
                   selectItemClassName='text-gray-700 block px-2 py-1 text-base cursor-pointer hover:bg-gray-200 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
-                  onSelect={(item) => setFilterCategory(item.name)}
+                  onSelect={(item) => {
+                    if (item.id === 'all') return setFilterCategory('') 
+                    else return setFilterCategory(item.name)}
+                  }
                 />
               </div>
               <div>
