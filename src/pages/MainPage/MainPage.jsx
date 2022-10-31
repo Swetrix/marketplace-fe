@@ -4,6 +4,7 @@ import { SearchIcon } from '@heroicons/react/outline'
 import { useTranslation } from 'react-i18next'
 import Button from 'ui/Button'
 import _isEmpty from 'lodash/isEmpty'
+import _filter from 'lodash/filter'
 import Glider from 'react-glider'
 import '../../glider.css'
 import { useHistory } from 'react-router-dom'
@@ -12,10 +13,11 @@ import ExtensionsCard from 'components/ExtensionsCard'
 import _map from 'lodash/map'
 import Title from 'components/Title'
 
-const MainPage = ({ extensions }) => {
+const MainPage = ({ extensions, category }) => {
   const { t } = useTranslation()
   const [search, setSearch] = useState('')
   const history = useHistory()
+  console.log(category)
 
   const searchSubmit = (e) => {
     e.preventDefault()
@@ -60,13 +62,53 @@ const MainPage = ({ extensions }) => {
         </div>
         <section>
           <div className='max-w-[1400px] mx-auto py-10 px-4 sm:px-6 lg:px-8'>
-            <div className='flex items-center justify-between'>
-              <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>
-                Featured
-              </h2>
-              <Button onClick={() => { }} text='See more' primary regular />
-            </div>
             <div className='mt-6 relative p-5'>
+              {!_isEmpty(category) && (
+                _map(category, (item) => {
+                  const extensionForCategory = _filter(
+                    extensions,
+                    (extension) => extension.category?.name === item.name,
+                  )
+                  if (!_isEmpty(extensionForCategory)) {
+                    return (
+                      <div key={extensionForCategory.id} className='my-4'>
+                        <div className='flex items-center justify-between'>
+                          <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>
+                            {item.name}
+                          </h2>
+                          <Button onClick={() => { }} text='See more' primary regular />
+                        </div>
+                        <Glider
+                          hasArrows
+                          slidesToScroll={6}
+                          resizeLock
+                          exactWidth
+                          itemWidth={210}
+                        >
+                          {_map(extensionForCategory, (extension) => (
+                            <ExtensionsCard
+                              key={extension.id}
+                              id={extension.id}
+                              name={extension.name}
+                              stars={3}
+                              downloads={extension.usersQuantity}
+                              mainImage={extension.mainImage}
+                              price={extension.price}
+                              // companyLink='https://simpson.com'
+                              companyName={extension.owner?.nickname || 'Unknown'} />
+                          ))}
+                        </Glider>
+                      </div>
+                    )
+                  }
+                })
+              )}
+              <div className='flex items-center justify-between mb-2'>
+                <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>
+                  Featured
+                </h2>
+                <Button onClick={() => { }} text='See more' primary regular />
+              </div>
               <Glider
                 hasArrows
                 slidesToScroll={6}
