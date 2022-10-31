@@ -56,7 +56,7 @@ const Search = ({
   }, [page, limit, setOffset])
 
   useEffect(() => {
-    if (!loading) {
+    if (!loading && filterCategory !== 'All') {
       getExtensions()
     }
   }, [search, filterCategory, filterSortBy, offset, limit]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -131,7 +131,7 @@ const Search = ({
           </div>
           {pageAmount > 1 && (
             <div className='mt-2'>
-              <Pagination page={page} setPage={setPage} pageAmount={pageAmount} total={total} />
+              <Pagination page={page} setPage={setPage} pageAmount={pageAmount} total={total} limit={limit}/>
             </div>
           )}
         </div>
