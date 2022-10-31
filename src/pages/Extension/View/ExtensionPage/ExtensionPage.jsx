@@ -134,7 +134,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                   Description
                 </h3>
               </div>
-              <p className='text-lg dark:text-gray-50'>
+              <p className='text-lg dark:text-gray-50 whitespace-pre-line'>
                 {extension.description}
               </p>
             </div>
