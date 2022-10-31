@@ -83,6 +83,7 @@ const ExtensionSettings = ({
       } else {
         setForm({
           ...extension,
+          category: extension.category?.name,
         })
       }
     }
