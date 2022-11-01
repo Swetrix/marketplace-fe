@@ -44,6 +44,9 @@ const mapDispatchToProps = (dispatch) => ({
   showError: (message) => {
     dispatch(errorsActions.genericError(message))
   },
+  setExtensions: (extensions, isInstall) => {
+    dispatch(UIActions.setExtensions(extensions, isInstall))
+  }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectSettings)
