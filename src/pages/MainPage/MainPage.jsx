@@ -17,7 +17,6 @@ const MainPage = ({ extensions, category }) => {
   const { t } = useTranslation()
   const [search, setSearch] = useState('')
   const history = useHistory()
-  console.log(category)
 
   const searchSubmit = (e) => {
     e.stopPropagation()

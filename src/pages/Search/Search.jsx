@@ -19,7 +19,7 @@ import Title from 'components/Title'
 import { getExtensionsSearch } from 'api'
 
 const Search = ({
-  limit, offset, setOffset, category,
+  limit, offset, setOffset, category, generateError,
 }) => {
   const params = new URLSearchParams(window.location.search)
 
@@ -39,11 +39,11 @@ const Search = ({
     setLoading(true)
     await getExtensionsSearch(search, filterCategory, 'updatedAt', offset, limit)
       .then(results => {
-        console.log(results)
         setExtensions(results.extensions)
         setTotal(results.count)
       })
       .catch(err => {
+        generateError(err.message)
         console.log(err)
       })
       .finally(() => {
