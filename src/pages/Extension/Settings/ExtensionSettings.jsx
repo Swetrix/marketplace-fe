@@ -13,12 +13,14 @@ import _keys from 'lodash/keys'
 import _toNumber from 'lodash/toNumber'
 import _filter from 'lodash/filter'
 import _forEach from 'lodash/forEach'
+import _map from 'lodash/map'
 import PropTypes from 'prop-types'
 import { ExclamationIcon } from '@heroicons/react/outline'
 
 import Title from 'components/Title'
 import ImageUpload from 'components/ImageUpload/ImageUpload'
 import ImageList from 'components/ImageUpload/ImageList'
+import Glider from 'react-glider'
 
 import { withAuthentication, auth } from 'hoc/protected'
 import {
@@ -39,6 +41,7 @@ const MAX_VERSION_LENGTH = 6
 const ExtensionSettings = ({
   updateExtensionFailed, createNewExtensionFailed, newExtension, extensionDelete, deleteExtensionFailed,
   loadExtensions, isLoading, extensions, showError, removeExtension, user, isPublishExtension, publishExtensions,
+  setExtensions,
 }) => {
   const { t } = useTranslation('common')
   const { pathname } = useLocation()
@@ -131,9 +134,15 @@ const ExtensionSettings = ({
         }
         if (isSettings) {
           await updateExtension(id, formData)
+          .then(() => {
+            setExtensions([...extensions, { ...form, id: _toNumber(id) }])
+          })
           newExtension(t('extension.settings.updated'))
         } else {
           await createExtension(formData)
+          .then(() => {
+            setExtensions([...extensions, { ...form, id: _toNumber(id) }])
+          })
           trackCustom('EXTENSION_CREATED')
           newExtension(t('extension.settings.created'))
         }
@@ -340,7 +349,7 @@ const ExtensionSettings = ({
               }}
               removeFile={removeFile}
             />
-            <ImageList disabled={showDelete} files={form.additionalImages} removeFile={removeFile} />
+            <ImageList  disabled={showDelete} files={form.additionalImages} removeFile={removeFile} />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               Add up to 5 images to display on your extension&apos;s summary page.
               <br />
@@ -369,13 +378,22 @@ const ExtensionSettings = ({
               removeFile={removeFile}
               fileType='javascript'
             />
-            <ImageList disabled={showDelete} isFile files={form.file} removeFile={(file) => removeFile(file, false, true)} />
+            <ImageList  disabled={showDelete} isFile files={form.file} removeFile={(file) => removeFile(file, false, true)} />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               The extension .js file.
             </p>
           </div>
-          {isSettings && (
+          {isSettings ? (
             <>
+              <Checkbox
+                checked={Boolean(form.active)}
+                onChange={handleInput}
+                name='active'
+                id='active'
+                className='mt-4'
+                label={t('extension.settings.enabled')}
+                hint={t('extension.settings.enabledHint')}
+              />
               <div className='flex justify-between mt-8 h-20 sm:h-min'>
                 <div className='flex flex-wrap items-center'>
                   <Button className='mr-2 border-indigo-100 dark:text-gray-50 dark:border-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600' onClick={onCancel} secondary regular>
@@ -394,6 +412,10 @@ const ExtensionSettings = ({
               </div>
               <hr className='mt-2 sm:mt-5' />
             </>
+          ) : (
+            <p className='text-gray-500 dark:text-gray-300 italic mt-1 mb-4 text-sm'>
+              {t('extension.settings.createHint')}
+            </p>
           )}
 
           {!isSettings && (

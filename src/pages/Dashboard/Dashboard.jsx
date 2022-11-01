@@ -12,8 +12,9 @@ import _map from 'lodash/map'
 import _filter from 'lodash/filter'
 import _ceil from 'lodash/ceil'
 import { useTranslation } from 'react-i18next'
-import { CalendarIcon, FolderAddIcon } from '@heroicons/react/outline'
+import { CalendarIcon, FolderAddIcon, CogIcon } from '@heroicons/react/outline'
 import { XCircleIcon } from '@heroicons/react/solid'
+
 
 import Modal from 'ui/Modal'
 import { withAuthentication, auth } from 'hoc/protected'
@@ -63,7 +64,9 @@ const ProjectCart = ({
                   )
                 ) : (
                     <>
-                      <Link to={`/extensions/settings/${publish.id}`}>settings</Link>
+                      <Link to={`/extensions/settings/${publish.id}`}>
+                        <CogIcon className='w-6 h-6 text-gray-400 hover:text-gray-500 mr-5' />
+                      </Link>
                       {status === extensionStatus[0] ? (
                         <InactivePin label={extensionStatus[0]} />
                       ) : (
@@ -257,7 +260,7 @@ const Dashboard = ({
                         <ul className='divide-y divide-gray-200 dark:divide-gray-500'>
                           {_map(publishExtensions, (extension) => (
                             <div key={extension.id}>
-                              <Link to={_replace(routes.project, ':id', extension.id)}>
+                              <Link to={_replace(routes.extension, ':id', extension.id)}>
                                 <ProjectCart
                                   t={t}
                                   language={language}
