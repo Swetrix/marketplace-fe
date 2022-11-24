@@ -26,6 +26,8 @@ export const addPanelTabExample = `sdk.addPanelTab('cc', '<h2>Custom Content</h2
   // Your code goes here..
 })`
 
+export const removePanelTabExample = `sdk.removePanelTab('cc')`
+
 export const getUMDBuildExample = (pid) => `<!-- Put this at the end of the <body> tag -->
 <script src="https://swetrix.org/swetrix.js" defer></script>
 <script>

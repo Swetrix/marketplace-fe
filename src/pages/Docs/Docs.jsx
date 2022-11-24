@@ -10,7 +10,7 @@ import Code from 'ui/Code'
 import {
   extensionStructureExample, trackPageView, trackPVAPI, init, track, trackExample, npmInstall,
   esExample, npmImport, trackPVReturnAPI, eventListenerBasicExample, addExportDataRowExample,
-  removeExportDataRowExample, addPanelTabExample,
+  removeExportDataRowExample, addPanelTabExample, removePanelTabExample,
 } from './examples'
 
 const contents = (t) => [{
@@ -222,6 +222,7 @@ const Docs = () => {
             <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
               {t('docs.contents.removePanelTab')}
             </p>
+            <Code text={removePanelTabExample} language='javascript' />
 
             <hr className='mt-10 mb-4 border-gray-200 dark:border-gray-600' />
             <div className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>

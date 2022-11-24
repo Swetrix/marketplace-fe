@@ -141,7 +141,7 @@
         "me": "utm_medium",
         "ca": "utm_campaign"
       },
-      "removePanelTab": "To be done.."
+      "removePanelTab": "The removePanelTab() function allows you to remove a panel tab from the dashboard panels. It takes the ID of the panel as a parameter."
     }
   },
   "profileSettings": {
