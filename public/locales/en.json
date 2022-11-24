@@ -97,7 +97,32 @@
     "signup": "Sign up",
     "main": "Swetrix Marketplace",
     "profileSettings": "Profile settings",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "docs": "Documentation"
+  },
+  "docs": {
+    "titles": {
+      "start": "Getting Started",
+      "whatAreExtensions": "What are the extensions?",
+      "howDoTheyWork": "How do they work?",
+      "how": "How to..",
+      "publish": "Publish an extension",
+      "test": "Test an extension",
+      "sdk": "SDK documentation",
+      "eventListeners": "Event listeners"
+    },
+    "contents": {
+      "whatAreExtensions": "Swetrix allows you to create your own extensions to extend the functionality of the platform.\nThese extensions work similarly to browser extensions and allow you to access and process analytics data, display customised pages and much more.\n\nYou can also publish your extensions in the Swetrix Marketplace for others to use.",
+      "howDoTheyWork": "Extensions can communicate with the Swetrix platform via the Swetrix SDK.\nThe Swetrix SDK is a module that gives you the ability to configure different event listeners and also to transfer data from the extension to the Swetrix dashboard.\nAll user-installed extensions run in parallel and are isolated from each other.\n\nThe extension itself is a JavaScript file which consists of a function that takes an sdk object as an argument.\n\nThis object consists of all the APIs you can use when writing your extension.\n\nA simple example of an extension structure:",
+      "exampleLink": "You can find full and in-detail explained examples in our <url>GitHub repository</url>.",
+      "test": "To be done..",
+      "publish": "To be done..",
+      "eventListeners": "To be done..",
+      "addExportDataRow": "To be done..",
+      "removeExportDataRow": "To be done..",
+      "addPanelTab": "To be done..",
+      "removePanelTab": "To be done.."
+    }
   },
   "profileSettings": {
     "general": "General settings",

@@ -1,0 +1,239 @@
+/* eslint-disable jsx-a11y/anchor-has-content, react/jsx-one-expression-per-line */
+import React, { memo, Fragment, useEffect } from 'react'
+import _map from 'lodash/map'
+import Prism from 'prismjs'
+import { useTranslation, Trans } from 'react-i18next'
+import 'prismjs/themes/prism-tomorrow.css'
+
+import Title from 'components/Title'
+import Code from 'ui/Code'
+import {
+  extensionStructureExample, trackPageView, trackPVAPI, init, track, trackExample, npmInstall,
+  esExample, npmImport, trackPVReturnAPI,
+} from './examples'
+
+const contents = (t) => [{
+  name: t('docs.titles.start'),
+  id: 'docs-gs',
+  content: [{
+    name: t('docs.titles.whatAreExtensions'),
+    id: 'docs-what',
+  }, {
+    name: t('docs.titles.howDoTheyWork'),
+    id: 'docs-how',
+  }],
+}, {
+  name: t('docs.titles.how'),
+  id: 'docs-ht',
+  content: [{
+    name: t('docs.titles.test'),
+    id: 'docs-test',
+  }, {
+    name: t('docs.titles.publish'),
+    id: 'docs-pub',
+  }],
+}, {
+  name: t('docs.titles.sdk'),
+  id: 'docs-sdk',
+  content: [{
+    name: t('docs.titles.eventListeners'),
+    id: 'docs-evl',
+  }, {
+    name: 'addExportDataRow',
+    id: 'docs-edr',
+  }, {
+    name: 'removeExportDataRow',
+    id: 'docs-redr',
+  }, {
+    name: 'addPanelTab',
+    id: 'docs-apt',
+  }, {
+    name: 'removePanelTab',
+    id: 'docs-rpt',
+  }, {
+    name: 'trackViews',
+    id: 'docs-tv',
+  }],
+}]
+
+const EXAMPLES_REPO_URL = 'https://github.com/Swetrix/extension-examples'
+
+const Contents = ({ t }) => {
+  const tContents = contents(t)
+
+  return (
+    <div className='lg:flex flex-1 items-start justify-center lg:order-2'>
+      <h2 className='block lg:hidden text-3xl font-bold text-gray-900 dark:text-gray-50 tracking-tight'>
+        {t('docs.contents')}
+        :
+      </h2>
+      <ol className='mb-10 lg:mb-0 lg:sticky lg:top-10'>
+        {_map(tContents, ({ name, id, content }) => (
+          <Fragment key={id}>
+            <li className='mt-3'>
+              <a className='hover:underline text-2xl text-blue-600 dark:text-gray-50 font-bold' href={`#${id}`}>{name}</a>
+            </li>
+            <ol>
+              {_map(content, ({ name: cname, id: cid }) => (
+                <li key={cid}>
+                  <a className='hover:underline text-lg text-blue-500 dark:text-gray-200 px-4' href={`#${cid}`}>{cname}</a>
+                </li>
+              ))}
+            </ol>
+          </Fragment>
+        ))}
+      </ol>
+    </div>
+  )
+}
+
+const CHeader = ({ id, name, addHr = true }) => (
+  <>
+    {addHr && (
+      <hr className='mt-10 border-gray-200 dark:border-gray-600' />
+    )}
+    <h2 id={id} className='text-3xl font-bold text-gray-900 dark:text-gray-50 tracking-tight mt-2 -mb-5'>{name}</h2>
+  </>
+)
+
+const CSection = ({ id, name }) => (
+  <h3 id={id} className='text-2xl font-normal text-gray-900 dark:text-gray-50 tracking-tight mt-8'>{name}</h3>
+)
+
+const Docs = () => {
+  const { t } = useTranslation('common')
+
+  useEffect(() => {
+    Prism.highlightAll()
+  }, [])
+
+  return (
+    <Title title={t('titles.docs')}>
+      <div className='bg-gray-50 dark:bg-gray-800'>
+        <div className='w-11/12 mx-auto pb-16 pt-12 px-4 sm:px-6 lg:w-11/12 lg:px-8 lg:flex'>
+          <Contents t={t} />
+          <div className='flex-1 lg:order-1 whitespace-pre-line'>
+            <h1 className='text-4xl font-extrabold text-gray-900 dark:text-gray-50 tracking-tight'>
+              {t('titles.docs')}
+            </h1>
+
+            {/* Getting Started */}
+            <CHeader id='docs-gs' name={t('docs.titles.start')} addHr={false} />
+
+            {/* What are the extensions? */}
+            <CSection id='docs-what' name={t('docs.titles.whatAreExtensions')} />
+            <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
+              {t('docs.contents.whatAreExtensions')}
+            </p>
+
+            {/* How do they work? */}
+            <CSection id='docs-how' name={t('docs.titles.howDoTheyWork')} />
+            <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
+              {t('docs.contents.howDoTheyWork')}
+            </p>
+            <Code text={extensionStructureExample} language='javascript' />
+            <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
+              <Trans
+                t={t}
+                i18nKey='docs.contents.exampleLink'
+                components={{
+                  url: <a href={EXAMPLES_REPO_URL} className='hover:underline hover:opacity-80 text-indigo-600 dark:text-indigo-400' target='_blank' rel='noopener noreferrer' />,
+                }}
+              />
+            </p>
+
+            {/* How to.. */}
+            <CHeader id='docs-ht' name={t('docs.titles.how')} />
+
+            {/* Test an extension */}
+            <CSection id='docs-test' name={t('docs.titles.test')} />
+            <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
+              {t('docs.contents.test')}
+            </p>
+
+            {/* Publish an extension */}
+            <CSection id='docs-pub' name={t('docs.titles.publish')} />
+            <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
+              {t('docs.contents.publish')}
+            </p>
+
+            {/* SDK documentation */}
+            <CHeader id='docs-sdk' name={t('docs.titles.sdk')} />
+
+            {/* Event listeners */}
+            <CSection id='docs-evl' name={t('docs.titles.eventListeners')} />
+            <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
+              {t('docs.contents.eventListeners')}
+            </p>
+            <Code text={init} language='javascript' />
+
+            {/* addExportDataRow */}
+            <CSection id='docs-edr' name='addExportDataRow' />
+            <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
+              {t('docs.contents.addExportDataRow')}
+            </p>
+            <Code text={track} language='javascript' />
+
+            {/* removeExportDataRow */}
+            <CSection id='docs-redr' name='removeExportDataRow' />
+            <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
+              {t('docs.contents.removeExportDataRow')}
+            </p>
+
+            {/* addPanelTab */}
+            <CSection id='docs-apt' name='addPanelTab' />
+            <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
+              {t('docs.contents.addPanelTab')}
+            </p>
+
+            {/* removePanelTab */}
+            <CSection id='docs-rpt' name='removePanelTab' />
+            <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
+              {t('docs.contents.removePanelTab')}
+            </p>
+
+            <CSection id='docs-tv' name='trackViews' />
+            <div className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
+              {t('docs.tv.call')}
+              <div className='mb-5'>
+                <ul className='ml-10'>
+                  <li><b>pid</b> - {t('docs.tv.params.pid')}</li>
+                  <li><b>lc</b> - {t('docs.tv.params.lc')}</li>
+                  <li><b>tz</b> - {t('docs.tv.params.tz')}</li>
+                  <li><b>ref</b> - {t('docs.tv.params.ref')}</li>
+                  <li><b>so</b> - {t('docs.tv.params.so')}</li>
+                  <li><b>me</b> - {t('docs.tv.params.me')}</li>
+                  <li><b>ca</b> - {t('docs.tv.params.ca')}</li>
+                  <li><b>pg</b> - {t('docs.tv.params.pg')}</li>
+                </ul>
+              </div>
+              <Trans
+                t={t}
+                i18nKey='docs.tv.gather'
+                components={{
+                  b: <b />,
+                }}
+              />
+            </div>
+            <Code text={trackPVAPI} language='javascript' />
+            <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
+              {t('docs.tvReturn')}
+            </p>
+            <Code text={trackPVReturnAPI} language='javascript' />
+
+            <hr className='mt-10 mb-4 border-gray-200 dark:border-gray-600' />
+            <div className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
+              <i>Last updated: September 6, 2022.</i><br />
+              <div>
+                - Added Vue, Java SDK and SvelteKit&nbsp;
+                <a className='hover:underline text-gray-700 dark:text-gray-300' href='#docs-int'>integration instructions.</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Title>
+  )
+}
+
+export default memo(Docs)
