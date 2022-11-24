@@ -50,9 +50,6 @@ const contents = (t) => [{
   }, {
     name: 'removePanelTab',
     id: 'docs-rpt',
-  }, {
-    name: 'trackViews',
-    id: 'docs-tv',
   }],
 }]
 
