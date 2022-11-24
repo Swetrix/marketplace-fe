@@ -98,7 +98,29 @@
     "main": "Swetrix Marketplace",
     "profileSettings": "Profile settings",
     "dashboard": "Dashboard",
-    "docs": "Documentation"
+    "docs": "Documentation",
+    "checklist": "Submission Checklist"
+  },
+  "checklist": {
+    "desc": "Swetrix Marketplace is a platform for sharing high-quality extensions that are easy to use by anyone.\nIn order to ensure that extensions are free from security vulnerabilities, our team reviews all extensions before they're listed publicly.\nOnce you've tested your extension, make sure that it meets the entire checklist below before submitting.",
+    "list": [
+      {
+        "title": "The extension is secure without use of external scripts.",
+        "desc": "Because extensions are run in Swetrix production with full access to the browser, we carefully review extensions for potential vulnerabilities. Use of external scripts is strongly discouraged and may be rejected as consequence. Make sure to remove external scripts and review your extension for potential vulnerabilities."
+      },
+      {
+        "title": "Code is unminified and formatted consistently.",
+        "desc": "In order for our team to be able to conduct a security review of your extension, its source code must be submitted in an unminified and unobfuscated form. Extensions with consistent code formatting reduce the time from submission to approval. Generally, all JavaScript code styles are permitted as long as they're consistent and human readable."
+      },
+      {
+        "title": "Tested on multiple browsers and different websites.",
+        "desc": "We recommend testing extensions for the last 2 versions of Chrome, Safari, Firefox, Edge, and IE 11. If your extension is visual, make sure that it's mobile friendly."
+      },
+      {
+        "title": "Extension icons and screenshots are uploaded.",
+        "desc": "Extension developers/designers get to submit a range of media to show off your extension.\nIt is required that every extension have an icon.\nFinally you can add gallery images to show off your extension in action. While not required, we encourage all extensions to add these screenshots to illustrate what the extension looks like and behaves on a real example dashboard.\nWe recommend to add at least 1 screenshot which demonstrates the extension in action."
+      }
+    ]
   },
   "docs": {
     "titles": {
