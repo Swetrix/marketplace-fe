@@ -126,7 +126,7 @@
         "load": "The event is triggered when the dashboard loads a new set of analytics data.\nFor example, when user opens dashboard for the first time, changes the data range or time bucket."
       },
       "addExportDataRow": "The addExportDataRow() function adds a new export data row into the 'Export data' dropdown.\nThe function takes 2 parameters: (1) the name of the row and (2) the callback which is called when the user clicks on the row.\n\nHere is an example of how to use this function:",
-      "removeExportDataRow": "To be done..",
+      "removeExportDataRow": "The addExportDataRow() function removes an export data row from the dropdown. It takes the name of the export data row as a parameter.",
       "addPanelTab": "To be done..",
       "removePanelTab": "To be done.."
     }

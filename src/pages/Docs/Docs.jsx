@@ -10,6 +10,7 @@ import Code from 'ui/Code'
 import {
   extensionStructureExample, trackPageView, trackPVAPI, init, track, trackExample, npmInstall,
   esExample, npmImport, trackPVReturnAPI, eventListenerBasicExample, addExportDataRowExample,
+  removeExportDataRowExample,
 } from './examples'
 
 const contents = (t) => [{
@@ -190,6 +191,7 @@ const Docs = () => {
             <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
               {t('docs.contents.removeExportDataRow')}
             </p>
+            <Code text={removeExportDataRowExample} language='javascript' />
 
             {/* addPanelTab */}
             <CSection id='docs-apt' name='addPanelTab' />
