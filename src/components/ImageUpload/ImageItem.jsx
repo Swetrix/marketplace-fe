@@ -10,7 +10,6 @@ const ImageItem = ({ file, deleteFile, disabled }) => {
     }
     return string
   }
-  console.log(file)
 
   if (!file) return null
 
