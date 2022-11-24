@@ -9,7 +9,7 @@ import Title from 'components/Title'
 import Code from 'ui/Code'
 import {
   extensionStructureExample, trackPageView, trackPVAPI, init, track, trackExample, npmInstall,
-  esExample, npmImport, trackPVReturnAPI, eventListenerBasicExample,
+  esExample, npmImport, trackPVReturnAPI, eventListenerBasicExample, addExportDataRowExample,
 } from './examples'
 
 const contents = (t) => [{
@@ -183,7 +183,7 @@ const Docs = () => {
             <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
               {t('docs.contents.addExportDataRow')}
             </p>
-            <Code text={track} language='javascript' />
+            <Code text={addExportDataRowExample} language='javascript' />
 
             {/* removeExportDataRow */}
             <CSection id='docs-redr' name='removeExportDataRow' />
