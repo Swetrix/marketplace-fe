@@ -5,6 +5,13 @@ export const extensionStructureExample = `(async (sdk) => {
 })
 `
 
+export const eventListenerBasicExample = `(async (sdk) => {
+  sdk.addEventListener('projectinfo', ({ id }) => {
+    // Your code goes here..
+  })
+})
+`
+
 export const getUMDBuildExample = (pid) => `<!-- Put this at the end of the <body> tag -->
 <script src="https://swetrix.org/swetrix.js" defer></script>
 <script>

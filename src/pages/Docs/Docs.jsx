@@ -9,7 +9,7 @@ import Title from 'components/Title'
 import Code from 'ui/Code'
 import {
   extensionStructureExample, trackPageView, trackPVAPI, init, track, trackExample, npmInstall,
-  esExample, npmImport, trackPVReturnAPI,
+  esExample, npmImport, trackPVReturnAPI, eventListenerBasicExample,
 } from './examples'
 
 const contents = (t) => [{
@@ -165,7 +165,18 @@ const Docs = () => {
             <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
               {t('docs.contents.eventListeners')}
             </p>
-            <Code text={init} language='javascript' />
+            <Code text={eventListenerBasicExample} language='javascript' />
+            <div className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
+              {t('docs.contents.eventListenersList.desc')}
+              <div className='mb-5'>
+                <ul className='ml-10'>
+                  <li><b>load</b> - {t('docs.contents.eventListenersList.load')}</li>
+                  <li className='mt-1'><b>timeupdate</b> - {t('docs.contents.eventListenersList.timeupdate')}</li>
+                  <li className='mt-1'><b>filtersupdate</b> - {t('docs.contents.eventListenersList.filtersupdate')}</li>
+                  <li className='mt-1'><b>projectinfo</b> - {t('docs.contents.eventListenersList.projectinfo')}</li>
+                </ul>
+              </div>
+            </div>
 
             {/* addExportDataRow */}
             <CSection id='docs-edr' name='addExportDataRow' />
@@ -191,35 +202,6 @@ const Docs = () => {
             <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
               {t('docs.contents.removePanelTab')}
             </p>
-
-            <CSection id='docs-tv' name='trackViews' />
-            <div className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
-              {t('docs.tv.call')}
-              <div className='mb-5'>
-                <ul className='ml-10'>
-                  <li><b>pid</b> - {t('docs.tv.params.pid')}</li>
-                  <li><b>lc</b> - {t('docs.tv.params.lc')}</li>
-                  <li><b>tz</b> - {t('docs.tv.params.tz')}</li>
-                  <li><b>ref</b> - {t('docs.tv.params.ref')}</li>
-                  <li><b>so</b> - {t('docs.tv.params.so')}</li>
-                  <li><b>me</b> - {t('docs.tv.params.me')}</li>
-                  <li><b>ca</b> - {t('docs.tv.params.ca')}</li>
-                  <li><b>pg</b> - {t('docs.tv.params.pg')}</li>
-                </ul>
-              </div>
-              <Trans
-                t={t}
-                i18nKey='docs.tv.gather'
-                components={{
-                  b: <b />,
-                }}
-              />
-            </div>
-            <Code text={trackPVAPI} language='javascript' />
-            <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
-              {t('docs.tvReturn')}
-            </p>
-            <Code text={trackPVReturnAPI} language='javascript' />
 
             <hr className='mt-10 mb-4 border-gray-200 dark:border-gray-600' />
             <div className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>

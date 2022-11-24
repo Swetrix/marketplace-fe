@@ -117,7 +117,14 @@
       "exampleLink": "You can find full and in-detail explained examples in our <url>GitHub repository</url>.",
       "test": "To be done..",
       "publish": "To be done..",
-      "eventListeners": "To be done..",
+      "eventListeners": "Event listeners allow you to listen to the specific events from the Swetrix Dashboard and run your custom code based on it.\nThe method addEventListener() works by adding a function to the list of event listeners for the specified event type on which it's called.\n\nIf the function or object is already in the list of event listeners for this target, the function or object is not added a second time.\n\nHere is a basic example of an event listener:",
+      "eventListenersList": {
+        "desc": "Currently, the following events are available:",
+        "projectinfo": "This event is triggered on load and it supplies information about the project it's running on.",
+        "timeupdate": "This event is triggered when user changes the time bucket, time perios or sets the date range.",
+        "filtersupdate": "This event is triggered when user changes the filters.",
+        "load": "The event is triggered when the dashboard loads a new set of analytics data.\nFor example, when user opens dashboard for the first time, changes the data range or time bucket."
+      },
       "addExportDataRow": "To be done..",
       "removeExportDataRow": "To be done..",
       "addPanelTab": "To be done..",
