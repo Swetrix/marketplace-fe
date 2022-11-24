@@ -8,8 +8,7 @@ import 'prismjs/themes/prism-tomorrow.css'
 import Title from 'components/Title'
 import Code from 'ui/Code'
 import {
-  extensionStructureExample, trackPageView, trackPVAPI, init, track, trackExample, npmInstall,
-  esExample, npmImport, trackPVReturnAPI, eventListenerBasicExample, addExportDataRowExample,
+  extensionStructureExample, eventListenerBasicExample, addExportDataRowExample,
   removeExportDataRowExample, addPanelTabExample, removePanelTabExample,
 } from './examples'
 
@@ -226,10 +225,9 @@ const Docs = () => {
 
             <hr className='mt-10 mb-4 border-gray-200 dark:border-gray-600' />
             <div className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
-              <i>Last updated: September 6, 2022.</i><br />
+              <i>Last updated: November 24, 2022.</i><br />
               <div>
-                - Added Vue, Java SDK and SvelteKit&nbsp;
-                <a className='hover:underline text-gray-700 dark:text-gray-300' href='#docs-int'>integration instructions.</a>
+                - Initial documentation release.
               </div>
             </div>
           </div>
