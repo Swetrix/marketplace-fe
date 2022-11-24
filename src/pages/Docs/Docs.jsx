@@ -10,7 +10,7 @@ import Code from 'ui/Code'
 import {
   extensionStructureExample, trackPageView, trackPVAPI, init, track, trackExample, npmInstall,
   esExample, npmImport, trackPVReturnAPI, eventListenerBasicExample, addExportDataRowExample,
-  removeExportDataRowExample,
+  removeExportDataRowExample, addPanelTabExample,
 } from './examples'
 
 const contents = (t) => [{
@@ -198,6 +198,24 @@ const Docs = () => {
             <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
               {t('docs.contents.addPanelTab')}
             </p>
+            <Code text={addPanelTabExample} language='javascript' />
+            <div className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
+              {t('docs.contents.supportedPanelsList.desc')}
+              <div className='mb-5'>
+                <ul className='ml-10'>
+                  <li><b>cc</b> - {t('docs.contents.supportedPanelsList.cc')}</li>
+                  <li className='mt-1'><b>pg</b> - {t('docs.contents.supportedPanelsList.pg')}</li>
+                  <li className='mt-1'><b>lc</b> - {t('docs.contents.supportedPanelsList.lc')}</li>
+                  <li className='mt-1'><b>ref</b> - {t('docs.contents.supportedPanelsList.ref')}</li>
+                  <li className='mt-1'><b>dv</b> - {t('docs.contents.supportedPanelsList.dv')}</li>
+                  <li className='mt-1'><b>br</b> - {t('docs.contents.supportedPanelsList.br')}</li>
+                  <li className='mt-1'><b>os</b> - {t('docs.contents.supportedPanelsList.os')}</li>
+                  <li className='mt-1'><b>so</b> - {t('docs.contents.supportedPanelsList.so')}</li>
+                  <li className='mt-1'><b>me</b> - {t('docs.contents.supportedPanelsList.me')}</li>
+                  <li className='mt-1'><b>ca</b> - {t('docs.contents.supportedPanelsList.ca')}</li>
+                </ul>
+              </div>
+            </div>
 
             {/* removePanelTab */}
             <CSection id='docs-rpt' name='removePanelTab' />

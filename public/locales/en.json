@@ -126,8 +126,21 @@
         "load": "The event is triggered when the dashboard loads a new set of analytics data.\nFor example, when user opens dashboard for the first time, changes the data range or time bucket."
       },
       "addExportDataRow": "The addExportDataRow() function adds a new export data row into the 'Export data' dropdown.\nThe function takes 2 parameters: (1) the name of the row and (2) the callback which is called when the user clicks on the row.\n\nHere is an example of how to use this function:",
-      "removeExportDataRow": "The addExportDataRow() function removes an export data row from the dropdown. It takes the name of the export data row as a parameter.",
-      "addPanelTab": "To be done..",
+      "removeExportDataRow": "The removeExportDataRow() function removes an export data row from the dropdown. It takes the name of the export data row as a parameter.",
+      "addPanelTab": "The addPanelTab() function allows you to add a new panel tab into the dashboard panels.\n\nFor example, Swetrix has a Country panel with 2 pre-built tabs: countries list and a map.\nBy using this method, you can add a custom tab with a custom HTML (or just text) content.\n\nThis function takes 3 parameters: (1) Panel ID - the ID of the panel where you want to add a new tab, (2) The content of your tab, can be either text or stringified HTML, (3) onOpen callback - a callback that is called when the user opens the tab.",
+      "supportedPanelsList": {
+        "desc": "Currently, Swetrix supports the following panels you can inject a tab into:",
+        "cc": "Country",
+        "pg": "Page",
+        "lc": "Locale",
+        "ref": "Referrer",
+        "dv": "Device type",
+        "br": "Browser",
+        "os": "OS name",
+        "so": "utm_source",
+        "me": "utm_medium",
+        "ca": "utm_campaign"
+      },
       "removePanelTab": "To be done.."
     }
   },

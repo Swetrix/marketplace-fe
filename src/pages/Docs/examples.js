@@ -21,6 +21,11 @@ export const addExportDataRowExample = `(async (sdk) => {
 
 export const removeExportDataRowExample = `sdk.removeExportDataRow('As JSON')`
 
+export const addPanelTabExample = `sdk.addPanelTab('cc', '<h2>Custom Content</h2>', () => {
+  // This part is triggered when the tab is opened
+  // Your code goes here..
+})`
+
 export const getUMDBuildExample = (pid) => `<!-- Put this at the end of the <body> tag -->
 <script src="https://swetrix.org/swetrix.js" defer></script>
 <script>
