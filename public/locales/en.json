@@ -141,7 +141,7 @@
         "ca": "utm_campaign"
       },
       "removePanelTab": "The removePanelTab() function allows you to remove a panel tab from the dashboard panels. It takes the ID of the panel as a parameter.",
-      "test": "So, you have written your custom extension and want to test it. Cool!\n\nAt the moment, the marketplace and extensions are in beta, so for now we provide 1 way to test your extensions: to do so, you need to download and locally run the Swetrix frontend repository.\n\nOnce you've got it up and running, you can drop your extension into the public/assets directory, then manually add a link to your extension in the src/pages/Project/View/ViewProject.jsx file.\n\nThe result should be something like this:",
+      "test": "So, you have written your custom extension and want to test it. Cool!\n\nAt the moment, the marketplace and extensions are in beta, so for now we provide 1 way to test your extensions: to do so, you need to download and locally run the <url>Swetrix frontend repository</url>.\n\nOnce you've got it up and running, you can drop your extension into the public/assets directory, then manually add a link to your extension in the src/pages/Project/View/ViewProject.jsx file.\n\nThe result should be something like this:",
       "testInProgress": "We are currently working on draft extensions so you can upload your beta extensions to the marketplace and test them on the production version of Swetrix.\nAs soon as this functionality is implemented, we will update this section of the documentation."
     }
   },

@@ -54,6 +54,7 @@ const contents = (t) => [{
 }]
 
 const EXAMPLES_REPO_URL = 'https://github.com/Swetrix/extension-examples'
+const SWETRIX_FE_URL = 'https://github.com/Swetrix/swetrix-fe'
 
 const Contents = ({ t }) => {
   const tContents = contents(t)
@@ -145,7 +146,13 @@ const Docs = () => {
             {/* Test an extension */}
             <CSection id='docs-test' name={t('docs.titles.test')} />
             <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
-              {t('docs.contents.test')}
+              <Trans
+                t={t}
+                i18nKey='docs.contents.test'
+                components={{
+                  url: <a href={SWETRIX_FE_URL} className='hover:underline hover:opacity-80 text-indigo-600 dark:text-indigo-400' target='_blank' rel='noopener noreferrer' />,
+                }}
+              />
             </p>
             <Code text={extensionTestingExample} language='javascript' />
             <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
