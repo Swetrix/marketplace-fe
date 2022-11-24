@@ -27,3 +27,15 @@ export const addPanelTabExample = `sdk.addPanelTab('cc', '<h2>Custom Content</h2
 })`
 
 export const removePanelTabExample = `sdk.removePanelTab('cc')`
+
+export const extensionTestingExample = `// this useEffect hook is located around line 300 in ViewProject.jsx
+useEffect(() => {
+  let sdk = null
+  if (true) {
+    sdk = new SwetrixSDK([{
+      id: 'some-test-ext-id',
+      cdnURL: 'http://localhost:3000/assets/test_extension.js'
+    }], {
+      debug: isDevelopment,
+    }, {
+    // ....leave the following code unmodified`

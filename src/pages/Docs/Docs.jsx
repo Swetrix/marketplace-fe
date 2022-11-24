@@ -9,7 +9,7 @@ import Title from 'components/Title'
 import Code from 'ui/Code'
 import {
   extensionStructureExample, eventListenerBasicExample, addExportDataRowExample,
-  removeExportDataRowExample, addPanelTabExample, removePanelTabExample,
+  removeExportDataRowExample, addPanelTabExample, removePanelTabExample, extensionTestingExample,
 } from './examples'
 
 const contents = (t) => [{
@@ -146,6 +146,10 @@ const Docs = () => {
             <CSection id='docs-test' name={t('docs.titles.test')} />
             <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
               {t('docs.contents.test')}
+            </p>
+            <Code text={extensionTestingExample} language='javascript' />
+            <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
+              {t('docs.contents.testInProgress')}
             </p>
 
             {/* Publish an extension */}
