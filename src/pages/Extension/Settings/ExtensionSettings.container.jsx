@@ -46,6 +46,15 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setExtensions: (extensions, isInstall) => {
     dispatch(UIActions.setExtensions(extensions, isInstall))
+  },
+  setAllExtensions: (extensions) => {
+    dispatch(UIActions.setAllExtensions(extensions))
+  },
+  setTotal: (total, publish) => {
+    dispatch(UIActions.setTotal(total, publish))
+  },
+  setAllTotal: (total) => {
+    dispatch(UIActions.setAllTotal(total))
   }
 })
 

@@ -41,7 +41,7 @@ const MAX_VERSION_LENGTH = 6
 const ExtensionSettings = ({
   updateExtensionFailed, createNewExtensionFailed, newExtension, extensionDelete, deleteExtensionFailed,
   loadExtensions, isLoading, extensions, showError, removeExtension, user, isPublishExtension, publishExtensions,
-  setExtensions,
+  setExtensions, setAllExtensions, setTotal, setAllTotal,
 }) => {
   const { t } = useTranslation('common')
   const { pathname } = useLocation()
@@ -140,8 +140,11 @@ const ExtensionSettings = ({
           newExtension(t('extension.settings.updated'))
         } else {
           await createExtension(formData)
-          .then(() => {
-            setExtensions([...extensions, { ...form, id: _toNumber(id) }])
+          .then((response) => {
+            setExtensions([...extensions, response ], true)
+            setAllExtensions([...extensions, response])
+            setTotal(_size(extensions) + 1, true)
+            setAllTotal(_size(extensions) + 1)
           })
           trackCustom('EXTENSION_CREATED')
           newExtension(t('extension.settings.created'))

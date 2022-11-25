@@ -11,6 +11,8 @@ const ImageItem = ({ file, deleteFile, disabled }) => {
     return string
   }
 
+  if (!file) return null
+
   return (
     <li
       className={cx('flex my-2 max-w-sm mx-auto items-center px-2 py-3', {
