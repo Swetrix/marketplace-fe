@@ -13,6 +13,7 @@ import _keys from 'lodash/keys'
 import _toNumber from 'lodash/toNumber'
 import _filter from 'lodash/filter'
 import _forEach from 'lodash/forEach'
+import _isString from 'lodash/isString'
 import _map from 'lodash/map'
 import PropTypes from 'prop-types'
 import { ExclamationIcon } from '@heroicons/react/outline'
@@ -121,10 +122,18 @@ const ExtensionSettings = ({
       try {
         const formData = new FormData()
         formData.append('name', data.name)
-        data.mainImage && formData.append('mainImage', data.mainImage)
-        data.file && formData.append('file', data.file)
+        if (!_isString(data.mainImage)) {
+          data.mainImage && formData.append('mainImage', data.mainImage)
+        }
+        if (!_isString(data.file)) {
+          data.file && formData.append('file', data.file)
+        }
         _forEach(data.additionalImages, (file) => {
-          formData.append('additionalImages', file)
+          if (!_isString(file)) {
+            formData.append('additionalImages', file)
+          } else {
+            formData.append('additionalImagesCdn', file)
+          }
         })
         formData.append('version', data.version)
         data.description && formData.append('description', data.description)
