@@ -16,7 +16,6 @@ const MainImageUpload = ({ fileReader, files, setFiles, isMainImage, fileType, d
         type={_isString(files) ? 'file' : files?.length >= 5 ? 'hidden' : 'file'}
         className='absolute top-0 left-0 opacity-0 cursor-pointer z-20 w-full h-full'
         onChange={uploadHandler}
-        // accept={fileType === 'image' ? 'image/jpeg, image/jpg, image/png' : 'text/javascript'}
         accept={ 'image/jpeg, image/jpg, image/png' }
       />
       <div className='flex flex-col justify-center items-center'>

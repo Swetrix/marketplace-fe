@@ -259,6 +259,11 @@ const ExtensionSettings = ({
     setForm(items => ({ ...items, mainImage: file[0] }))
   }
 
+  const deleteForMainImage = () => {
+    setForm(prevState => ({...prevState, mainImage: {}}))
+    setMainImageUrl('')
+  }
+
   return (
     <Title title={title}>
       <div
@@ -354,18 +359,18 @@ const ExtensionSettings = ({
               removeFile={(file) => removeFile(file, true)}
               isMainImage
             />
-            <div className='relative max-w-max mx-auto'>
-              <img className='max-w-xs max-h-[200px] mx-auto' alt={mainImageUrl} src={mainImageUrl} />
-              <div className='absolute top-1 right-1'>
-                <Button secondary regular>
-                   <TrashIcon className='w-4 h-4 cursor-pointer'
-                    // onClick={() => {
-                    //   if (!disabled) return deleteFile(file)
-                    // }}
-                  />
-                </Button>
+            {mainImageUrl !== '' &&
+              <div className='relative mt-3 max-w-max mx-auto'>
+                <img className='max-w-xs max-h-[200px] mx-auto' alt={mainImageUrl} src={mainImageUrl} />
+                <div className='absolute top-1 right-1'>
+                  <Button secondary regular>
+                    <TrashIcon className='w-4 h-4 cursor-pointer'
+                               onClick={deleteForMainImage}
+                    />
+                  </Button>
+                </div>
               </div>
-            </div>
+            }
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               The primary visual identity of your app.
               <br />
