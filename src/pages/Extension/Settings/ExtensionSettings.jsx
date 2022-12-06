@@ -15,12 +15,16 @@ import _filter from 'lodash/filter'
 import _forEach from 'lodash/forEach'
 import _map from 'lodash/map'
 import PropTypes from 'prop-types'
-import { ExclamationIcon } from '@heroicons/react/outline'
+import {
+  DocumentIcon,
+  ExclamationIcon,
+  TrashIcon,
+  LockClosedIcon
+} from '@heroicons/react/outline'
 
 import Title from 'components/Title'
 import ImageUpload from 'components/ImageUpload/ImageUpload'
 import ImageList from 'components/ImageUpload/ImageList'
-import Glider from 'react-glider'
 
 import { withAuthentication, auth } from 'hoc/protected'
 import {
@@ -34,7 +38,7 @@ import Modal from 'ui/Modal'
 import Select from 'ui/Select'
 import { trackCustom } from 'utils/analytics'
 import routes from 'routes'
-import NewImageUpload from './components/NewImageUpload'
+import MainImageUpload from './components/MainImageUpload'
 import _isString from 'lodash/isString'
 import { nanoid } from 'nanoid'
 
@@ -96,6 +100,10 @@ const ExtensionSettings = ({
       }
     }
   }, [user, extension, isLoading, isSettings, history, showError, extensionDeleting, t])
+
+  useEffect(() => {
+    console.log(form)
+  }, [form])
 
   const removeFile = (rFiles, isMainImage, isFile) => {
     setForm((items) => {
@@ -336,7 +344,7 @@ const ExtensionSettings = ({
               {t('extension.settings.mainImage')}
             </div>
             {/* mainImage */}
-            <NewImageUpload
+            <MainImageUpload
               fileReader={fileReaderForMainImage}
               files={form.mainImage}
               disabled={showDelete}
@@ -346,8 +354,18 @@ const ExtensionSettings = ({
               removeFile={(file) => removeFile(file, true)}
               isMainImage
             />
-            <img className='max-w-xs max-h-[200px]' src={mainImageUrl} />
-            <ImageList disabled={showDelete} isMainImage files={form.mainImage} removeFile={(file) => removeFile(file, true)} />
+            <div className='relative max-w-max mx-auto'>
+              <img className='max-w-xs max-h-[200px] mx-auto' alt={mainImageUrl} src={mainImageUrl} />
+              <div className='absolute top-1 right-1'>
+                <Button secondary regular>
+                   <TrashIcon className='w-4 h-4 cursor-pointer'
+                    // onClick={() => {
+                    //   if (!disabled) return deleteFile(file)
+                    // }}
+                  />
+                </Button>
+              </div>
+            </div>
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               The primary visual identity of your app.
               <br />

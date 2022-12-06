@@ -3,7 +3,7 @@ import _isString from 'lodash/isString'
 import Button from '../../../../ui/Button'
 import _isEmpty from 'lodash/isEmpty'
 
-const NewImageUpload = ({ fileReader, files, setFiles, isMainImage, fileType, disabled }) => {
+const MainImageUpload = ({ fileReader, files, setFiles, isMainImage, fileType, disabled }) => {
   const uploadHandler = (event) => {
     console.log(event.target.files)
     fileReader(event.target.files)
@@ -34,4 +34,4 @@ const NewImageUpload = ({ fileReader, files, setFiles, isMainImage, fileType, di
   )
 }
 
-export default NewImageUpload
+export default MainImageUpload
