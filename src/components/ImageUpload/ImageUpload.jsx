@@ -34,9 +34,8 @@ const ImageUpload = ({ files, setFiles, isMainImage, fileType, disabled }) => {
             {isMainImage && !_isEmpty(files) ? 'Reset Image' : 'Upload Images'}
           </Button>
         </div>
-
-        <p className='flex text-sm font-medium text-gray-700 dark:text-gray-200'>Supported files</p>
-        <p className='flex text-sm font-medium text-gray-700 dark:text-gray-200'>
+        <p className='flex text-sm font-medium text-gray-700'>Supported files</p>
+        <p className='flex text-sm font-medium text-gray-700'>
           {fileType === 'image' ? 'JPG and PNG images' : 'JavaScript'}
         </p>
       </div>

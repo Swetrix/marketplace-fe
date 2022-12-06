@@ -204,7 +204,8 @@ const ExtensionSettings = ({
     validate()
   }, [form]) // eslint-disable-line
 
-  const handleInput = event => {
+  const handleInput = event =>
+  {
     const { target } = event
     const value = target.type === 'checkbox' ? target.checked : target.value
 
@@ -337,6 +338,7 @@ const ExtensionSettings = ({
                 - The image <b>should not</b> be larger than <b>1000x1000</b> pixels.
             </p>
           </div>
+
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               {t('extension.settings.additionalImages')}
@@ -365,6 +367,7 @@ const ExtensionSettings = ({
               - Trim excessive empty space around slide decks.
             </p>
           </div>
+
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               The extension .js file
