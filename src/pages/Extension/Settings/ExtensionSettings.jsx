@@ -34,6 +34,7 @@ import Modal from 'ui/Modal'
 import Select from 'ui/Select'
 import { trackCustom } from 'utils/analytics'
 import routes from 'routes'
+import NewImageUpload from './components/NewImageUpload'
 
 const MAX_NAME_LENGTH = 50
 const MAX_VERSION_LENGTH = 6
@@ -62,6 +63,8 @@ const ExtensionSettings = ({
   const [extensionDeleting, setExtensionDeleting] = useState(false)
   const [extensionSaving, setExtensionSaving] = useState(false)
   const [categories, setCategories] = useState([])
+
+  const [mainImageUrl, setMainImageUrl] = useState('')
 
   useEffect(() => {
     getCategories()
@@ -239,6 +242,12 @@ const ExtensionSettings = ({
 
   const title = isSettings ? `${t('extension.settings.settings')} ${form.name}` : t('extension.settings.create')
 
+  const fileReader = (file) => {
+    const url = window.URL.createObjectURL(file[0])
+    setMainImageUrl(url)
+    console.log(url)
+  }
+
   return (
     <Title title={title}>
       <div
@@ -320,7 +329,9 @@ const ExtensionSettings = ({
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               {t('extension.settings.mainImage')}
             </div>
-            <ImageUpload
+            {/* mainImage */}
+            <NewImageUpload
+              fileReader={fileReader}
               files={form.mainImage}
               disabled={showDelete}
               setFiles={(files) => {
@@ -329,6 +340,7 @@ const ExtensionSettings = ({
               removeFile={(file) => removeFile(file, true)}
               isMainImage
             />
+            <img className='max-w-xs max-h-[200px]' src={mainImageUrl} />
             <ImageList disabled={showDelete} isMainImage files={form.mainImage} removeFile={(file) => removeFile(file, true)} />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               The primary visual identity of your app.
@@ -338,7 +350,7 @@ const ExtensionSettings = ({
                 - The image <b>should not</b> be larger than <b>1000x1000</b> pixels.
             </p>
           </div>
-
+          {/* additionalImages */}
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               {t('extension.settings.additionalImages')}
@@ -347,7 +359,7 @@ const ExtensionSettings = ({
               disabled={showDelete}
               files={form.additionalImages}
               setFiles={(files) => {
-                setForm((items) => ({ ...items, additionalImages: [...items.additionalImages, files] }))
+              setForm((items) => ({ ...items, additionalImages: [...items.additionalImages, files] }))
               }}
               removeFile={removeFile}
             />
@@ -367,7 +379,7 @@ const ExtensionSettings = ({
               - Trim excessive empty space around slide decks.
             </p>
           </div>
-
+          {/* js file */}
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               The extension .js file

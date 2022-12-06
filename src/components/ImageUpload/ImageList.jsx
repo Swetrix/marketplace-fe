@@ -35,7 +35,7 @@ const ImageList = ({ files, removeFile, isMainImage, isFile, disabled }) => {
 
 
   return (
-    <ul className='flex items-center justify-between flex-wrap'>
+    <ul className='flex items-center flex-wrap'>
       {
       isMainImage && !_isEmpty(files) ? (
         <ImageItem
