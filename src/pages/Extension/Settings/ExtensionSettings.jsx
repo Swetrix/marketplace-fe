@@ -35,6 +35,8 @@ import Select from 'ui/Select'
 import { trackCustom } from 'utils/analytics'
 import routes from 'routes'
 import NewImageUpload from './components/NewImageUpload'
+import _isString from 'lodash/isString'
+import { nanoid } from 'nanoid'
 
 const MAX_NAME_LENGTH = 50
 const MAX_VERSION_LENGTH = 6
@@ -207,8 +209,7 @@ const ExtensionSettings = ({
     validate()
   }, [form]) // eslint-disable-line
 
-  const handleInput = event =>
-  {
+  const handleInput = event => {
     const { target } = event
     const value = target.type === 'checkbox' ? target.checked : target.value
 
@@ -242,10 +243,12 @@ const ExtensionSettings = ({
 
   const title = isSettings ? `${t('extension.settings.settings')} ${form.name}` : t('extension.settings.create')
 
-  const fileReader = (file) => {
+  const fileReaderForMainImage = (file) => {
     const url = window.URL.createObjectURL(file[0])
     setMainImageUrl(url)
-    console.log(url)
+    file.isUploading = true
+    file.id = nanoid()
+    setForm(items => ({ ...items, mainImage: file[0] }))
   }
 
   return (
@@ -256,82 +259,85 @@ const ExtensionSettings = ({
         })}
       >
         <form className='max-w-7xl w-full mx-auto' onSubmit={handleSubmit}>
-          <h2 className='mt-2 text-3xl font-bold text-gray-900 dark:text-gray-50'>
-            {title}
-          </h2>
-          <Input
-            name='name'
-            id='name'
-            type='text'
-            label={t('extension.settings.name')}
-            hint={'Your extension\'s name without slogans or phrases (e.g. JSON Exporter, Map Beautifier).'}
-            value={form.name}
-            placeholder='My awesome extension'
-            className='mt-4'
-            onChange={handleInput}
-            error={beenSubmitted ? errors.name : null}
-          />
-          <Textarea
-            name='description'
-            id='description'
-            type='text'
-            label={t('extension.settings.description')}
-            value={form.description || ''}
-            placeholder={'My extension does blah blah blah, it provides such great features as blah and blah.'}
-            hint={'Here you should describe your extension in details. What does it do? How does it work? Add a features list, changelog, or whatever else you think best describes it.'}
-            className='mt-4'
-            onChange={handleInput}
-            error={beenSubmitted ? errors.description : null}
-          />
-          <Input
-            name='version'
-            id='version'
-            type='text'
-            hint={(
-              <span>
-                This is the version identifier your customers will see when they install or upgrade to this version of your extension.
-                <br />
-                It should be specified using
-                {' '}
-                <a href='https://semver.org/' className='dark:text-indigo-400 text-indigo-700' target='_blank' rel='noopener noreferrer'>SemVer</a>
-                .
-              </span>
-            )}
-            label={t('extension.settings.version')}
-            value={form.version || ''}
-            placeholder='0.0.1'
-            className='mt-4 mb-4'
-            onChange={handleInput}
-            error={beenSubmitted ? errors.version : null}
-          />
-          {/* <Input
-            name='price'
-            id='price'
-            type='number'
-            label={t('extension.settings.price')}
-            value={`${form.price}` || ''}
-            placeholder='0 (free), 1 (1$), 2 (2$)'
-            className='mb-4'
-            onChange={handleInput}
-            error={beenSubmitted ? errors.price : null}
-          /> */}
-          <Select
-            title={form.category || 'Select a category'}
-            label={t('extension.settings.category')}
-            hint='Select a category your extension belongs to.'
-            className='w-full'
-            items={categories}
-            keyExtractor={item => item.id}
-            labelExtractor={item => item.name}
-            onSelect={(category) => setForm({ ...form, category })}
-          />
+          <>
+            <h2 className='mt-2 text-3xl font-bold text-gray-900 dark:text-gray-50'>
+              {title}
+            </h2>
+            <Input
+              name='name'
+              id='name'
+              type='text'
+              label={t('extension.settings.name')}
+              hint={'Your extension\'s name without slogans or phrases (e.g. JSON Exporter, Map Beautifier).'}
+              value={form.name}
+              placeholder='My awesome extension'
+              className='mt-4'
+              onChange={handleInput}
+              error={beenSubmitted ? errors.name : null}
+            />
+            <Textarea
+              name='description'
+              id='description'
+              type='text'
+              label={t('extension.settings.description')}
+              value={form.description || ''}
+              placeholder={'My extension does blah blah blah, it provides such great features as blah and blah.'}
+              hint={'Here you should describe your extension in details. What does it do? How does it work? Add a features list, changelog, or whatever else you think best describes it.'}
+              className='mt-4'
+              onChange={handleInput}
+              error={beenSubmitted ? errors.description : null}
+            />
+            <Input
+              name='version'
+              id='version'
+              type='text'
+              hint={(
+                <span>
+                  This is the version identifier your customers will see when they install or upgrade to this version of your extension.
+                  <br />
+                  It should be specified using
+                  {' '}
+                  <a href='https://semver.org/' className='dark:text-indigo-400 text-indigo-700' target='_blank' rel='noopener noreferrer'>SemVer</a>
+                  .
+                </span>
+              )}
+              label={t('extension.settings.version')}
+              value={form.version || ''}
+              placeholder='0.0.1'
+              className='mt-4 mb-4'
+              onChange={handleInput}
+              error={beenSubmitted ? errors.version : null}
+            />
+            {/* <Input
+              name='price'
+              id='price'
+              type='number'
+              label={t('extension.settings.price')}
+              value={`${form.price}` || ''}
+              placeholder='0 (free), 1 (1$), 2 (2$)'
+              className='mb-4'
+              onChange={handleInput}
+              error={beenSubmitted ? errors.price : null}
+            /> */}
+            <Select
+              title={form.category || 'Select a category'}
+              label={t('extension.settings.category')}
+              hint='Select a category your extension belongs to.'
+              className='w-full'
+              items={categories}
+              keyExtractor={item => item.id}
+              labelExtractor={item => item.name}
+              onSelect={(category) => setForm({ ...form, category })}
+            />
+          </>
+
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               {t('extension.settings.mainImage')}
             </div>
             {/* mainImage */}
             <NewImageUpload
-              fileReader={fileReader}
+              fileReader={fileReaderForMainImage}
               files={form.mainImage}
               disabled={showDelete}
               setFiles={(files) => {
