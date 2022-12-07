@@ -41,6 +41,7 @@ import routes from 'routes'
 import MainImageUpload from './components/MainImageUpload'
 import _isString from 'lodash/isString'
 import AdditionalImageUpload from './components/AdittionalImageUpload'
+import JsFileUpload from './components/JsFileUpload'
 
 const MAX_NAME_LENGTH = 50
 const MAX_VERSION_LENGTH = 6
@@ -361,12 +362,12 @@ const ExtensionSettings = ({
                 setForm((items) => ({ ...items, mainImage: files, mainImageUrl: fileReader(files) }))
               }}
             />
-            <ImageList 
-              disabled={showDelete} 
-              isMainImage 
-              files={form.mainImage} 
-              url={form.mainImageUrl} 
-              removeFile={(file) => removeFile(file, FILE_TYPE.MAIN_IMAGE)} 
+            <ImageList
+              disabled={showDelete}
+              isMainImage
+              files={form.mainImage}
+              url={form.mainImageUrl}
+              removeFile={(file) => removeFile(file, FILE_TYPE.MAIN_IMAGE)}
             />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               The primary visual identity of your app.
@@ -388,10 +389,10 @@ const ExtensionSettings = ({
                 setForm((items) => ({ ...items, additionalImages: [...items.additionalImages, { files: files, url: fileReader(files) }] }))
               }}
             />
-            <ImageList 
-              disabled={showDelete} 
-              files={form.additionalImages} 
-              removeFile={(file) => removeFile(file, FILE_TYPE.ADDITIONAL_IMAGES)} 
+            <ImageList
+              disabled={showDelete}
+              files={form.additionalImages}
+              removeFile={(file) => removeFile(file, FILE_TYPE.ADDITIONAL_IMAGES)}
             />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               Add up to 5 images to display on your extension&apos;s summary page.
@@ -413,7 +414,7 @@ const ExtensionSettings = ({
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               The extension .js file
             </div>
-            <ImageUpload
+            <JsFileUpload
               disabled={showDelete}
               files={form.file}
               setFiles={(files) => {
