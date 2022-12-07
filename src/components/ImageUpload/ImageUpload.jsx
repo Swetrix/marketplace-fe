@@ -44,7 +44,7 @@ const ImageUpload = ({ files, setFiles, isMainImage, fileType, disabled }) => {
 }
 
 ImageUpload.propTypes = {
-  files: PropTypes.array || PropTypes.string,
+  files: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
   setFiles: PropTypes.func,
   isMainImage: PropTypes.bool,
   fileType: PropTypes.oneOf(['image', 'javascript']),
