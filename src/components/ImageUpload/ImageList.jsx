@@ -3,21 +3,9 @@ import _map from 'lodash/map'
 import _isEmpty from 'lodash/isEmpty'
 import ImageItem from './ImageItem'
 
-const ImageList = ({ files, removeFile, isMainImage, isFile, disabled }) => {
-  const deleteFileHandler = async (file) => {
-    if (!file.isUploading) {
-      removeFile(file)
-    //   await deleteFile(file.filename)
-    //     .then(() => {
-    //       removeFile(file.filename)
-    //     })
-    //     .catch((err) => console.error(err))
-    } else {
-      removeFile(file)
-    }
-  }
+const ImageList = ({ files, removeFile, isMainImage, isFile, disabled, url }) => {
 
-  if (_isEmpty(files)) {
+  if (_isEmpty(files?.files || files)) {
     return null
   }
 
@@ -27,7 +15,8 @@ const ImageList = ({ files, removeFile, isMainImage, isFile, disabled }) => {
       <ImageItem
           disabled={disabled}
           file={files}
-          deleteFile={() => deleteFileHandler(files)}
+          isFile={isFile}
+          deleteFile={() => removeFile(files)}
         />
     </ul>
     )
@@ -41,15 +30,17 @@ const ImageList = ({ files, removeFile, isMainImage, isFile, disabled }) => {
         <ImageItem
           disabled={disabled}
           file={files}
-          deleteFile={() => deleteFileHandler(files)}
+          url={url}
+          deleteFile={() => removeFile(files)}
         />
       )
-        : files && _map(files, (file, index) => (
+        : !_isEmpty(files) && _map(files, (file, index) => (
           <ImageItem
             disabled={disabled}
-            key={index + (file?.name || file.filename)}
-            file={file}
-            deleteFile={() => deleteFileHandler(file)}
+            key={index + (file?.id || file)}
+            file={file?.files || file}
+            url={file?.url}
+            deleteFile={() => removeFile(file.files || file)}
           />
         ))
       }

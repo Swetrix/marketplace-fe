@@ -40,25 +40,31 @@ import { trackCustom } from 'utils/analytics'
 import routes from 'routes'
 import MainImageUpload from './components/MainImageUpload'
 import _isString from 'lodash/isString'
-import { nanoid } from 'nanoid'
+import AdditionalImageUpload from './components/AdittionalImageUpload'
 
 const MAX_NAME_LENGTH = 50
 const MAX_VERSION_LENGTH = 6
+const FILE_TYPE = {
+  MAIN_IMAGE: 'mainImage',
+  ADDITIONAL_IMAGES: 'additionalImages',
+  FILE: 'file',
+}
 
 const ExtensionSettings = ({
   updateExtensionFailed, createNewExtensionFailed, newExtension, extensionDelete, deleteExtensionFailed,
-  loadExtensions, isLoading, extensions, showError, removeExtension, user, isPublishExtension, publishExtensions,
+  loadExtensions, isLoading, showError, removeExtension, user, isPublishExtension, publishExtensions,
   setExtensions,
 }) => {
   const { t } = useTranslation('common')
   const { pathname } = useLocation()
   const { id } = useParams()
   const isSettings = !_isEmpty(id) && (_replace(routes.extension_settings, ':id', id) === pathname)
-  const extension = useMemo(() => _find([...extensions, publishExtensions], p => p.id === id) || {}, [extensions, id, publishExtensions])
+  const extension = useMemo(() => _find(publishExtensions, p => p.id === id) || {}, [id, publishExtensions])
   const history = useHistory()
   const [form, setForm] = useState({
     name: '',
     additionalImages: [],
+    mainImageUrl: '',
     price: 0,
     category: null,
   })
@@ -69,8 +75,6 @@ const ExtensionSettings = ({
   const [extensionDeleting, setExtensionDeleting] = useState(false)
   const [extensionSaving, setExtensionSaving] = useState(false)
   const [categories, setCategories] = useState([])
-
-  const [mainImageUrl, setMainImageUrl] = useState('')
 
   useEffect(() => {
     getCategories()
@@ -105,25 +109,29 @@ const ExtensionSettings = ({
     console.log(form)
   }, [form])
 
-  const removeFile = (rFiles, isMainImage, isFile) => {
+  const removeFile = (rFiles, type) => {
     setForm((items) => {
-      if (isFile) {
-        return {
-          ...items,
-          file: {},
-        }
-      }
-      if (isMainImage) {
-        return {
-          ...items,
-          mainImage: {},
-        }
-      }
-      return {
-        ...items,
-        additionalImages: _filter(items.additionalImages, file => {
-          return file.isUploading ? file.id !== rFiles.id : file.filename !== rFiles.filename
-        }),
+      switch (type) {
+        case FILE_TYPE.MAIN_IMAGE:
+          return {
+            ...items,
+            mainImage: {},
+            mainImageUrl: '',
+          }
+        case FILE_TYPE.ADDITIONAL_IMAGES:
+          return {
+            ...items,
+            additionalImages: _filter(items.additionalImages, file => {
+              return file?.files?.isUploading ? file.files.id !== rFiles.id : file !== rFiles
+            }),
+          }
+        case FILE_TYPE.FILE:
+          return {
+            ...items,
+            file: {},
+          }
+        default:
+          return items
       }
     })
   }
@@ -134,30 +142,36 @@ const ExtensionSettings = ({
       try {
         const formData = new FormData()
         formData.append('name', data.name)
-        data.mainImage && formData.append('mainImage', data.mainImage)
-        data.file && formData.append('file', data.file)
+        if (!_isString(data.mainImage)) {
+          data.mainImage && formData.append('mainImage', data.mainImage)
+        }
+        if (!_isString(data.file)) {
+          data.file && formData.append('file', data.file)
+        }
         _forEach(data.additionalImages, (file) => {
-          formData.append('additionalImages', file)
+          if (!_isString(file)) {
+            formData.append('additionalImages', file?.files)
+          } else {
+            formData.append('additionalImagesCdn', file)
+          }
         })
-        formData.append('version', data.version)
         data.description && formData.append('description', data.description)
         if (data.category) {
           const categoryID = _find(categories, ({ name }) => name === form.category)?.id
           categoryID && formData.append('categoryID', categoryID)
         }
         if (isSettings) {
+          formData.append('version', data.version)
           await updateExtension(id, formData)
           .then(() => {
-            setExtensions([...extensions, { ...form, id: _toNumber(id) }])
+            newExtension(t('extension.settings.updated'))
           })
-          newExtension(t('extension.settings.updated'))
         } else {
           await createExtension(formData)
           .then(() => {
-            setExtensions([...extensions, { ...form, id: _toNumber(id) }])
+            trackCustom('EXTENSION_CREATED')
+            newExtension(t('extension.settings.created'))
           })
-          trackCustom('EXTENSION_CREATED')
-          newExtension(t('extension.settings.created'))
         }
 
         loadExtensions(isPublishExtension)
@@ -251,17 +265,8 @@ const ExtensionSettings = ({
 
   const title = isSettings ? `${t('extension.settings.settings')} ${form.name}` : t('extension.settings.create')
 
-  const fileReaderForMainImage = (file) => {
-    const url = window.URL.createObjectURL(file[0])
-    setMainImageUrl(url)
-    file.isUploading = true
-    file.id = nanoid()
-    setForm(items => ({ ...items, mainImage: file[0] }))
-  }
-
-  const deleteForMainImage = () => {
-    setForm(prevState => ({...prevState, mainImage: {}}))
-    setMainImageUrl('')
+  const fileReader = (file) => {
+    return window.URL.createObjectURL(file)
   }
 
   return (
@@ -350,27 +355,19 @@ const ExtensionSettings = ({
             </div>
             {/* mainImage */}
             <MainImageUpload
-              fileReader={fileReaderForMainImage}
               files={form.mainImage}
               disabled={showDelete}
               setFiles={(files) => {
-                setForm((items) => ({ ...items, mainImage: files }))
+                setForm((items) => ({ ...items, mainImage: files, mainImageUrl: fileReader(files) }))
               }}
-              removeFile={(file) => removeFile(file, true)}
-              isMainImage
             />
-            {mainImageUrl !== '' &&
-              <div className='relative mt-3 max-w-max mx-auto'>
-                <img className='max-w-xs max-h-[200px] mx-auto' alt={mainImageUrl} src={mainImageUrl} />
-                <div className='absolute top-1 right-1'>
-                  <Button secondary regular>
-                    <TrashIcon className='w-4 h-4 cursor-pointer'
-                               onClick={deleteForMainImage}
-                    />
-                  </Button>
-                </div>
-              </div>
-            }
+            <ImageList 
+              disabled={showDelete} 
+              isMainImage 
+              files={form.mainImage} 
+              url={form.mainImageUrl} 
+              removeFile={(file) => removeFile(file, FILE_TYPE.MAIN_IMAGE)} 
+            />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               The primary visual identity of your app.
               <br />
@@ -384,15 +381,18 @@ const ExtensionSettings = ({
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               {t('extension.settings.additionalImages')}
             </div>
-            <ImageUpload
+            <AdditionalImageUpload
               disabled={showDelete}
               files={form.additionalImages}
               setFiles={(files) => {
-              setForm((items) => ({ ...items, additionalImages: [...items.additionalImages, files] }))
+                setForm((items) => ({ ...items, additionalImages: [...items.additionalImages, { files: files, url: fileReader(files) }] }))
               }}
-              removeFile={removeFile}
             />
-            <ImageList  disabled={showDelete} files={form.additionalImages} removeFile={removeFile} />
+            <ImageList 
+              disabled={showDelete} 
+              files={form.additionalImages} 
+              removeFile={(file) => removeFile(file, FILE_TYPE.ADDITIONAL_IMAGES)} 
+            />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               Add up to 5 images to display on your extension&apos;s summary page.
               <br />
@@ -422,7 +422,7 @@ const ExtensionSettings = ({
               removeFile={removeFile}
               fileType='javascript'
             />
-            <ImageList  disabled={showDelete} isFile files={form.file} removeFile={(file) => removeFile(file, false, true)} />
+            <ImageList disabled={showDelete} isFile files={form.file} removeFile={(file) => removeFile(file, FILE_TYPE.FILE)} />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               The extension .js file.
             </p>
@@ -500,7 +500,6 @@ ExtensionSettings.propTypes = {
   extensionDelete: PropTypes.func.isRequired,
   deleteExtensionFailed: PropTypes.func.isRequired,
   loadExtensions: PropTypes.func.isRequired,
-  extensions: PropTypes.arrayOf(PropTypes.object).isRequired,
   showError: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,

@@ -33,9 +33,9 @@ const ImageUpload = ({ files, setFiles, isMainImage, fileType, disabled }) => {
           <Button type='button' className={_isString(files) ? '' : `${files?.length >= 5 ? 'cursor-not-allowed' : ''}`} primary regular>
             {isMainImage && !_isEmpty(files) ? 'Reset Image' : 'Upload Images'}
           </Button>
-        </div>
-        <p className='flex text-sm font-medium text-gray-700'>Supported files</p>
-        <p className='flex text-sm font-medium text-gray-700'>
+        </div>        
+        <p className='flex text-sm font-medium text-gray-700 dark:text-gray-200'>Supported files</p>
+        <p className='flex text-sm font-medium text-gray-700 dark:text-gray-200'>
           {fileType === 'image' ? 'JPG and PNG images' : 'JavaScript'}
         </p>
       </div>

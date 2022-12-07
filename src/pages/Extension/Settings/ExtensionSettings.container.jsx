@@ -7,7 +7,6 @@ import { tabForPublishExtensions } from 'redux/constants'
 import ProjectSettings from './ExtensionSettings'
 
 const mapStateToProps = (state) => ({
-  extensions: state.ui.extensions.extensions,
   publishExtensions: state.ui.extensions.publishExtensions,
   isLoading: state.ui.extensions.isLoading,
   user: state.auth.user,
@@ -44,8 +43,8 @@ const mapDispatchToProps = (dispatch) => ({
   showError: (message) => {
     dispatch(errorsActions.genericError(message))
   },
-  setExtensions: (extensions, isInstall) => {
-    dispatch(UIActions.setExtensions(extensions, isInstall))
+  setPublishExtensions: (publishExtensions) => {
+    dispatch(UIActions.setExtensions(publishExtensions, true))
   }
 })
 
