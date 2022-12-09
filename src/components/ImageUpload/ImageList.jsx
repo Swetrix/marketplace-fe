@@ -3,7 +3,7 @@ import _map from 'lodash/map'
 import _isEmpty from 'lodash/isEmpty'
 import ImageItem from './ImageItem'
 
-const ImageList = ({ files, removeFile, isMainImage, isFile, disabled, url }) => {
+const ImageList = ({ files, removeFile, isMainImage, isFile, disabled, url, isEditCode, handleEditMode, onClickSaveCode }) => {
 
   if (_isEmpty(files?.files || files)) {
     return null

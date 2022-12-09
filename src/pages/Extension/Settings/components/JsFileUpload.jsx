@@ -3,7 +3,7 @@ import Button from '../../../../ui/Button'
 import { nanoid } from 'nanoid'
 import _isString from 'lodash/isString'
 
-const JsFileUpload = ({ disabled, files, setFiles, setIsBeenChanged }) => {
+const JsFileUpload = ({ disabled, files, setFiles }) => {
   const uploadHandler = async (event) => {
     const file = event.target.files[0]
     if (!file) return
@@ -15,7 +15,6 @@ const JsFileUpload = ({ disabled, files, setFiles, setIsBeenChanged }) => {
     const formData = new FormData()
     formData.append('file', file)
     setFiles(file)
-    setIsBeenChanged(true)
   }
 
   return (

@@ -43,6 +43,8 @@ import _isString from 'lodash/isString'
 import AdditionalImageUpload from './components/AdittionalImageUpload'
 import JsFileUpload from './components/JsFileUpload'
 import CodeEditor from '../../../components/CodeEditor'
+import ImageItem from '../../../components/ImageUpload/ImageItem'
+import JsList from './components/JsList'
 
 const MAX_NAME_LENGTH = 50
 const MAX_VERSION_LENGTH = 6
@@ -68,6 +70,7 @@ const ExtensionSettings = ({
     additionalImages: [],
     mainImageUrl: '',
     price: 0,
+    file:{},
     category: null,
   })
   const [validated, setValidated] = useState(false)
@@ -103,6 +106,7 @@ const ExtensionSettings = ({
       } else {
         setForm({
           ...extension,
+          file: {},
           category: extension.category?.name,
         })
       }
@@ -123,8 +127,11 @@ const ExtensionSettings = ({
     if (form.fileURL) {
       loadExtensionsFile()
     }
-    console.log(code)
-  }, [form.fileURL])
+  }, [])
+
+  useEffect(() => {
+    console.log(form)
+  }, [form])
 
   const javascriptFileReader = useCallback(() => {
     const reader = new FileReader()
@@ -157,6 +164,7 @@ const ExtensionSettings = ({
           return {
             ...items,
             file: {},
+            fileURL: ''
           }
         default:
           return items
@@ -438,6 +446,7 @@ const ExtensionSettings = ({
               - Trim excessive empty space around slide decks.
             </p>
           </div>
+
           {/* js file */}
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
@@ -446,17 +455,18 @@ const ExtensionSettings = ({
             <JsFileUpload
               disabled={showDelete}
               files={form.file}
-              setFiles={(files) => {
-                setForm((items) => ({ ...items, file: files }))
-              }}
-              removeFile={removeFile}
+              setFiles={(files) => setForm((items) => ({ ...items, file: files, fileURL: files.name }))}
+              removeFile={(file) => removeFile(file, FILE_TYPE.FILE)}
               fileType='javascript'
             />
-            <ImageList disabled={showDelete} isFile files={form.file} removeFile={(file) => removeFile(file, FILE_TYPE.FILE)} />
+            {/* <ImageList disabled={showDelete} isFile files={_isEmpty(form.file) ? form.fileURL : form?.file.name} removeFile={(file) => removeFile(file, FILE_TYPE.FILE)} /> */}
+            <JsList file={form.file} fileURL={form.fileURL} disabled={showDelete} removeFile={(file) => removeFile(file, FILE_TYPE.FILE)}
+            />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               The extension .js file.
             </p>
           </div>
+
           {isEditCode && <CodeEditor code={code} onChangeCodeValue={onChangeCodeValue} />}
           {isSettings ? (
             <>
