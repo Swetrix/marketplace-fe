@@ -22,7 +22,6 @@ const ImageList = ({ files, removeFile, isMainImage, isFile, disabled, url, isEd
     )
   }
 
-
   return (
     <ul className='flex items-center flex-wrap'>
       {

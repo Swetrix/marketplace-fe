@@ -31,7 +31,7 @@ const JsList = ({
 
             <Button
               className='ml-2'
-              primary
+              semiDanger
               regular
               onClick={() => {
               if (!disabled) return removeFile(file)

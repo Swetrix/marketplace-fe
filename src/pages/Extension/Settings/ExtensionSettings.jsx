@@ -119,10 +119,7 @@ const ExtensionSettings = ({
   const loadExtensionsFile = useCallback(async () => {
     await fetch(`${process.env.REACT_APP_CDN_URL}file/${form.fileURL}`)
       .then(response => response.text())
-      .then(text => {
-        console.log('text', text)
-        setCode(text)
-      })
+      .then(text => setCode(text))
       .catch(error => console.log(error))
   }, [form.fileURL])
 
@@ -312,15 +309,11 @@ const ExtensionSettings = ({
     }
   }
 
-  const onCancel = () => {
-    history.push(isSettings ? _replace(routes.extension, ':id', id) : routes.dashboard)
-  }
+  const onCancel = () => history.push(isSettings ? _replace(routes.extension, ':id', id) : routes.dashboard)
 
   const title = isSettings ? `${t('extension.settings.settings')} ${form.name}` : t('extension.settings.create')
 
-  const fileReader = (file) => {
-    return window.URL.createObjectURL(file)
-  }
+  const fileReader = (file) => window.URL.createObjectURL(file)
 
   return (
     <Title title={title}>
@@ -330,7 +323,6 @@ const ExtensionSettings = ({
         })}
       >
         <form className='max-w-7xl w-full mx-auto' onSubmit={handleSubmit}>
-          <>
             <h2 className='mt-2 text-3xl font-bold text-gray-900 dark:text-gray-50'>
               {title}
             </h2>
@@ -400,13 +392,12 @@ const ExtensionSettings = ({
               labelExtractor={item => item.name}
               onSelect={(category) => setForm({ ...form, category })}
             />
-          </>
 
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               {t('extension.settings.mainImage')}
             </div>
-            {/* mainImage */}
+
             <MainImageUpload
               files={form.mainImage}
               disabled={showDelete}
@@ -429,7 +420,7 @@ const ExtensionSettings = ({
                 - The image <b>should not</b> be larger than <b>1000x1000</b> pixels.
             </p>
           </div>
-          {/* additionalImages */}
+
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               {t('extension.settings.additionalImages')}
@@ -462,7 +453,6 @@ const ExtensionSettings = ({
             </p>
           </div>
 
-          {/* js file */}
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               The extension .js file

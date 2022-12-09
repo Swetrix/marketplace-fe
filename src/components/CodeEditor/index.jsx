@@ -8,8 +8,8 @@ import Button from '../../ui/Button'
 const CodeEditor = ({ code, onChangeCodeValue, onClickSaveCode }) => {
   return (
     <>
-        <p className='text-end text-sm italic my-1 dark:text-gray-400 '>It`s a swetrix code editor and you can edit you extension js file. Good work for you)</p>
-        <div className='text-[16px] lg:max-w-[80vw] max-w-[800px] mx-auto relative'>
+        <p className='text-end text-xs italic my-1 dark:text-gray-400 '>It`s a swetrix code editor and you can edit you extension js file. Good work for you)</p>
+        <div className='text-[16px] lg:max-w-[80vw] max-w-[900px] mx-auto relative'>
           <ReactCodeMirror
             value={code}
             theme={dracula}

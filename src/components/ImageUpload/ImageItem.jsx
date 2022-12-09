@@ -37,7 +37,7 @@ const ImageItem = ({ file, deleteFile, disabled, url, isFile }) => {
     >
       <div className='relative'>
         <img className='max-w-xs max-h-[200px]' alt={file} src={!_isString(file) ? url : `${process.env.REACT_APP_CDN_URL}file/${file}`} />
-        <Button secondary regular className='absolute top-1 right-1'
+        <Button danger small className='absolute top-1 right-1'
           onClick={() => {
             if (!disabled) return deleteFile(file)
           }}>
