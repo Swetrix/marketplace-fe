@@ -151,8 +151,6 @@ const ExtensionSettings = ({
     console.log(form)
   }, [form])
 
-
-
   const onChangeCodeValue = (value) => setCode(value)
 
   const onClickEditCode = () => setIsEditCode(true)
@@ -183,6 +181,7 @@ const ExtensionSettings = ({
             }),
           }
         case FILE_TYPE.FILE:
+          setIsEditCode(false)
           return {
             ...items,
             file: {},
