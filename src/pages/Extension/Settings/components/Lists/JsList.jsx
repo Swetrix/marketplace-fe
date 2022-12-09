@@ -1,7 +1,7 @@
 import React from 'react'
 import { TrashIcon, PencilAltIcon } from '@heroicons/react/outline'
-import Button from '../../../../ui/Button'
-import { subStr } from '../../../../utils/subStr'
+import Button from '../../../../../ui/Button'
+import { subStr } from '../../../../../utils/subStr'
 
 const JsList = ({
   file,

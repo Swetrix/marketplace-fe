@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from '../../../../ui/Button'
+import Button from '../../../../../ui/Button'
 import _isEmpty from 'lodash/isEmpty'
 
 const MainImageUpload = ({files, setFiles, disabled }) => {

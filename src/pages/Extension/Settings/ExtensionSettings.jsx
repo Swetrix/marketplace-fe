@@ -39,13 +39,13 @@ import Modal from 'ui/Modal'
 import Select from 'ui/Select'
 import { trackCustom } from 'utils/analytics'
 import routes from 'routes'
-import MainImageUpload from './components/MainImageUpload'
+import MainImageUpload from './components/Uploaders/MainImageUpload'
 import _isString from 'lodash/isString'
-import AdditionalImageUpload from './components/AdittionalImageUpload'
-import JsFileUpload from './components/JsFileUpload'
+import AdditionalImageUpload from './components/Uploaders/AdittionalImageUpload'
+import JsFileUpload from './components/Uploaders/JsFileUpload'
 import CodeEditor from '../../../components/CodeEditor'
 import ImageItem from '../../../components/ImageUpload/ImageItem'
-import JsList from './components/JsList'
+import JsList from './components/Lists/JsList'
 
 const MAX_NAME_LENGTH = 50
 const MAX_VERSION_LENGTH = 6

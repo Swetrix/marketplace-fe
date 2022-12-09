@@ -18,7 +18,7 @@ const ImageItem = ({ file, deleteFile, disabled, url, isFile }) => {
         <div className='flex items-center mx-auto pr-10'>
           <DocumentIcon className='h-5 w-5 text-gray-700 mr-2' />
           <p>{subStr(file?.name || file, 33)}</p>
-          <Button primary  className='absolute top-[6px] right-1'>
+          <Button primary className='absolute top-[6px] right-1'>
             <TrashIcon className='w-4 h-4 cursor-pointer'
               onClick={() => {
                 if (!disabled) return deleteFile(file)

@@ -8,7 +8,7 @@ import Button from '../../ui/Button'
 const CodeEditor = ({ code, onChangeCodeValue, onClickSaveCode }) => {
   return (
     <>
-        <p className='text-center my-1'>It is a swetrix code editor and you can edit you extension js file. Good work for you)</p>
+        <p className='text-end text-sm italic my-1 dark:text-gray-400 '>It`s a swetrix code editor and you can edit you extension js file. Good work for you)</p>
         <div className='text-[16px] lg:max-w-[80vw] max-w-[800px] mx-auto relative'>
           <ReactCodeMirror
             scrollbarStyle='native'
