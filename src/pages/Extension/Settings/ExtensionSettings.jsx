@@ -109,11 +109,24 @@ const ExtensionSettings = ({
     }
   }, [user, extension, isLoading, isSettings, history, showError, extensionDeleting, t])
 
-  useEffect(() => {
-    console.log(form)
-  }, [form])
+  const loadExtensionsFile = useCallback(async () => {
+    await fetch(`${process.env.REACT_APP_CDN_URL}file/${form.fileURL}`)
+      .then(response => response.text())
+      .then(text => {
+        console.log('text', text)
+        setCode(text)
+      })
+      .catch(error => console.log(error))
+  }, [form.fileURL])
 
-  const JsFileReader = useCallback(() => {
+  useEffect(() => {
+    if (form.fileURL) {
+      loadExtensionsFile()
+    }
+    console.log(code)
+  }, [form.fileURL])
+
+  const javascriptFileReader = useCallback(() => {
     const reader = new FileReader()
     reader.readAsText(form.file)
     reader.onload = () => {
