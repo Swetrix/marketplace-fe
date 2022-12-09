@@ -147,10 +147,6 @@ const ExtensionSettings = ({
     }
   }, [form.fileURL, form.file, isEditCode, isBeenChanged, loadExtensionsFile, javascriptFileReader])
 
-  useEffect(() => {
-    console.log(form)
-  }, [form])
-
   const onChangeCodeValue = (value) => setCode(value)
 
   const onClickEditCode = () => setIsEditCode(true)

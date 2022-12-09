@@ -3,14 +3,9 @@ import { DocumentIcon, TrashIcon } from '@heroicons/react/outline'
 import cx from 'clsx'
 import _isString from 'lodash/isString'
 import Button from '../../ui/Button'
+import { subStr } from '../../utils/subStr'
 
 const ImageItem = ({ file, deleteFile, disabled, url, isFile }) => {
-  const subStr = (string, len) => {
-    if (string.length > len) {
-      return `${string.substring(0, len)}...`
-    }
-    return string
-  }
 
   if (isFile) {
     return (
