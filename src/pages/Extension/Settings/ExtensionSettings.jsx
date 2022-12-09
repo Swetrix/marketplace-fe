@@ -1,6 +1,6 @@
 /* eslint-disable react/forbid-prop-types */
 import React, {
-  useState, useEffect, useMemo, memo,
+  useState, useEffect, useMemo, memo, useCallback,
 } from 'react'
 import { useLocation, useHistory, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -42,6 +42,7 @@ import MainImageUpload from './components/MainImageUpload'
 import _isString from 'lodash/isString'
 import AdditionalImageUpload from './components/AdittionalImageUpload'
 import JsFileUpload from './components/JsFileUpload'
+import CodeEditor from '../../../components/CodeEditor'
 
 const MAX_NAME_LENGTH = 50
 const MAX_VERSION_LENGTH = 6
@@ -76,6 +77,8 @@ const ExtensionSettings = ({
   const [extensionDeleting, setExtensionDeleting] = useState(false)
   const [extensionSaving, setExtensionSaving] = useState(false)
   const [categories, setCategories] = useState([])
+  const [isEditCode, setIsEditCode] = useState(false)
+  const [code, setCode] = useState('')
 
   useEffect(() => {
     getCategories()
@@ -109,6 +112,17 @@ const ExtensionSettings = ({
   useEffect(() => {
     console.log(form)
   }, [form])
+
+  const JsFileReader = useCallback(() => {
+    const reader = new FileReader()
+    reader.readAsText(form.file)
+    reader.onload = () => {
+      setCode(reader.result)
+    }
+    reader.onerror = () => {
+      setCode('Your file have not been read')
+    }
+  }, [form.file])
 
   const removeFile = (rFiles, type) => {
     setForm((items) => {
@@ -265,6 +279,8 @@ const ExtensionSettings = ({
   }
 
   const title = isSettings ? `${t('extension.settings.settings')} ${form.name}` : t('extension.settings.create')
+
+  const onChangeCodeValue = (value) => setCode(value)
 
   const fileReader = (file) => {
     return window.URL.createObjectURL(file)
@@ -428,6 +444,7 @@ const ExtensionSettings = ({
               The extension .js file.
             </p>
           </div>
+          {isEditCode && <CodeEditor code={code} onChangeCodeValue={onChangeCodeValue} />}
           {isSettings ? (
             <>
               <Checkbox

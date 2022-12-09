@@ -32,7 +32,9 @@ const JsFileUpload = ({ disabled, files, setFiles }) => {
             Upload File
           </Button>
         </div>
-        <p className='flex text-sm font-medium text-gray-700 dark:text-gray-300'>Supported files</p>
+        <p className='flex text-sm font-medium text-gray-700 dark:text-gray-300'>
+          Supported files
+        </p>
         <p className='flex text-sm font-medium text-gray-700 dark:text-gray-300'>
           JavaScript
         </p>
