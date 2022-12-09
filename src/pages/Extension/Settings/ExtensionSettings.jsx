@@ -15,6 +15,7 @@ import _filter from 'lodash/filter'
 import _forEach from 'lodash/forEach'
 import _map from 'lodash/map'
 import PropTypes from 'prop-types'
+import { nanoid } from 'nanoid'
 import {
   DocumentIcon,
   ExclamationIcon,
@@ -79,6 +80,8 @@ const ExtensionSettings = ({
   const [showDelete, setShowDelete] = useState(false)
   const [extensionDeleting, setExtensionDeleting] = useState(false)
   const [extensionSaving, setExtensionSaving] = useState(false)
+
+  const [isBeenChanged, setIsBeenChanged] = useState(false)
   const [categories, setCategories] = useState([])
   const [isEditCode, setIsEditCode] = useState(false)
   const [code, setCode] = useState('')
@@ -123,16 +126,6 @@ const ExtensionSettings = ({
       .catch(error => console.log(error))
   }, [form.fileURL])
 
-  useEffect(() => {
-    if (form.fileURL) {
-      loadExtensionsFile()
-    }
-  }, [])
-
-  useEffect(() => {
-    console.log(form)
-  }, [form])
-
   const javascriptFileReader = useCallback(() => {
     const reader = new FileReader()
     reader.readAsText(form.file)
@@ -143,6 +136,35 @@ const ExtensionSettings = ({
       setCode('Your file have not been read')
     }
   }, [form.file])
+
+  useEffect(() => {
+    if (isEditCode) {
+      if (!isBeenChanged) {
+        loadExtensionsFile()
+      } else {
+        javascriptFileReader()
+      }
+    }
+  }, [form.fileURL, isEditCode, isBeenChanged, loadExtensionsFile, javascriptFileReader])
+
+  useEffect(() => {
+    console.log(form)
+  }, [form])
+
+
+
+  const onChangeCodeValue = (value) => setCode(value)
+
+  const onClickEditCode = () => setIsEditCode(true)
+
+  const onClickSaveCode = () => {
+    const editingFile = new File([code], form.fileName, { type: 'text/javascript' })
+    editingFile.isUploading = true
+    editingFile.id = nanoid()
+    setForm((items)=>({...items, file: editingFile}))
+    setIsEditCode(false)
+    setIsBeenChanged(true)
+  }
 
   const removeFile = (rFiles, type) => {
     setForm((items) => {
@@ -301,8 +323,6 @@ const ExtensionSettings = ({
 
   const title = isSettings ? `${t('extension.settings.settings')} ${form.name}` : t('extension.settings.create')
 
-  const onChangeCodeValue = (value) => setCode(value)
-
   const fileReader = (file) => {
     return window.URL.createObjectURL(file)
   }
@@ -460,14 +480,23 @@ const ExtensionSettings = ({
               fileType='javascript'
             />
             {/* <ImageList disabled={showDelete} isFile files={_isEmpty(form.file) ? form.fileURL : form?.file.name} removeFile={(file) => removeFile(file, FILE_TYPE.FILE)} /> */}
-            <JsList file={form.file} fileURL={form.fileURL} disabled={showDelete} removeFile={(file) => removeFile(file, FILE_TYPE.FILE)}
+            <JsList
+              file={form.file}
+              fileURL={form.fileURL}
+              disabled={showDelete}
+              isCodeEditing={isEditCode}
+              handleEditMode={onClickEditCode}
+              removeFile={(file) => removeFile(file, FILE_TYPE.FILE)}
             />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               The extension .js file.
             </p>
           </div>
 
-          {isEditCode && <CodeEditor code={code} onChangeCodeValue={onChangeCodeValue} />}
+          {isEditCode && <CodeEditor code={code} onChangeCodeValue={onChangeCodeValue} onClickSaveCode={() => {
+            onClickSaveCode()
+            setIsEditCode(false)
+          }} />}
           {isSettings ? (
             <>
               <Checkbox
