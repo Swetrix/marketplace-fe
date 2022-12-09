@@ -26,29 +26,25 @@ body {
   }
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-@layer utilities {
-  .scrollbar::-webkit-scrollbar {
-    width: 20px;
-    height: 20px;
+  .cm-scroller::-webkit-scrollbar {
+    width: 10px !important;
+    height: 10px !important;
+
+
   }
 
-  .scrollbar::-webkit-scrollbar-track {
+  .cm-scroller::-webkit-scrollbar-track {
     border-radius: 100vh;
-    background: #f7f4ed;
+    background: rgb(224 231 255);
   }
 
-  .scrollbar::-webkit-scrollbar-thumb {
-    background: #e0cbcb;
-    border-radius: 100vh;
-    border: 3px solid #f6f7ed;
+  .cm-scroller::-webkit-scrollbar-thumb {
+    background: rgb(79 70 229) !important;
+    border-radius: 100vh !important;
   }
 
-  .scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #c0a0b9;
+  .cm-scroller::-webkit-scrollbar-thumb:hover {
+    background: rgb(79 70 229);
   }
-}
 

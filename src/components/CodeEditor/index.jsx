@@ -11,7 +11,6 @@ const CodeEditor = ({ code, onChangeCodeValue, onClickSaveCode }) => {
         <p className='text-end text-sm italic my-1 dark:text-gray-400 '>It`s a swetrix code editor and you can edit you extension js file. Good work for you)</p>
         <div className='text-[16px] lg:max-w-[80vw] max-w-[800px] mx-auto relative'>
           <ReactCodeMirror
-            scrollbarStyle='native'
             value={code}
             theme={dracula}
             height='600px'
