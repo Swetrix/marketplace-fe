@@ -145,7 +145,7 @@ const ExtensionSettings = ({
         javascriptFileReader()
       }
     }
-  }, [form.fileURL, isEditCode, isBeenChanged, loadExtensionsFile, javascriptFileReader])
+  }, [form.fileURL, form.file, isEditCode, isBeenChanged, loadExtensionsFile, javascriptFileReader])
 
   useEffect(() => {
     console.log(form)
@@ -158,7 +158,7 @@ const ExtensionSettings = ({
   const onClickEditCode = () => setIsEditCode(true)
 
   const onClickSaveCode = () => {
-    const editingFile = new File([code], form.fileName, { type: 'text/javascript' })
+    const editingFile = new File([code], form.file?.name ? form.file?.name : form.fileURL , { type: 'text/javascript' })
     editingFile.isUploading = true
     editingFile.id = nanoid()
     setForm((items)=>({...items, file: editingFile}))
@@ -478,6 +478,7 @@ const ExtensionSettings = ({
               setFiles={(files) => setForm((items) => ({ ...items, file: files, fileURL: files.name }))}
               removeFile={(file) => removeFile(file, FILE_TYPE.FILE)}
               fileType='javascript'
+              setIsBeenChanged={setIsBeenChanged}
             />
             {/* <ImageList disabled={showDelete} isFile files={_isEmpty(form.file) ? form.fileURL : form?.file.name} removeFile={(file) => removeFile(file, FILE_TYPE.FILE)} /> */}
             <JsList
@@ -493,10 +494,7 @@ const ExtensionSettings = ({
             </p>
           </div>
 
-          {isEditCode && <CodeEditor code={code} onChangeCodeValue={onChangeCodeValue} onClickSaveCode={() => {
-            onClickSaveCode()
-            setIsEditCode(false)
-          }} />}
+          {isEditCode && <CodeEditor code={code} onChangeCodeValue={onChangeCodeValue} onClickSaveCode={onClickSaveCode} />}
           {isSettings ? (
             <>
               <Checkbox
