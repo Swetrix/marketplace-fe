@@ -90,7 +90,7 @@ const ExtensionSettings = ({
     version: '',
     price: 0,
     file: {},
-    category: null,   
+    category: null,
   })
   const [validated, setValidated] = useState(false)
   const [errors, setErrors] = useState({})
@@ -102,7 +102,14 @@ const ExtensionSettings = ({
   const [isBeenChanged, setIsBeenChanged] = useState(false)
   const [categories, setCategories] = useState([])
   const [isEditCode, setIsEditCode] = useState(false)
+  const [isWarningCodeSave, setIsWarningCodeSave] = useState(false)
   const [code, setCode] = useState('')
+
+  useEffect(() => {
+    if (isWarningCodeSave){
+      setTimeout(()=> setIsWarningCodeSave(false), 4000)
+    }
+  }, [isWarningCodeSave])
 
   useEffect(() => {
     getCategories()
@@ -204,7 +211,6 @@ const ExtensionSettings = ({
   }
 
   const onSubmit = async (data) => {
-    console.log(data)
     if (!extensionSaving) {
       setExtensionSaving(true)
       try {
@@ -326,9 +332,15 @@ const ExtensionSettings = ({
     e.stopPropagation()
     setBeenSubmitted(true)
 
-    if (validated) {
-      onSubmit(form)
+    if (!isEditCode) {
+      if (validated) {
+        onSubmit(form)
+      }
+    }else{
+      setIsWarningCodeSave(true)
+      showError(t('extension.settings.noSaveCode'))
     }
+
   }
 
   const onCancel = () => history.push(isSettings ? _replace(routes.extension, ':id', id) : routes.dashboard)
@@ -530,7 +542,7 @@ const ExtensionSettings = ({
             </p>
           </div>
 
-          {isEditCode && <CodeEditor code={code} onChangeCodeValue={onChangeCodeValue} onClickSaveCode={onClickSaveCode} />}
+          {isEditCode && <CodeEditor isWarningCodeSave={isWarningCodeSave} code={code} onChangeCodeValue={onChangeCodeValue} onClickSaveCode={onClickSaveCode} />}
           {isSettings ? (
             <>
               <Checkbox

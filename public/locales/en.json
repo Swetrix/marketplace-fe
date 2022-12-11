@@ -178,6 +178,7 @@
   "extension": {
     "noExist": "The selected extension does not exist",
     "settings": {
+      "settings": "Settings of",
       "create": "Create an extension",
       "name": "Name",
       "description": "Description",
@@ -193,7 +194,10 @@
       "updated": "Extension updated",
       "delete": "Delete extension",
       "enabled": "Extension enabled",
-      "enabledHint": "Disabled extension will not count any newly incoming events or pageviews."
+      "enabledHint": "Disabled extension will not count any newly incoming events or pageviews.",
+      "noSaveCode": "Extension's update won`t save, if you don't save code's changes",
+      "deleteHint": "If you delete an extension, you cannot return it.",
+      "qDelete": "Are you sure?"
     }
   },
   "footer": {
