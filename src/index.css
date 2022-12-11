@@ -156,3 +156,26 @@ body {
     transition: none !important;
   }
 }
+
+.cm-scroller::-webkit-scrollbar {
+  width: 10px !important;
+  height: 10px !important;
+}
+
+.cm-scroller::-webkit-scrollbar-track {
+  /*border-radius: 100vh;*/
+  background: rgb(224 231 255);
+}
+
+.cm-scroller::-webkit-scrollbar-thumb {
+  background: rgb(79 70 229) !important;
+  border-radius: 100vh !important;
+}
+
+.cm-scroller::-webkit-scrollbar-thumb:hover {
+  background: rgb(79 70 229);
+}
+
+.cm-theme{
+  border-radius: 15px;
+}

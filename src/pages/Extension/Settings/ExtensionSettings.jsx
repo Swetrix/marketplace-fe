@@ -1,6 +1,6 @@
 /* eslint-disable react/forbid-prop-types */
 import React, {
-  useState, useEffect, useMemo, memo,
+  useState, useEffect, useMemo, memo, useCallback,
 } from 'react'
 import { useLocation, useHistory, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -13,15 +13,13 @@ import _keys from 'lodash/keys'
 import _toNumber from 'lodash/toNumber'
 import _filter from 'lodash/filter'
 import _forEach from 'lodash/forEach'
-import _isString from 'lodash/isString'
-import _map from 'lodash/map'
 import PropTypes from 'prop-types'
-import { ExclamationIcon } from '@heroicons/react/outline'
+import { nanoid } from 'nanoid'
+import {
+  ExclamationIcon,
+} from '@heroicons/react/outline'
 
 import Title from 'components/Title'
-import ImageUpload from 'components/ImageUpload/ImageUpload'
-import ImageList from 'components/ImageUpload/ImageList'
-import Glider from 'react-glider'
 
 import { withAuthentication, auth } from 'hoc/protected'
 import {
@@ -35,26 +33,64 @@ import Modal from 'ui/Modal'
 import Select from 'ui/Select'
 import { trackCustom } from 'utils/analytics'
 import routes from 'routes'
+import MainImageUpload from './components/Uploaders/MainImageUpload'
+import _isString from 'lodash/isString'
+import AdditionalImageUpload from './components/Uploaders/AdittionalImageUpload'
+import JsFileUpload from './components/Uploaders/JsFileUpload'
+import CodeEditor from '../../../components/CodeEditor'
+import JsList from './components/Lists/JsList'
+import ImageList from './components/Lists/ImageList'
 
 const MAX_NAME_LENGTH = 50
-const MAX_VERSION_LENGTH = 6
+const FILE_TYPE = {
+  MAIN_IMAGE: 'mainImage',
+  ADDITIONAL_IMAGES: 'additionalImages',
+  FILE: 'file',
+}
+const VERSION_TYPE = {
+  NOTHING: '',
+  PATCH: 'patch',
+  MINOR: 'minor',
+  MAJOR: 'major',
+}
+const VERSION_TYPE_LIST = [
+  {
+    value: VERSION_TYPE.NOTHING,
+    label: 'Nothing',
+  },
+  {
+    value: VERSION_TYPE.PATCH,
+    label: 'Patch',
+  },
+  {
+    value: VERSION_TYPE.MINOR,
+    label: 'Minor',
+  },
+  {
+    value: VERSION_TYPE.MAJOR,
+    label: 'Major',
+  },
+]
 
 const ExtensionSettings = ({
   updateExtensionFailed, createNewExtensionFailed, newExtension, extensionDelete, deleteExtensionFailed,
-  loadExtensions, isLoading, extensions, showError, removeExtension, user, isPublishExtension, publishExtensions,
-  setExtensions, setAllExtensions, setTotal, setAllTotal,
+  loadExtensions, isLoading, showError, removeExtension, user, isPublishExtension, publishExtensions,
+  setExtensions,
 }) => {
   const { t } = useTranslation('common')
   const { pathname } = useLocation()
   const { id } = useParams()
   const isSettings = !_isEmpty(id) && (_replace(routes.extension_settings, ':id', id) === pathname)
-  const extension = useMemo(() => _find([...extensions, publishExtensions], p => p.id === id) || {}, [extensions, id, publishExtensions])
+  const extension = useMemo(() => _find(publishExtensions, p => p.id === id) || {}, [id, publishExtensions])
   const history = useHistory()
   const [form, setForm] = useState({
     name: '',
     additionalImages: [],
+    mainImageUrl: '',
+    version: '',
     price: 0,
-    category: null,
+    file: {},
+    category: null,   
   })
   const [validated, setValidated] = useState(false)
   const [errors, setErrors] = useState({})
@@ -62,7 +98,11 @@ const ExtensionSettings = ({
   const [showDelete, setShowDelete] = useState(false)
   const [extensionDeleting, setExtensionDeleting] = useState(false)
   const [extensionSaving, setExtensionSaving] = useState(false)
+
+  const [isBeenChanged, setIsBeenChanged] = useState(false)
   const [categories, setCategories] = useState([])
+  const [isEditCode, setIsEditCode] = useState(false)
+  const [code, setCode] = useState('')
 
   useEffect(() => {
     getCategories()
@@ -93,30 +133,78 @@ const ExtensionSettings = ({
     }
   }, [user, extension, isLoading, isSettings, history, showError, extensionDeleting, t])
 
-  const removeFile = (rFiles, isMainImage, isFile) => {
+  const loadExtensionsFile = useCallback(async () => {
+    await fetch(`${process.env.REACT_APP_CDN_URL}file/${form.fileURL}`)
+      .then(response => response.text())
+      .then(text => setCode(text))
+      .catch(error => console.log(error))
+  }, [form.fileURL])
+
+  const javascriptFileReader = useCallback(() => {
+    const reader = new FileReader()
+    reader.readAsText(form.file)
+    reader.onload = () => {
+      setCode(reader.result)
+    }
+    reader.onerror = () => {
+      setCode('Your file have not been read')
+    }
+  }, [form.file])
+
+  useEffect(() => {
+    if (isEditCode) {
+      if (!isBeenChanged) {
+        loadExtensionsFile()
+      } else {
+        javascriptFileReader()
+      }
+    }
+  }, [form.fileURL, form.file, isEditCode, isBeenChanged, loadExtensionsFile, javascriptFileReader])
+
+  const onChangeCodeValue = (value) => setCode(value)
+
+  const onClickEditCode = () => setIsEditCode(true)
+
+  const onClickSaveCode = () => {
+    const editingFile = new File([code], form.file?.name ? form.file?.name : form.fileURL, { type: 'text/javascript' })
+    editingFile.isUploading = true
+    editingFile.id = nanoid()
+    setForm((items) => ({ ...items, file: editingFile }))
+    setIsEditCode(false)
+    setIsBeenChanged(true)
+  }
+
+  const removeFile = (rFiles, type) => {
     setForm((items) => {
-      if (isFile) {
-        return {
-          ...items,
-          file: {},
-        }
-      }
-      if (isMainImage) {
-        return {
-          ...items,
-          mainImage: {},
-        }
-      }
-      return {
-        ...items,
-        additionalImages: _filter(items.additionalImages, file => {
-          return file.isUploading ? file.id !== rFiles.id : file.filename !== rFiles.filename
-        }),
+      switch (type) {
+        case FILE_TYPE.MAIN_IMAGE:
+          return {
+            ...items,
+            mainImage: {},
+            mainImageUrl: '',
+          }
+        case FILE_TYPE.ADDITIONAL_IMAGES:
+          return {
+            ...items,
+            additionalImages: _filter(items.additionalImages, file => {
+              return file?.files?.isUploading ? file.files.id !== rFiles.id : file !== rFiles
+            }),
+          }
+        case FILE_TYPE.FILE:
+          setIsEditCode(false)
+          return {
+            ...items,
+            file: {},
+            fileURL: ''
+          }
+        default:
+          return items
       }
     })
   }
 
   const onSubmit = async (data) => {
+    console.log(data)
     if (!extensionSaving) {
       setExtensionSaving(true)
       try {
@@ -126,37 +214,36 @@ const ExtensionSettings = ({
           data.mainImage && formData.append('mainImage', data.mainImage)
         }
         if (!_isString(data.file)) {
-          data.file && formData.append('file', data.file)
+          !_isEmpty(data.file) && formData.append('file', data.file)
         }
         _forEach(data.additionalImages, (file) => {
           if (!_isString(file)) {
-            formData.append('additionalImages', file)
+            formData.append('additionalImages', file?.files)
           } else {
             formData.append('additionalImagesCdn', file)
           }
         })
-        formData.append('version', data.version)
         data.description && formData.append('description', data.description)
         if (data.category) {
           const categoryID = _find(categories, ({ name }) => name === form.category)?.id
           categoryID && formData.append('categoryID', categoryID)
         }
         if (isSettings) {
+          if (data.version !== extension.version) {
+            formData.append('version', data.version)
+          } else {
+            formData.append('version', '')
+          }
           await updateExtension(id, formData)
-          .then(() => {
-            setExtensions([...extensions, { ...form, id: _toNumber(id) }])
-          })
-          newExtension(t('extension.settings.updated'))
+            .then(() => {
+              newExtension(t('extension.settings.updated'))
+            })
         } else {
           await createExtension(formData)
-          .then((response) => {
-            setExtensions([...extensions, response ], true)
-            setAllExtensions([...extensions, response])
-            setTotal(_size(extensions) + 1, true)
-            setAllTotal(_size(extensions) + 1)
-          })
-          trackCustom('EXTENSION_CREATED')
-          newExtension(t('extension.settings.created'))
+            .then(() => {
+              trackCustom('EXTENSION_CREATED')
+              newExtension(t('extension.settings.created'))
+            })
         }
 
         loadExtensions(isPublishExtension)
@@ -202,8 +289,8 @@ const ExtensionSettings = ({
       allErrors.name = t('extension.settings.pxCharsError', { amount: MAX_NAME_LENGTH })
     }
 
-    if (_size(form.version) > MAX_VERSION_LENGTH) {
-      allErrors.version = t('extension.settings.pxCharsError', { amount: MAX_VERSION_LENGTH })
+    if (form.version !== '' && _isString(form.fileUrl)) {
+      allErrors.version = 'please upload a new or edit file to update the version'
     }
 
     const valid = _isEmpty(_keys(allErrors))
@@ -244,11 +331,11 @@ const ExtensionSettings = ({
     }
   }
 
-  const onCancel = () => {
-    history.push(isSettings ? _replace(routes.extension, ':id', id) : routes.dashboard)
-  }
+  const onCancel = () => history.push(isSettings ? _replace(routes.extension, ':id', id) : routes.dashboard)
 
   const title = isSettings ? `${t('extension.settings.settings')} ${form.name}` : t('extension.settings.create')
+
+  const fileReader = (file) => window.URL.createObjectURL(file)
 
   return (
     <Title title={title}>
@@ -258,7 +345,7 @@ const ExtensionSettings = ({
         })}
       >
         <form className='max-w-7xl w-full mx-auto' onSubmit={handleSubmit}>
-          <h2 className='mt-2 text-3xl font-bold text-gray-900 dark:text-gray-50'>
+          <h2 className='mt-2 text-xl sm:text-3xl font-bold text-gray-900 dark:text-gray-50'>
             {title}
           </h2>
           <Input
@@ -285,38 +372,70 @@ const ExtensionSettings = ({
             onChange={handleInput}
             error={beenSubmitted ? errors.description : null}
           />
-          <Input
-            name='version'
-            id='version'
-            type='text'
-            hint={(
-              <span>
-                This is the version identifier your customers will see when they install or upgrade to this version of your extension.
-                <br />
-                It should be specified using
-                {' '}
-                <a href='https://semver.org/' className='dark:text-indigo-400 text-indigo-700' target='_blank' rel='noopener noreferrer'>SemVer</a>
-                .
-              </span>
-            )}
-            label={t('extension.settings.version')}
-            value={form.version || ''}
-            placeholder='0.0.1'
-            className='mt-4 mb-4'
-            onChange={handleInput}
-            error={beenSubmitted ? errors.version : null}
-          />
+          {isSettings && (
+            <Select
+              name='version'
+              id='version'
+              title={form.version || 'Select a changes'}
+              label={t('extension.settings.version')}
+              hint={(
+                <span>
+                  This is the version identifier your customers will see when they install or upgrade to this version of your extension.
+                  <br />
+                  It should be specified using
+                  {' '}
+                  <a href='https://semver.org/' className='dark:text-indigo-400 text-indigo-700' target='_blank' rel='noopener noreferrer'>SemVer</a>
+                  .
+                  {''}
+                  <br />
+                  Please upload or update file before changing version.
+                  By default, the latest version is selected.
+                </span>
+              )}
+              className='mt-4 mb-4'
+              items={VERSION_TYPE_LIST}
+              keyExtractor={item => item.value}
+              labelExtractor={item => item.label}
+              onSelect={(version) => setForm((oldForm) => {
+                switch (version) {
+                  case VERSION_TYPE_LIST[0].label:
+                    return {
+                      ...oldForm,
+                      version: VERSION_TYPE_LIST[0].value,
+                    }
+                  case VERSION_TYPE_LIST[1].label:
+                    return {
+                      ...oldForm,
+                      version: VERSION_TYPE_LIST[1].value,
+                    }
+                  case VERSION_TYPE_LIST[2].label:
+                    return {
+                      ...oldForm,
+                      version: VERSION_TYPE_LIST[2].value,
+                    }
+                  case VERSION_TYPE_LIST[3].label:
+                    return {
+                      ...oldForm,
+                      version: VERSION_TYPE_LIST[3].value,
+                    }
+                  default:
+                    return oldForm
+                }
+              })}
+              error={beenSubmitted ? errors.version : null}
+            />
+          )}
           {/* <Input
-            name='price'
-            id='price'
-            type='number'
-            label={t('extension.settings.price')}
-            value={`${form.price}` || ''}
-            placeholder='0 (free), 1 (1$), 2 (2$)'
-            className='mb-4'
-            onChange={handleInput}
-            error={beenSubmitted ? errors.price : null}
-          /> */}
+              name='price'
+              id='price'
+              type='number'
+              label={t('extension.settings.price')}
+              value={`${form.price}` || ''}
+              placeholder='0 (free), 1 (1$), 2 (2$)'
+              className='mb-4'
+              onChange={handleInput}
+              error={beenSubmitted ? errors.price : null}
+            /> */}
           <Select
             title={form.category || 'Select a category'}
             label={t('extension.settings.category')}
@@ -331,37 +450,45 @@ const ExtensionSettings = ({
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               {t('extension.settings.mainImage')}
             </div>
-            <ImageUpload
+            <MainImageUpload
               files={form.mainImage}
               disabled={showDelete}
               setFiles={(files) => {
-                setForm((items) => ({ ...items, mainImage: files }))
+                setForm((items) => ({ ...items, mainImage: files, mainImageUrl: fileReader(files) }))
               }}
-              removeFile={(file) => removeFile(file, true)}
-              isMainImage
             />
-            <ImageList disabled={showDelete} isMainImage files={form.mainImage} removeFile={(file) => removeFile(file, true)} />
+            <ImageList
+              disabled={showDelete}
+              isMainImage
+              files={form.mainImage}
+              url={form.mainImageUrl}
+              removeFile={(file) => removeFile(file, FILE_TYPE.MAIN_IMAGE)}
+            />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               The primary visual identity of your app.
               <br />
-               - Please use a square image of at least <b>150x150</b> dimensions.
+              - Please use a square image of at least <b>150x150</b> dimensions.
               <br />
-                - The image <b>should not</b> be larger than <b>1000x1000</b> pixels.
+              - The image <b>should not</b> be larger than <b>1000x1000</b> pixels.
             </p>
           </div>
+
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               {t('extension.settings.additionalImages')}
             </div>
-            <ImageUpload
+            <AdditionalImageUpload
               disabled={showDelete}
               files={form.additionalImages}
               setFiles={(files) => {
-                setForm((items) => ({ ...items, additionalImages: [...items.additionalImages, files] }))
+                setForm((items) => ({ ...items, additionalImages: [...items.additionalImages, { files: files, url: fileReader(files) }] }))
               }}
-              removeFile={removeFile}
             />
-            <ImageList  disabled={showDelete} files={form.additionalImages} removeFile={removeFile} />
+            <ImageList
+              disabled={showDelete}
+              files={form.additionalImages}
+              removeFile={(file) => removeFile(file, FILE_TYPE.ADDITIONAL_IMAGES)}
+            />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               Add up to 5 images to display on your extension&apos;s summary page.
               <br />
@@ -377,24 +504,33 @@ const ExtensionSettings = ({
               - Trim excessive empty space around slide decks.
             </p>
           </div>
+
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               The extension .js file
             </div>
-            <ImageUpload
+            <JsFileUpload
               disabled={showDelete}
               files={form.file}
-              setFiles={(files) => {
-                setForm((items) => ({ ...items, file: files }))
-              }}
-              removeFile={removeFile}
+              setFiles={(files) => setForm((items) => ({ ...items, file: files, fileURL: files.name }))}
+              removeFile={(file) => removeFile(file, FILE_TYPE.FILE)}
               fileType='javascript'
+              setIsBeenChanged={setIsBeenChanged}
             />
-            <ImageList  disabled={showDelete} isFile files={form.file} removeFile={(file) => removeFile(file, false, true)} />
+            <JsList
+              file={form.file}
+              fileURL={form.fileURL}
+              disabled={showDelete}
+              isCodeEditing={isEditCode}
+              handleEditMode={onClickEditCode}
+              removeFile={(file) => removeFile(file, FILE_TYPE.FILE)}
+            />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               The extension .js file.
             </p>
           </div>
+
+          {isEditCode && <CodeEditor code={code} onChangeCodeValue={onChangeCodeValue} onClickSaveCode={onClickSaveCode} />}
           {isSettings ? (
             <>
               <Checkbox
@@ -468,7 +604,6 @@ ExtensionSettings.propTypes = {
   extensionDelete: PropTypes.func.isRequired,
   deleteExtensionFailed: PropTypes.func.isRequired,
   loadExtensions: PropTypes.func.isRequired,
-  extensions: PropTypes.arrayOf(PropTypes.object).isRequired,
   showError: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,

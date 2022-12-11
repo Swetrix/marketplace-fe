@@ -33,6 +33,14 @@ import Button from 'ui/Button'
 const ProjectCart = ({
   name, created, status, t, language, installed, publish, version, onDelete,
 }) => {
+  const history = useHistory()
+
+  const redirectClick = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    history.push(`/extensions/settings/${publish.id}`)
+  }
+
   return (
     <li>
       <div className='block cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-700'>
@@ -64,13 +72,13 @@ const ProjectCart = ({
                   )
                 ) : (
                     <>
-                      <Link to={`/extensions/settings/${publish.id}`}>
+                      <div className='cursor-pointer' onClick={redirectClick}>
                         <CogIcon className='w-6 h-6 text-gray-400 hover:text-gray-500 mr-5' />
-                      </Link>
+                      </div>
                       {status === extensionStatus[0] ? (
-                        <InactivePin label={extensionStatus[0]} />
+                        <InactivePin label={status} />
                       ) : (
-                        <ActivePin label={t('dashboard.active')} />
+                        <ActivePin label={status} />
                       )}
                     </>
                 )
