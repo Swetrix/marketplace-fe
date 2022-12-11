@@ -178,6 +178,7 @@
   "extension": {
     "noExist": "The selected extension does not exist",
     "settings": {
+      "settings": "Settings of",
       "create": "Create an extension",
       "name": "Name",
       "description": "Description",
