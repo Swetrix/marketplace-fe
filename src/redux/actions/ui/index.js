@@ -200,6 +200,11 @@ const loadCategory = () => ({
   payload: { },
 })
 
+const setThemeType = (theme) => ({
+  type: types.SET_THEME_TYPE,
+  payload: { theme },
+})
+
 const UIActions = {
   loadExtensions,
   loadPublishExtensions,
@@ -230,6 +235,7 @@ const UIActions = {
   setAllExtensions,
   setAllExtensionsLoading,
   setAllTotal,
+  setThemeType,
 }
 
 export default UIActions

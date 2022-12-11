@@ -58,4 +58,9 @@ export const sortByConstans = {
   UPDATED_AT: 'updatedAt',
 }
 
+export const THEME_TYPE = {
+  classic: 'classic',
+  christmas: 'christmas',
+}
+
 export const extensionStatus = ['PENDING']
