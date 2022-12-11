@@ -18,6 +18,9 @@ import { alertsActions } from 'redux/actions/alerts'
 import _some from 'lodash/some'
 import _includes from 'lodash/includes'
 import { authMe } from './api'
+import Snowfall from 'react-snowfall'
+import { THEME_TYPE } from 'redux/constants'
+import UIActions from 'redux/actions/ui'
 
 const MainPage = lazy(() => import('pages/MainPage'))
 const SignUp = lazy(() => import('pages/Auth/Signup'))
@@ -68,6 +71,7 @@ const App = () => {
   const { theme } = useSelector(state => state.ui.theme)
   const { error } = useSelector(state => state.errors)
   const { message, type } = useSelector(state => state.alerts)
+  const themeType = useSelector(state => state.ui.theme.type)
   const accessToken = getAccessToken()
 
   useEffect(() => {
@@ -86,7 +90,7 @@ const App = () => {
       if (accessToken && !authenticated) {
         try {
           const me = await authMe()
-
+          dispatch(UIActions.setThemeType(me.theme))
           dispatch(authActions.loginSuccess(me))
           dispatch(authActions.finishLoading())
         } catch (e) {
@@ -123,7 +127,13 @@ const App = () => {
     (!accessToken || !loading) && (
       // eslint-disable-next-line react/jsx-no-useless-fragment
       <Suspense fallback={<></>}>
-        <Header authenticated={authenticated} theme={theme} />
+        <Header authenticated={authenticated} theme={theme} themeType={themeType} />
+        {location.pathname === routes.main && (
+          <Snowfall />
+        )}
+        {location.pathname !== routes.main && themeType === THEME_TYPE.christmas && (
+          <Snowfall snowflakeCount={10} />
+        )}
         <ScrollToTop>
           <Suspense fallback={<Fallback theme={theme} />}>
             <Switch>
