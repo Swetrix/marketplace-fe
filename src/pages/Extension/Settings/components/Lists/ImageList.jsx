@@ -13,12 +13,14 @@ const ImageItem = ({ file, deleteFile, disabled, url }) => {
     >
       <div className='relative'>
         <img className='max-w-xs w-full max-h-[200px]' alt={file} src={!_isString(file) ? url : `${process.env.REACT_APP_CDN_URL}file/${file}`} />
-        <Button danger small className='absolute top-1 right-1'
-          onClick={() => {
-            if (!disabled) return deleteFile(file)
-          }}>
-          <TrashIcon className='w-4 h-4 cursor-pointer' />
-        </Button>
+        <div className='!absolute !top-1 !right-1'>
+          <Button danger small
+            onClick={() => {
+              if (!disabled) return deleteFile(file)
+            }}>
+            <TrashIcon className='w-4 h-4 cursor-pointer' />
+          </Button>
+        </div>
       </div>
     </li>
   )
