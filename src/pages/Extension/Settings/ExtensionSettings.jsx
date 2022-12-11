@@ -90,7 +90,7 @@ const ExtensionSettings = ({
     version: '',
     price: 0,
     file: {},
-    category: null,   
+    category: null,
   })
   const [validated, setValidated] = useState(false)
   const [errors, setErrors] = useState({})
@@ -204,7 +204,6 @@ const ExtensionSettings = ({
   }
 
   const onSubmit = async (data) => {
-    console.log(data)
     if (!extensionSaving) {
       setExtensionSaving(true)
       try {
@@ -326,9 +325,14 @@ const ExtensionSettings = ({
     e.stopPropagation()
     setBeenSubmitted(true)
 
-    if (validated) {
-      onSubmit(form)
+    if (!isEditCode) {
+      if (validated) {
+        onSubmit(form)
+      }
+    }else{
+      showError(t('extension.settings.noSaveCode'))
     }
+
   }
 
   const onCancel = () => history.push(isSettings ? _replace(routes.extension, ':id', id) : routes.dashboard)

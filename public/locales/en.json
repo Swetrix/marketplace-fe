@@ -193,7 +193,8 @@
       "updated": "Extension updated",
       "delete": "Delete extension",
       "enabled": "Extension enabled",
-      "enabledHint": "Disabled extension will not count any newly incoming events or pageviews."
+      "enabledHint": "Disabled extension will not count any newly incoming events or pageviews.",
+      "noSaveCode": "Extension's update won`t save, if you don't save code's changes"
     }
   },
   "footer": {
