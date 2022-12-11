@@ -35,10 +35,6 @@ const ProjectCart = ({
 }) => {
   const history = useHistory()
 
-  useEffect(() => {
-    console.log(extensionStatus, status)
-  }, [])
-
   const redirectClick = (e) => {
     e.preventDefault()
     e.stopPropagation()
@@ -82,8 +78,12 @@ const ProjectCart = ({
                       {status === extensionStatus[0] ? (
                         <InactivePin label={status} />
                       ) : status === 'ACCEPTED'
-                        ? ( <ActivePin label={status} /> )
-                        : ( <WarningPin label={status} /> )
+                        ? (
+                          <ActivePin label={status} />
+                        )
+                        : (
+                          <WarningPin label={status} />
+                        )
                       }
                     </>
                 )
