@@ -7,7 +7,7 @@ import { BookmarkIcon } from '@heroicons/react/outline'
 import Button from '../../ui/Button'
 import { getItem } from 'utils/localstorage'
 
-const CodeEditor = ({ code, onChangeCodeValue, onClickSaveCode }) => {
+const CodeEditor = ({ code, onChangeCodeValue, onClickSaveCode, isWarningCodeSave }) => {
   return (
     <>
         <p className='text-end text-xs italic my-1 dark:text-gray-400 '>It`s a swetrix code editor and you can edit you extension js file. Good work for you</p>
@@ -50,7 +50,8 @@ const CodeEditor = ({ code, onChangeCodeValue, onClickSaveCode }) => {
           />
           <div className='absolute top-2 right-6 '>
             <Button
-              secondary
+              className={isWarningCodeSave ? 'animate-bounce': ''}
+              primary
               regular
               onClick={() => onClickSaveCode()}
             >

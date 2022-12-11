@@ -102,7 +102,14 @@ const ExtensionSettings = ({
   const [isBeenChanged, setIsBeenChanged] = useState(false)
   const [categories, setCategories] = useState([])
   const [isEditCode, setIsEditCode] = useState(false)
+  const [isWarningCodeSave, setIsWarningCodeSave] = useState(false)
   const [code, setCode] = useState('')
+
+  useEffect(() => {
+    if (isWarningCodeSave){
+      setTimeout(()=> setIsWarningCodeSave(false), 4000)
+    }
+  }, [isWarningCodeSave])
 
   useEffect(() => {
     getCategories()
@@ -330,6 +337,7 @@ const ExtensionSettings = ({
         onSubmit(form)
       }
     }else{
+      setIsWarningCodeSave(true)
       showError(t('extension.settings.noSaveCode'))
     }
 
@@ -534,7 +542,7 @@ const ExtensionSettings = ({
             </p>
           </div>
 
-          {isEditCode && <CodeEditor code={code} onChangeCodeValue={onChangeCodeValue} onClickSaveCode={onClickSaveCode} />}
+          {isEditCode && <CodeEditor isWarningCodeSave={isWarningCodeSave} code={code} onChangeCodeValue={onChangeCodeValue} onClickSaveCode={onClickSaveCode} />}
           {isSettings ? (
             <>
               <Checkbox
