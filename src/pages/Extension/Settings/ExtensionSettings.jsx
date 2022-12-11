@@ -13,19 +13,13 @@ import _keys from 'lodash/keys'
 import _toNumber from 'lodash/toNumber'
 import _filter from 'lodash/filter'
 import _forEach from 'lodash/forEach'
-import _map from 'lodash/map'
 import PropTypes from 'prop-types'
 import { nanoid } from 'nanoid'
 import {
-  DocumentIcon,
   ExclamationIcon,
-  TrashIcon,
-  LockClosedIcon
 } from '@heroicons/react/outline'
 
 import Title from 'components/Title'
-import ImageUpload from 'components/ImageUpload/ImageUpload'
-import ImageList from 'components/ImageUpload/ImageList'
 
 import { withAuthentication, auth } from 'hoc/protected'
 import {
@@ -44,16 +38,39 @@ import _isString from 'lodash/isString'
 import AdditionalImageUpload from './components/Uploaders/AdittionalImageUpload'
 import JsFileUpload from './components/Uploaders/JsFileUpload'
 import CodeEditor from '../../../components/CodeEditor'
-import ImageItem from '../../../components/ImageUpload/ImageItem'
 import JsList from './components/Lists/JsList'
+import ImageList from './components/Lists/ImageList'
 
 const MAX_NAME_LENGTH = 50
-const MAX_VERSION_LENGTH = 6
 const FILE_TYPE = {
   MAIN_IMAGE: 'mainImage',
   ADDITIONAL_IMAGES: 'additionalImages',
   FILE: 'file',
 }
+const VERSION_TYPE = {
+  NOTHING: '',
+  PATCH: 'patch',
+  MINOR: 'minor',
+  MAJOR: 'major',
+}
+const VERSION_TYPE_LIST = [
+  {
+    value: VERSION_TYPE.NOTHING,
+    label: 'Nothing',
+  },
+  {
+    value: VERSION_TYPE.PATCH,
+    label: 'Patch',
+  },
+  {
+    value: VERSION_TYPE.MINOR,
+    label: 'Minor',
+  },
+  {
+    value: VERSION_TYPE.MAJOR,
+    label: 'Major',
+  },
+]
 
 const ExtensionSettings = ({
   updateExtensionFailed, createNewExtensionFailed, newExtension, extensionDelete, deleteExtensionFailed,
@@ -70,9 +87,10 @@ const ExtensionSettings = ({
     name: '',
     additionalImages: [],
     mainImageUrl: '',
+    version: '',
     price: 0,
-    file:{},
-    category: null,
+    file: {},
+    category: null,   
   })
   const [validated, setValidated] = useState(false)
   const [errors, setErrors] = useState({})
@@ -109,7 +127,6 @@ const ExtensionSettings = ({
       } else {
         setForm({
           ...extension,
-          file: {},
           category: extension.category?.name,
         })
       }
@@ -149,10 +166,10 @@ const ExtensionSettings = ({
   const onClickEditCode = () => setIsEditCode(true)
 
   const onClickSaveCode = () => {
-    const editingFile = new File([code], form.file?.name ? form.file?.name : form.fileURL , { type: 'text/javascript' })
+    const editingFile = new File([code], form.file?.name ? form.file?.name : form.fileURL, { type: 'text/javascript' })
     editingFile.isUploading = true
     editingFile.id = nanoid()
-    setForm((items)=>({...items, file: editingFile}))
+    setForm((items) => ({ ...items, file: editingFile }))
     setIsEditCode(false)
     setIsBeenChanged(true)
   }
@@ -187,6 +204,7 @@ const ExtensionSettings = ({
   }
 
   const onSubmit = async (data) => {
+    console.log(data)
     if (!extensionSaving) {
       setExtensionSaving(true)
       try {
@@ -196,7 +214,7 @@ const ExtensionSettings = ({
           data.mainImage && formData.append('mainImage', data.mainImage)
         }
         if (!_isString(data.file)) {
-          data.file && formData.append('file', data.file)
+          !_isEmpty(data.file) && formData.append('file', data.file)
         }
         _forEach(data.additionalImages, (file) => {
           if (!_isString(file)) {
@@ -211,17 +229,21 @@ const ExtensionSettings = ({
           categoryID && formData.append('categoryID', categoryID)
         }
         if (isSettings) {
-          formData.append('version', data.version)
+          if (data.version !== extension.version) {
+            formData.append('version', data.version)
+          } else {
+            formData.append('version', '')
+          }
           await updateExtension(id, formData)
-          .then(() => {
-            newExtension(t('extension.settings.updated'))
-          })
+            .then(() => {
+              newExtension(t('extension.settings.updated'))
+            })
         } else {
           await createExtension(formData)
-          .then(() => {
-            trackCustom('EXTENSION_CREATED')
-            newExtension(t('extension.settings.created'))
-          })
+            .then(() => {
+              trackCustom('EXTENSION_CREATED')
+              newExtension(t('extension.settings.created'))
+            })
         }
 
         loadExtensions(isPublishExtension)
@@ -267,8 +289,8 @@ const ExtensionSettings = ({
       allErrors.name = t('extension.settings.pxCharsError', { amount: MAX_NAME_LENGTH })
     }
 
-    if (_size(form.version) > MAX_VERSION_LENGTH) {
-      allErrors.version = t('extension.settings.pxCharsError', { amount: MAX_VERSION_LENGTH })
+    if (form.version !== '' && _isString(form.fileUrl)) {
+      allErrors.version = 'please upload a new or edit file to update the version'
     }
 
     const valid = _isEmpty(_keys(allErrors))
@@ -323,37 +345,39 @@ const ExtensionSettings = ({
         })}
       >
         <form className='max-w-7xl w-full mx-auto' onSubmit={handleSubmit}>
-            <h2 className='mt-2 text-3xl font-bold text-gray-900 dark:text-gray-50'>
-              {title}
-            </h2>
-            <Input
-              name='name'
-              id='name'
-              type='text'
-              label={t('extension.settings.name')}
-              hint={'Your extension\'s name without slogans or phrases (e.g. JSON Exporter, Map Beautifier).'}
-              value={form.name}
-              placeholder='My awesome extension'
-              className='mt-4'
-              onChange={handleInput}
-              error={beenSubmitted ? errors.name : null}
-            />
-            <Textarea
-              name='description'
-              id='description'
-              type='text'
-              label={t('extension.settings.description')}
-              value={form.description || ''}
-              placeholder={'My extension does blah blah blah, it provides such great features as blah and blah.'}
-              hint={'Here you should describe your extension in details. What does it do? How does it work? Add a features list, changelog, or whatever else you think best describes it.'}
-              className='mt-4'
-              onChange={handleInput}
-              error={beenSubmitted ? errors.description : null}
-            />
-            <Input
+          <h2 className='mt-2 text-xl sm:text-3xl font-bold text-gray-900 dark:text-gray-50'>
+            {title}
+          </h2>
+          <Input
+            name='name'
+            id='name'
+            type='text'
+            label={t('extension.settings.name')}
+            hint={'Your extension\'s name without slogans or phrases (e.g. JSON Exporter, Map Beautifier).'}
+            value={form.name}
+            placeholder='My awesome extension'
+            className='mt-4'
+            onChange={handleInput}
+            error={beenSubmitted ? errors.name : null}
+          />
+          <Textarea
+            name='description'
+            id='description'
+            type='text'
+            label={t('extension.settings.description')}
+            value={form.description || ''}
+            placeholder={'My extension does blah blah blah, it provides such great features as blah and blah.'}
+            hint={'Here you should describe your extension in details. What does it do? How does it work? Add a features list, changelog, or whatever else you think best describes it.'}
+            className='mt-4'
+            onChange={handleInput}
+            error={beenSubmitted ? errors.description : null}
+          />
+          {isSettings && (
+            <Select
               name='version'
               id='version'
-              type='text'
+              title={form.version || 'Select a changes'}
+              label={t('extension.settings.version')}
               hint={(
                 <span>
                   This is the version identifier your customers will see when they install or upgrade to this version of your extension.
@@ -362,16 +386,46 @@ const ExtensionSettings = ({
                   {' '}
                   <a href='https://semver.org/' className='dark:text-indigo-400 text-indigo-700' target='_blank' rel='noopener noreferrer'>SemVer</a>
                   .
+                  {''}
+                  <br />
+                  Please upload or update file before changing version.
+                  By default, the latest version is selected.
                 </span>
               )}
-              label={t('extension.settings.version')}
-              value={form.version || ''}
-              placeholder='0.0.1'
               className='mt-4 mb-4'
-              onChange={handleInput}
+              items={VERSION_TYPE_LIST}
+              keyExtractor={item => item.value}
+              labelExtractor={item => item.label}
+              onSelect={(version) => setForm((oldForm) => {
+                switch (version) {
+                  case VERSION_TYPE_LIST[0].label:
+                    return {
+                      ...oldForm,
+                      version: VERSION_TYPE_LIST[0].value,
+                    }
+                  case VERSION_TYPE_LIST[1].label:
+                    return {
+                      ...oldForm,
+                      version: VERSION_TYPE_LIST[1].value,
+                    }
+                  case VERSION_TYPE_LIST[2].label:
+                    return {
+                      ...oldForm,
+                      version: VERSION_TYPE_LIST[2].value,
+                    }
+                  case VERSION_TYPE_LIST[3].label:
+                    return {
+                      ...oldForm,
+                      version: VERSION_TYPE_LIST[3].value,
+                    }
+                  default:
+                    return oldForm
+                }
+              })}
               error={beenSubmitted ? errors.version : null}
             />
-            {/* <Input
+          )}
+          {/* <Input
               name='price'
               id='price'
               type='number'
@@ -382,22 +436,20 @@ const ExtensionSettings = ({
               onChange={handleInput}
               error={beenSubmitted ? errors.price : null}
             /> */}
-            <Select
-              title={form.category || 'Select a category'}
-              label={t('extension.settings.category')}
-              hint='Select a category your extension belongs to.'
-              className='w-full'
-              items={categories}
-              keyExtractor={item => item.id}
-              labelExtractor={item => item.name}
-              onSelect={(category) => setForm({ ...form, category })}
-            />
-
+          <Select
+            title={form.category || 'Select a category'}
+            label={t('extension.settings.category')}
+            hint='Select a category your extension belongs to.'
+            className='w-full'
+            items={categories}
+            keyExtractor={item => item.id}
+            labelExtractor={item => item.name}
+            onSelect={(category) => setForm({ ...form, category })}
+          />
           <div>
             <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
               {t('extension.settings.mainImage')}
             </div>
-
             <MainImageUpload
               files={form.mainImage}
               disabled={showDelete}
@@ -415,9 +467,9 @@ const ExtensionSettings = ({
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               The primary visual identity of your app.
               <br />
-               - Please use a square image of at least <b>150x150</b> dimensions.
+              - Please use a square image of at least <b>150x150</b> dimensions.
               <br />
-                - The image <b>should not</b> be larger than <b>1000x1000</b> pixels.
+              - The image <b>should not</b> be larger than <b>1000x1000</b> pixels.
             </p>
           </div>
 
@@ -465,7 +517,6 @@ const ExtensionSettings = ({
               fileType='javascript'
               setIsBeenChanged={setIsBeenChanged}
             />
-            {/* <ImageList disabled={showDelete} isFile files={_isEmpty(form.file) ? form.fileURL : form?.file.name} removeFile={(file) => removeFile(file, FILE_TYPE.FILE)} /> */}
             <JsList
               file={form.file}
               fileURL={form.fileURL}

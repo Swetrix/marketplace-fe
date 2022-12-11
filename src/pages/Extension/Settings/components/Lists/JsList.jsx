@@ -2,6 +2,7 @@ import React from 'react'
 import { TrashIcon, PencilAltIcon } from '@heroicons/react/outline'
 import Button from '../../../../../ui/Button'
 import { subStr } from '../../../../../utils/subStr'
+import _isEmpty from 'lodash/isEmpty'
 
 const JsList = ({
   file,
@@ -11,6 +12,8 @@ const JsList = ({
   handleEditMode,
   isCodeEditing
 }) => {
+
+  if (_isEmpty(file) && _isEmpty(fileURL)) return null
 
   if (file?.name || fileURL !== '') {
     return (
