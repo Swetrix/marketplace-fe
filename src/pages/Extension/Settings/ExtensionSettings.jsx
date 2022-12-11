@@ -336,7 +336,7 @@ const ExtensionSettings = ({
       if (validated) {
         onSubmit(form)
       }
-    }else{
+    } else{
       setIsWarningCodeSave(true)
       showError(t('extension.settings.noSaveCode'))
     }

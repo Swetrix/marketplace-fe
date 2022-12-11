@@ -50,7 +50,7 @@ const CodeEditor = ({ code, onChangeCodeValue, onClickSaveCode, isWarningCodeSav
           />
           <div className='absolute top-2 right-6 '>
             <Button
-              className={isWarningCodeSave ? 'animate-bounce': ''}
+              className={isWarningCodeSave ? 'animate-bounce' : ''}
               primary
               regular
               onClick={() => onClickSaveCode()}

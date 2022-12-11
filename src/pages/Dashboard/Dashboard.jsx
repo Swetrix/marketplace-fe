@@ -77,8 +77,7 @@ const ProjectCart = ({
                       </div>
                       {status === extensionStatus[0] ? (
                         <InactivePin label={status} />
-                      ) : status === 'ACCEPTED'
-                        ? (
+                      ) : status === 'ACCEPTED' ? (
                           <ActivePin label={status} />
                         )
                         : (
