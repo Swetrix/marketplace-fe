@@ -65,10 +65,6 @@ const Search = ({
     history.push(`/search?term=${search}&category=${_isEmpty(filterCategory) ? '' : filterCategory}`)
   }, [search, filterCategory, history])
 
-  useEffect(() => {
-    console.log(extensions)
-  }, [extensions])
-
   return (
     <Title title='Search'>
       <div className='dark:bg-gray-900 py-10 px-2 sm:px-10 min-h-page'>
