@@ -20,7 +20,7 @@ import Modal from 'ui/Modal'
 import { withAuthentication, auth } from 'hoc/protected'
 import Title from 'components/Title'
 import Loader from 'ui/Loader'
-import { ActivePin, InactivePin } from 'ui/Pin'
+import { ActivePin, InactivePin, WarningPin } from 'ui/Pin'
 import routes from 'routes'
 import {
   ENTRIES_PER_PAGE_DASHBOARD, tabsForDashboard, tabForInstallExtension, tabForPublishExtensions, extensionStatus,
@@ -34,6 +34,10 @@ const ProjectCart = ({
   name, created, status, t, language, installed, publish, version, onDelete,
 }) => {
   const history = useHistory()
+
+  useEffect(() => {
+    console.log(extensionStatus, status)
+  }, [])
 
   const redirectClick = (e) => {
     e.preventDefault()
@@ -77,9 +81,10 @@ const ProjectCart = ({
                       </div>
                       {status === extensionStatus[0] ? (
                         <InactivePin label={status} />
-                      ) : (
-                        <ActivePin label={status} />
-                      )}
+                      ) : status === 'ACCEPTED'
+                        ? ( <ActivePin label={status} /> )
+                        : ( <WarningPin label={status} /> )
+                      }
                     </>
                 )
               }
