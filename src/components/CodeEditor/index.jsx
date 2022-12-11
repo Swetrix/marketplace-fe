@@ -48,14 +48,15 @@ const CodeEditor = ({ code, onChangeCodeValue, onClickSaveCode }) => {
               keyMap: 'sublime',
             }}
           />
+          <div className='absolute top-2 right-6 '>
             <Button
-              className='absolute top-2 right-6 '
               secondary
               regular
               onClick={() => onClickSaveCode()}
             >
                 <BookmarkIcon className='w-4 h-4 cursor-pointer'/>
             </Button>
+          </div>
         </div>
     </>
   )
