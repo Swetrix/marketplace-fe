@@ -190,7 +190,10 @@
       "noNameError": "Please enter an extension name.",
       "verify": "Please, verify your email address first",
       "created": "Extension created",
-      "updated": "Extension updated"
+      "updated": "Extension updated",
+      "delete": "Delete extension",
+      "enabled": "Extension enabled",
+      "enabledHint": "Disabled extension will not count any newly incoming events or pageviews."
     }
   },
   "footer": {
