@@ -19,7 +19,7 @@ const ExtensionsCard = ({
   }
 
   const openExtension = () => {
-    history.push(_replace(routes.viewExtensions, ':id', id))
+    history.push(_replace(routes.view_extensions, ':id', id))
   }
 
   return (
