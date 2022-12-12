@@ -58,7 +58,7 @@ const ProjectCart = ({
                     <>
                       <Button
                         className='mr-2'
-                        primary
+                        danger
                         large
                         onClick={(e) => {
                           e.stopPropagation()
@@ -66,7 +66,7 @@ const ProjectCart = ({
                           onDelete()
                         }}
                       >
-                        delete
+                        Delete
                       </Button>
                     </>
                   )
