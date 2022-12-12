@@ -35,10 +35,16 @@ const ProjectCart = ({
 }) => {
   const history = useHistory()
 
-  const redirectClick = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
+  const redirectClick = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
     history.push(`/extensions/settings/${publish.id}`)
+  }
+
+  const deleteExtensionClick = (event) => {
+    event.stopPropagation()
+    event.preventDefault()
+    onDelete()
   }
 
   return (
@@ -60,11 +66,7 @@ const ProjectCart = ({
                         className='mr-2'
                         danger
                         large
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          e.preventDefault()
-                          onDelete()
-                        }}
+                        onClick={deleteExtensionClick}
                       >
                         Delete
                       </Button>
