@@ -5,6 +5,7 @@ import { useParams, useHistory } from 'react-router-dom'
 
 import _find from 'lodash/find'
 import _filter from 'lodash/filter'
+import _map from 'lodash/map'
 
 import routes from 'routes'
 
@@ -25,6 +26,22 @@ const InstalledSettings = ({ extensions, setInstallExtensions, generateError }) 
 
   const onSubmit = () => {
     installExtension(id, idValue)
+      .then((response) => {
+        if (response.status === 200) {
+          const newExtensions = _filter(extensions, (extension) => extension.id !== id)
+          setInstallExtensions(_map(newExtensions, (extension) => {
+              if (extension.id === id) {
+                return { ...extension, projectId: idValue }
+              }
+              return extension
+            }
+          ))
+          history.push(routes.extensionSettings)
+        }
+      })
+      .catch((error) => {
+        generateError(error?.message || error)
+      })
   }
 
   const onDelete = async () => {
