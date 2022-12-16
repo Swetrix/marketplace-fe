@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { installExtension, deleteInstallExtension } from 'api'
 import { useParams, useHistory } from 'react-router-dom'
