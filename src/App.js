@@ -33,6 +33,7 @@ const ExtensionPage = lazy(() => import('pages/Extension/View/ExtensionPage'))
 const UserSettings = lazy(() => import('pages/UserSettings'))
 const Docs = lazy(() => import('pages/Docs'))
 const Checklist = lazy(() => import('pages/Checklist'))
+const InstalledExtensionSettings = lazy(() => import('./pages/Extension/Settings/InstalledSettings'))
 const minimalFooterPages = [
   '/projects', '/dashboard', '/settings', '/contact',
 ]
@@ -156,8 +157,13 @@ const App = () => {
                 exact
               />
               <Route
-                path={routes.viewExtensions}
+                path={routes.view_extensions}
                 component={ExtensionPage}
+                exact
+              />
+              <Route
+                path={routes.installed_extension_settings}
+                component={InstalledExtensionSettings}
                 exact
               />
               <Route path='*' component={NotFound} />

@@ -13,6 +13,7 @@ import _keys from 'lodash/keys'
 import _toNumber from 'lodash/toNumber'
 import _filter from 'lodash/filter'
 import _forEach from 'lodash/forEach'
+import _findIndex from 'lodash/findIndex'
 import PropTypes from 'prop-types'
 import { nanoid } from 'nanoid'
 import {
@@ -74,7 +75,7 @@ const VERSION_TYPE_LIST = [
 
 const ExtensionSettings = ({
   updateExtensionFailed, createNewExtensionFailed, newExtension, extensionDelete, deleteExtensionFailed,
-  loadExtensions, isLoading, showError, removeExtension, user, isPublishExtension, publishExtensions,
+  loadExtensions, isLoading, showError, removeExtension, user, publishExtensions, setPublishExtensions,
   setExtensions,
 }) => {
   const { t } = useTranslation('common')
@@ -251,8 +252,7 @@ const ExtensionSettings = ({
               newExtension(t('extension.settings.created'))
             })
         }
-
-        loadExtensions(isPublishExtension)
+        loadExtensions(true)
         history.push(routes.dashboard)
       } catch (e) {
         console.error(e, 'error in extension settings')
@@ -273,9 +273,9 @@ const ExtensionSettings = ({
       setExtensionDeleting(true)
       try {
         await deleteExtension(id)
-        removeExtension(id, isPublishExtension)
-        extensionDelete(t('extension.settings.deleted'))
         history.push(routes.dashboard)
+        removeExtension(id, true)
+        extensionDelete(t('extension.settings.deleted'))
       } catch (e) {
         deleteExtensionFailed(e)
       } finally {
@@ -619,7 +619,6 @@ ExtensionSettings.propTypes = {
   showError: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
-  isPublishExtension: PropTypes.bool.isRequired,
 }
 
 export default memo(withAuthentication(ExtensionSettings, auth.authenticated))

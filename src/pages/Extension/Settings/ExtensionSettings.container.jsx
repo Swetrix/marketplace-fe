@@ -10,7 +10,6 @@ const mapStateToProps = (state) => ({
   publishExtensions: state.ui.extensions.publishExtensions,
   isLoading: state.ui.extensions.isLoading,
   user: state.auth.user,
-  isPublishExtension: state.ui.extensions.dashboardTabs === tabForPublishExtensions,
 })
 
 const mapDispatchToProps = (dispatch) => ({

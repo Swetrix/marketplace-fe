@@ -229,13 +229,13 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
       }
     }
 
-    case types.REMOVE_PROJECT: {
+    case types.REMOVE_EXTENSION: {
       const { pid, publish = false } = payload
 
       if (publish) {
         return {
           ...state,
-          publishExtensions: _filter(state.publishExtensions, (item) => item.project.id !== pid),
+          publishExtensions: _filter(state.publishExtensions, (item) => item.id !== pid),
           publishTotal: state.publishTotal - 1,
         }
       }
