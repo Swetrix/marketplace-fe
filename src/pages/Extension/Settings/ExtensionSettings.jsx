@@ -13,7 +13,6 @@ import _keys from 'lodash/keys'
 import _toNumber from 'lodash/toNumber'
 import _filter from 'lodash/filter'
 import _forEach from 'lodash/forEach'
-import _findIndex from 'lodash/findIndex'
 import PropTypes from 'prop-types'
 import { nanoid } from 'nanoid'
 import {

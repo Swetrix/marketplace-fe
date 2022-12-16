@@ -3,7 +3,6 @@ import UIActions from 'redux/actions/ui'
 import { alertsActions } from 'redux/actions/alerts'
 import { errorsActions } from 'redux/actions/errors'
 
-import { tabForPublishExtensions } from 'redux/constants'
 import ProjectSettings from './ExtensionSettings'
 
 const mapStateToProps = (state) => ({
