@@ -25,16 +25,21 @@ const InstalledSettings = ({ extensions, setInstallExtensions, generateError }) 
   }
 
   const onSubmit = () => {
+    if (idValue === extension?.projectId || idValue === '') {
+      generateError(t('ExtensionSettings.errors.sameId'))
+      return
+    }
+
     installExtension(id, idValue)
       .then((response) => {
         if (response.status === 200) {
           const newExtensions = _filter(extensions, (extension) => extension.id !== id)
           setInstallExtensions(_map(newExtensions, (extension) => {
-              if (extension.id === id) {
-                return { ...extension, projectId: idValue }
-              }
-              return extension
+            if (extension.id === id) {
+              return { ...extension, projectId: idValue }
             }
+            return extension
+          }
           ))
           history.push(routes.extensionSettings)
         }
@@ -55,7 +60,8 @@ const InstalledSettings = ({ extensions, setInstallExtensions, generateError }) 
   }
 
   return (
-    <div className='min-h-page bg-gray-50 dark:bg-gray-800 flex flex-col py-6 px-4 sm:px-6 lg:px-8'>
+    <div className='min-h-min-footer bg-gray-50 dark:bg-gray-800 flex flex-col py-6 px-4 sm:px-6 lg:px-8'>
+      <div className='max-w-7xl w-full mx-auto'>
         <Input
           onChange={handleInput}
           value={idValue}
@@ -75,6 +81,7 @@ const InstalledSettings = ({ extensions, setInstallExtensions, generateError }) 
             </Button>
           </div>
         </div>
+      </div>
     </div>
   )
 }
