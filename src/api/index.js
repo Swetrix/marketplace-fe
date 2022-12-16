@@ -218,9 +218,9 @@ export const changeUserDetails = (data) =>
       throw new Error(errorsArray)
     })
 
-export const installExtension = (extensionId) =>
+export const installExtension = (extensionId, projectId = null) =>
   api
-    .post(`/extensions/${extensionId}/install`)
+    .post(`/extensions/${extensionId}/install`, { projectId })
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
