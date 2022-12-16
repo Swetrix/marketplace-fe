@@ -107,33 +107,6 @@ const MainPage = ({ extensions, category }) => {
                   }
                 })
               )}
-              <div className='flex items-center justify-between mb-2'>
-                <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>
-                  Featured
-                </h2>
-                <Button onClick={() => { }} text='See more' primary regular />
-              </div>
-              <Glider
-                hasArrows
-                slidesToScroll={6}
-                resizeLock
-                exactWidth
-                itemWidth={210}
-              >
-                {_map(extensions, (extension) => (
-                  <ExtensionsCard
-                    key={extension.id}
-                    id={extension.id}
-                    name={extension.name}
-                    stars={3}
-                    downloads={extension.usersQuantity}
-                    mainImage={extension.mainImage}
-                    price={extension.price}
-                    // companyLink='https://simpson.com'
-                    companyName={extension.owner?.nickname || 'Unknown'}
-                  />
-                ))}
-              </Glider>
             </div>
           </div>
         </section>
