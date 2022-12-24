@@ -127,11 +127,18 @@ const Dashboard = ({
   const pageAmount = useMemo(() => (dashboardTabs === tabForPublishExtensions ? _ceil(publishTotal / ENTRIES_PER_PAGE_DASHBOARD) : _ceil(total / ENTRIES_PER_PAGE_DASHBOARD)), [total, publishTotal, dashboardTabs])
 
   const onNewExtension = () => {
-    if (user.isActive) {
-      history.push(routes.new_extension)
-    } else {
-      setShowActivateEmailModal(true)
+
+    if (_isEmpty(user.nickname)) {
+      showError('You must set a nickname to create an extension')
+      return
     }
+
+    if (!user.isActive) {
+      setShowActivateEmailModal(true)
+      return
+    }
+
+    history.push(routes.new_extension)
   }
 
   const onDeleteInstallExtensions = async (id) => {

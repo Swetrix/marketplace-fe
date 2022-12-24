@@ -43,6 +43,10 @@ const UserSettings = ({
       allErrors.repeat = t('auth.common.noMatchError')
     }
 
+    if (_size(form.nickname) < 3) {
+      allErrors.nickname = t('auth.common.xCharsError', { amount: 3 })
+    }
+
     const valid = _isEmpty(_keys(allErrors))
 
     setErrors(allErrors)
