@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import UIActions from 'redux/actions/ui'
+import { errorsActions } from 'redux/actions/errors'
 import Dashboard from './Dashboard'
 
 const mapStateToProps = (state) => ({
@@ -36,7 +37,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(UIActions.setExtensions(extensions, isInstall))
   },
   showError: (message) => {
-    dispatch(UIActions.showError(message))
+    dispatch(errorsActions.genericError(message))
   }
 })
 
