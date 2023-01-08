@@ -74,7 +74,7 @@ const VERSION_TYPE_LIST = [
 
 const ExtensionSettings = ({
   updateExtensionFailed, createNewExtensionFailed, newExtension, extensionDelete, deleteExtensionFailed,
-  loadExtensions, isLoading, showError, removeExtension, user, isPublishExtension, publishExtensions,
+  loadExtensions, isLoading, showError, removeExtension, user, publishExtensions, setPublishExtensions,
   setExtensions,
 }) => {
   const { t } = useTranslation('common')
@@ -251,8 +251,7 @@ const ExtensionSettings = ({
               newExtension(t('extension.settings.created'))
             })
         }
-
-        loadExtensions(isPublishExtension)
+        loadExtensions(true)
         history.push(routes.dashboard)
       } catch (e) {
         console.error(e, 'error in extension settings')
@@ -273,9 +272,9 @@ const ExtensionSettings = ({
       setExtensionDeleting(true)
       try {
         await deleteExtension(id)
-        removeExtension(id, isPublishExtension)
-        extensionDelete(t('extension.settings.deleted'))
         history.push(routes.dashboard)
+        removeExtension(id, true)
+        extensionDelete(t('extension.settings.deleted'))
       } catch (e) {
         deleteExtensionFailed(e)
       } finally {
@@ -336,7 +335,7 @@ const ExtensionSettings = ({
       if (validated) {
         onSubmit(form)
       }
-    }else{
+    } else{
       setIsWarningCodeSave(true)
       showError(t('extension.settings.noSaveCode'))
     }
@@ -619,7 +618,6 @@ ExtensionSettings.propTypes = {
   showError: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
-  isPublishExtension: PropTypes.bool.isRequired,
 }
 
 export default memo(withAuthentication(ExtensionSettings, auth.authenticated))

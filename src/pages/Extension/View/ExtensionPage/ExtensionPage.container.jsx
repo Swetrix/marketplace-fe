@@ -6,6 +6,7 @@ import ExtensionPage from './ExtensionPage'
 
 const mapStateToProps = (state) => ({
   extensions: state.ui.extensions.extensions,
+  publishExtensions: state.ui.extensions.publishExtensions,
   installExtensions: state.ui.extensions.installExtensions,
   isLoading: state.ui.extensions.isLoading,
   authenticated: state.auth.authenticated,

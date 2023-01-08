@@ -28,17 +28,22 @@ import {
 import { deleteInstallExtension } from 'api'
 
 import Pagination from 'ui/Pagination'
-import Button from 'ui/Button'
 
 const ProjectCart = ({
-  name, created, status, t, language, installed, publish, version, onDelete,
+  name, created, status, t, id, language, installed, publish, version, onDelete,
 }) => {
   const history = useHistory()
 
-  const redirectClick = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
+  const redirectClick = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
     history.push(`/extensions/settings/${publish.id}`)
+  }
+
+  const redirectExtSettings = (event) => {
+    event.stopPropagation()
+    event.preventDefault()
+    history.push(`/extensions/installed/settings/${id}`)
   }
 
   return (
@@ -55,20 +60,9 @@ const ProjectCart = ({
                   installed ? (
                     <ActivePin className='mr-2' label='installed' />
                   ) : (
-                    <>
-                      <Button
-                        className='mr-2'
-                        primary
-                        large
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          e.preventDefault()
-                          onDelete()
-                        }}
-                      >
-                        delete
-                      </Button>
-                    </>
+                    <div className='cursor-pointer' onClick={redirectExtSettings}>
+                      <CogIcon className='w-6 h-6 text-gray-400 hover:text-gray-500 mr-5' />
+                    </div>
                   )
                 ) : (
                     <>
@@ -77,8 +71,7 @@ const ProjectCart = ({
                       </div>
                       {status === extensionStatus[0] ? (
                         <InactivePin label={status} />
-                      ) : status === 'ACCEPTED'
-                        ? (
+                      ) : status === 'ACCEPTED' ? (
                           <ActivePin label={status} />
                         )
                         : (
@@ -134,11 +127,18 @@ const Dashboard = ({
   const pageAmount = useMemo(() => (dashboardTabs === tabForPublishExtensions ? _ceil(publishTotal / ENTRIES_PER_PAGE_DASHBOARD) : _ceil(total / ENTRIES_PER_PAGE_DASHBOARD)), [total, publishTotal, dashboardTabs])
 
   const onNewExtension = () => {
-    if (user.isActive) {
-      history.push(routes.new_extension)
-    } else {
-      setShowActivateEmailModal(true)
+
+    if (_isEmpty(user.nickname)) {
+      showError('You must set a nickname to create an extension')
+      return
     }
+
+    if (!user.isActive) {
+      setShowActivateEmailModal(true)
+      return
+    }
+
+    history.push(routes.new_extension)
   }
 
   const onDeleteInstallExtensions = async (id) => {
@@ -246,6 +246,7 @@ const Dashboard = ({
                               <Link to={_replace(routes.extension, ':id', id)}>
                                 <ProjectCart
                                   t={t}
+                                  id={id}
                                   language={language}
                                   name={name}
                                   created={created}

@@ -3,14 +3,12 @@ import UIActions from 'redux/actions/ui'
 import { alertsActions } from 'redux/actions/alerts'
 import { errorsActions } from 'redux/actions/errors'
 
-import { tabForPublishExtensions } from 'redux/constants'
 import ProjectSettings from './ExtensionSettings'
 
 const mapStateToProps = (state) => ({
   publishExtensions: state.ui.extensions.publishExtensions,
   isLoading: state.ui.extensions.isLoading,
   user: state.auth.user,
-  isPublishExtension: state.ui.extensions.dashboardTabs === tabForPublishExtensions,
 })
 
 const mapDispatchToProps = (dispatch) => ({
