@@ -15,7 +15,6 @@ import { useTranslation } from 'react-i18next'
 import { CalendarIcon, FolderAddIcon, CogIcon } from '@heroicons/react/outline'
 import { XCircleIcon } from '@heroicons/react/solid'
 
-
 import Modal from 'ui/Modal'
 import { withAuthentication, auth } from 'hoc/protected'
 import Title from 'components/Title'
