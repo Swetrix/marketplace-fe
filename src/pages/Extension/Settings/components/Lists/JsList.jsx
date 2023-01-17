@@ -1,5 +1,5 @@
 import React from 'react'
-import { TrashIcon, PencilAltIcon } from '@heroicons/react/outline'
+import { TrashIcon, PencilIcon } from '@heroicons/react/24/outline'
 import Button from '../../../../../ui/Button'
 import { subStr } from '../../../../../utils/subStr'
 import _isEmpty from 'lodash/isEmpty'
@@ -28,7 +28,7 @@ const JsList = ({
               regular
               onClick={() => handleEditMode()}
             >
-              <PencilAltIcon className='w-4 h-4 cursor-pointer'/>
+              <PencilIcon className='w-4 h-4 cursor-pointer'/>
             </Button>
           )}
 

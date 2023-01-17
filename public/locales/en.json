@@ -98,7 +98,6 @@
     "main": "Swetrix Marketplace",
     "profileSettings": "Profile settings",
     "dashboard": "Dashboard",
-    "docs": "Documentation",
     "checklist": "Submission Checklist"
   },
   "checklist": {
@@ -121,51 +120,6 @@
         "desc": "Extension developers/designers get to submit a range of media to show off your extension.\nIt is required that every extension have an icon.\nFinally you can add gallery images to show off your extension in action. While not required, we encourage all extensions to add these screenshots to illustrate what the extension looks like and behaves on a real example dashboard.\nWe recommend to add at least 1 screenshot which demonstrates the extension in action."
       }
     ]
-  },
-  "docs": {
-    "titles": {
-      "start": "Getting Started",
-      "whatAreExtensions": "What are the extensions?",
-      "howDoTheyWork": "How do they work?",
-      "how": "How to..",
-      "publish": "Publish an extension",
-      "test": "Test an extension",
-      "sdk": "SDK documentation",
-      "eventListeners": "Event listeners"
-    },
-    "contents": {
-      "whatAreExtensions": "Swetrix allows you to create your own extensions to extend the functionality of the platform.\nThese extensions work similarly to browser extensions and allow you to access and process analytics data, display customised pages and much more.\n\nYou can also publish your extensions in the Swetrix Marketplace for others to use.",
-      "howDoTheyWork": "Extensions can communicate with the Swetrix platform via the Swetrix SDK.\nThe Swetrix SDK is a module that gives you the ability to configure different event listeners and also to transfer data from the extension to the Swetrix dashboard.\nAll user-installed extensions run in parallel and are isolated from each other.\n\nThe extension itself is a JavaScript file which consists of a function that takes an sdk object as an argument.\n\nThis object consists of all the APIs you can use when writing your extension.\n\nA simple example of an extension structure:",
-      "exampleLink": "You can find full and in-detail explained examples in our <url>GitHub repository</url>.",
-      "publish": "This section of the documentation is in development..",
-      "eventListeners": "Event listeners allow you to listen to the specific events from the Swetrix Dashboard and run your custom code based on it.\nThe method addEventListener() works by adding a function to the list of event listeners for the specified event type on which it's called.\n\nIf the function or object is already in the list of event listeners for this target, the function or object is not added a second time.\n\nHere is a basic example of an event listener:",
-      "eventListenersList": {
-        "desc": "Currently, the following events are available:",
-        "projectinfo": "This event is triggered on load and it supplies information about the project it's running on.",
-        "timeupdate": "This event is triggered when user changes the time bucket, time perios or sets the date range.",
-        "filtersupdate": "This event is triggered when user changes the filters.",
-        "load": "The event is triggered when the dashboard loads a new set of analytics data.\nFor example, when user opens dashboard for the first time, changes the data range or time bucket."
-      },
-      "addExportDataRow": "The addExportDataRow() function adds a new export data row into the 'Export data' dropdown.\nThe function takes 2 parameters: (1) the name of the row and (2) the callback which is called when the user clicks on the row.\n\nHere is an example of how to use this function:",
-      "removeExportDataRow": "The removeExportDataRow() function removes an export data row from the dropdown. It takes the name of the export data row as a parameter.",
-      "addPanelTab": "The addPanelTab() function allows you to add a new panel tab into the dashboard panels.\n\nFor example, Swetrix has a Country panel with 2 pre-built tabs: countries list and a map.\nBy using this method, you can add a custom tab with a custom HTML (or just text) content.\n\nThis function takes 3 parameters: (1) Panel ID - the ID of the panel where you want to add a new tab, (2) The content of your tab, can be either text or stringified HTML, (3) onOpen callback - a callback that is called when the user opens the tab.",
-      "supportedPanelsList": {
-        "desc": "Currently, Swetrix supports the following panels you can inject a tab into:",
-        "cc": "Country",
-        "pg": "Page",
-        "lc": "Locale",
-        "ref": "Referrer",
-        "dv": "Device type",
-        "br": "Browser",
-        "os": "OS name",
-        "so": "utm_source",
-        "me": "utm_medium",
-        "ca": "utm_campaign"
-      },
-      "removePanelTab": "The removePanelTab() function allows you to remove a panel tab from the dashboard panels. It takes the ID of the panel as a parameter.",
-      "test": "So, you have written your custom extension and want to test it. Cool!\n\nAt the moment, the marketplace and extensions are in beta, so for now we provide 1 way to test your extensions: to do so, you need to download and locally run the <url>Swetrix frontend repository</url>.\n\nOnce you've got it up and running, you can drop your extension into the public/assets directory, then manually add a link to your extension in the src/pages/Project/View/ViewProject.jsx file.\n\nThe result should be something like this:",
-      "testInProgress": "We are currently working on draft extensions so you can upload your beta extensions to the marketplace and test them on the production version of Swetrix.\nAs soon as this functionality is implemented, we will update this section of the documentation."
-    }
   },
   "profileSettings": {
     "general": "General settings",

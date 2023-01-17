@@ -9,13 +9,13 @@ import PropTypes from 'prop-types'
 import {
   DONATE_URL, FIREFOX_ADDON_URL, CHROME_EXTENSION_URL, GITHUB_URL,
   LINKEDIN_URL, STATUSPAGE_URL, TWITTER_URL, BLOG_URL, ABOUT_PAGE_URL,
+  SDK_DOCS_URL,
 } from 'redux/constants'
 import routes from 'routes'
 
 const navigation = {
   support: [
-    () => ({ key: 'docs', href: routes.docs }),
-    () => ({ key: 'guides', href: `${routes.docs}#docs-ht` }),
+    () => ({ key: 'docs', href: SDK_DOCS_URL }),
   ],
   company: [
     { key: 'about', href: ABOUT_PAGE_URL },

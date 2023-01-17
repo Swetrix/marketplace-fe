@@ -2,7 +2,7 @@ import React from 'react'
 
 // import StarsRaiting from 'ui/StarsRaiting'
 import _replace from 'lodash/replace'
-import { DownloadIcon } from '@heroicons/react/outline'
+import { ArrowDownTrayIcon } from '@heroicons/react/24/outline'
 import { useHistory } from 'react-router-dom'
 import routes from 'routes'
 
@@ -45,7 +45,7 @@ const ExtensionsCard = ({
             </a> */}
           </div>
           <div className='flex items-center'>
-            <DownloadIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
+            <ArrowDownTrayIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
             <p className='pl-1 text-gray-400'>
               {downloads}
             </p>

@@ -3,7 +3,7 @@ import _map from 'lodash/map'
 import _isEmpty from 'lodash/isEmpty'
 import _isString from 'lodash/isString'
 import Button from '../../../../../ui/Button'
-import { TrashIcon } from '@heroicons/react/outline'
+import { TrashIcon } from '@heroicons/react/24/outline'
 
 const ImageItem = ({ file, deleteFile, disabled, url }) => {
   return (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Input from 'ui/Input'
-import { SearchIcon } from '@heroicons/react/outline'
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { useTranslation } from 'react-i18next'
 import Button from 'ui/Button'
 import _isEmpty from 'lodash/isEmpty'
@@ -56,7 +56,7 @@ const MainPage = ({ extensions, category }) => {
               type='submit'
               className='-ml-px mb-2 mt-1 relative inline-flex items-center space-x-2 px-4 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 dark:bg-gray-800 dark:border-0 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'
             >
-              <SearchIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
+              <MagnifyingGlassIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
             </button>
           </form>
         </div>

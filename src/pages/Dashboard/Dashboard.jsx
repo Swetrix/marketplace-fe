@@ -12,8 +12,10 @@ import _map from 'lodash/map'
 import _filter from 'lodash/filter'
 import _ceil from 'lodash/ceil'
 import { useTranslation } from 'react-i18next'
-import { CalendarIcon, FolderAddIcon, CogIcon } from '@heroicons/react/outline'
-import { XCircleIcon } from '@heroicons/react/solid'
+import {
+  CalendarIcon, FolderPlusIcon, Cog6ToothIcon,
+} from '@heroicons/react/24/outline'
+import { XCircleIcon } from '@heroicons/react/24/solid'
 
 
 import Modal from 'ui/Modal'
@@ -61,13 +63,13 @@ const ProjectCart = ({
                     <ActivePin className='mr-2' label='installed' />
                   ) : (
                     <div className='cursor-pointer' onClick={redirectExtSettings}>
-                      <CogIcon className='w-6 h-6 text-gray-400 hover:text-gray-500 mr-5' />
+                      <Cog6ToothIcon className='w-6 h-6 text-gray-400 hover:text-gray-500 mr-5' />
                     </div>
                   )
                 ) : (
                     <>
                       <div className='cursor-pointer' onClick={redirectClick}>
-                        <CogIcon className='w-6 h-6 text-gray-400 hover:text-gray-500 mr-5' />
+                        <Cog6ToothIcon className='w-6 h-6 text-gray-400 hover:text-gray-500 mr-5' />
                       </div>
                       {status === extensionStatus[0] ? (
                         <InactivePin label={status} />
@@ -199,7 +201,7 @@ const Dashboard = ({
                 {t('titles.dashboard')}
               </h2>
               <span onClick={onNewExtension} className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 text-sm'>
-                <FolderAddIcon className='w-5 h-5 mr-1' />
+                <FolderPlusIcon className='w-5 h-5 mr-1' />
                 {t('dashboard.create')}
               </span>
             </div>

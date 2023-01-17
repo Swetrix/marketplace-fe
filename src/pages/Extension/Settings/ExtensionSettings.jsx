@@ -16,8 +16,8 @@ import _forEach from 'lodash/forEach'
 import PropTypes from 'prop-types'
 import { nanoid } from 'nanoid'
 import {
-  ExclamationIcon,
-} from '@heroicons/react/outline'
+  ExclamationTriangleIcon,
+} from '@heroicons/react/24/outline'
 
 import Title from 'components/Title'
 
@@ -564,7 +564,7 @@ const ExtensionSettings = ({
                 </div>
                 <div className='flex flex-wrap items-center justify-end'>
                   <Button className='ml-2' onClick={() => !extensionDeleting && setShowDelete(true)} loading={extensionDeleting} danger semiSmall>
-                    <ExclamationIcon className='w-5 h-5 mr-1' />
+                    <ExclamationTriangleIcon className='w-5 h-5 mr-1' />
                     {t('extension.settings.delete')}
                   </Button>
                 </div>

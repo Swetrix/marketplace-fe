@@ -8,15 +8,15 @@ import Flag from 'react-flagkit'
 import i18next from 'i18next'
 import { Popover, Transition } from '@headlessui/react'
 import {
-  MenuIcon, XIcon, DocumentTextIcon, CreditCardIcon, RssIcon,
-} from '@heroicons/react/outline'
-import { MoonIcon, SunIcon } from '@heroicons/react/solid'
+  Bars3Icon, XMarkIcon, DocumentTextIcon, CreditCardIcon, RssIcon,
+} from '@heroicons/react/24/outline'
+import { MoonIcon, SunIcon } from '@heroicons/react/24/solid'
 
 import routes from 'routes'
 import { authActions } from 'redux/actions/auth'
 import UIActions from 'redux/actions/ui'
 import {
-  whitelist, languages, languageFlag, BLOG_URL, THEME_TYPE
+  whitelist, languages, languageFlag, BLOG_URL, THEME_TYPE, SDK_DOCS_URL,
 } from 'redux/constants'
 import Dropdown from 'ui/Dropdown'
 
@@ -75,10 +75,10 @@ const Header = ({ authenticated, theme, themeType }) => {
                   <RssIcon className='w-5 h-5 mr-1' />
                   {t('footer.blog')}
                 </a>
-                <NavLink to={routes.docs} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-2 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' activeClassName='bg-indigo-700 hover:bg-indigo-700 dark:bg-gray-700' key='Docs'>
+                <a href={SDK_DOCS_URL} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-2 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' target='_blank' rel='noreferrer noopener'>
                   <DocumentTextIcon className='w-5 h-5 mr-1' />
                   {t('common.docs')}
-                </NavLink>
+                </a>
               </div>
             </div>
             <div className='hidden md:flex justify-center items-center flex-wrap ml-1 md:ml-10 space-y-1 sm:space-y-0 space-x-2 md:space-x-4'>
@@ -146,7 +146,7 @@ const Header = ({ authenticated, theme, themeType }) => {
                 <span className='sr-only'>
                   {t('common.openMenu')}
                 </span>
-                <MenuIcon className='h-6 w-6' aria-hidden='true' />
+                <Bars3Icon className='h-6 w-6' aria-hidden='true' />
               </Popover.Button>
             </div>
           </div>
@@ -161,10 +161,10 @@ const Header = ({ authenticated, theme, themeType }) => {
                   {t('common.pricing')}
                 </HashLink>
             )}
-            <NavLink to={routes.docs} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-1 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' activeClassName='bg-indigo-700 hover:bg-indigo-700 dark:bg-gray-700' key='Docs'>
+            <a href={SDK_DOCS_URL} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-1 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' target='_blank' rel='noreferrer noopener'>
               <DocumentTextIcon className='w-5 h-5 mr-1' />
               {t('common.docs')}
-            </NavLink>
+            </a>
           </div>
         </nav>
       </header>
@@ -198,7 +198,7 @@ const Header = ({ authenticated, theme, themeType }) => {
                   <span className='sr-only'>
                     {t('common.closeMenu')}
                   </span>
-                  <XIcon className='h-6 w-6' aria-hidden='true' />
+                  <XMarkIcon className='h-6 w-6' aria-hidden='true' />
                 </Popover.Button>
               </div>
             </div>

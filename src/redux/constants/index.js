@@ -11,6 +11,8 @@ export const STATUSPAGE_URL = 'https://stats.uptimerobot.com/33rvmiXXEz'
 export const ABOUT_PAGE_URL = 'https://swetrix.com/about'
 export const BLOG_URL = 'https://blog.swetrix.com'
 export const UTM_GENERATOR_URL = 'https://url.swetrix.com'
+export const DOCS_URL = 'https://docs.swetrix.com'
+export const SDK_DOCS_URL = DOCS_URL + '/sdk-introduction'
 
 export const SUPPORTED_THEMES = ['light', 'dark']
 
