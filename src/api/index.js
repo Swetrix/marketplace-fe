@@ -1,19 +1,40 @@
 /* eslint-disable implicit-arrow-linebreak */
 import axios from 'axios'
 import { store } from 'redux/store'
+import createAuthRefreshInterceptor from 'axios-auth-refresh'
 import Debug from 'debug'
 import _isEmpty from 'lodash/isEmpty'
 import _isArray from 'lodash/isArray'
 import { authActions } from 'redux/actions/auth'
 import _map from 'lodash/map'
 
-import { getAccessToken, removeAccessToken } from 'utils/accessToken'
+import { getAccessToken, removeAccessToken, setAccessToken } from 'utils/accessToken'
+import { getRefreshToken, removeRefreshToken } from 'utils/refreshToken'
 
 const debug = Debug('swetrix:api')
+const baseURL = process.env.REACT_APP_API_URL
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL,
 })
+
+const refreshAuthLogic = (failedRequest) =>
+  axios
+    .post(`${baseURL}/v1/auth/refresh-token`, null, {
+      headers: {
+        Authorization: `Bearer ${getRefreshToken}`,
+      },
+    })
+    .then((tokenRefreshResponse) => {
+      const { accessToken } = tokenRefreshResponse.data
+      setAccessToken(accessToken)
+      // eslint-disable-next-line
+      failedRequest.response.config.headers.Authorization = `Bearer ${accessToken}`
+      return Promise.resolve()
+    })
+
+// Instantiate the interceptor
+createAuthRefreshInterceptor(api, refreshAuthLogic)
 
 api.interceptors.request.use(
   (config) => {
@@ -34,6 +55,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.data.statusCode === 401) {
       removeAccessToken()
+      removeRefreshToken()
       store.dispatch(authActions.logout())
     }
     return Promise.reject(error)
@@ -42,7 +64,18 @@ api.interceptors.response.use(
 
 export const authMe = () =>
   api
-    .get('/auth/me')
+    .get('/user/me')
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+export const refreshToken = () =>
+  api
+    .post('v1/auth/refresh-token')
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
@@ -53,7 +86,7 @@ export const authMe = () =>
 
 export const login = (credentials) =>
   api
-    .post('/auth/login', credentials)
+    .post('v1/auth/login', credentials)
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
@@ -64,7 +97,7 @@ export const login = (credentials) =>
 
 export const signup = (data) =>
   api
-    .post('/auth/register', data)
+    .post('v1/auth/register', data)
     .then((response) => response.data)
     .catch((error) => {
       const errorsArray = error.response.data.message
@@ -218,7 +251,7 @@ export const changeUserDetails = (data) =>
       throw new Error(errorsArray)
     })
 
-export const installExtension = (extensionId, projectId = null) =>
+export const installExtension = (extensionId, projectId = '') =>
   api
     .post(`/extensions/${extensionId}/install`, { projectId })
     .then((response) => response.data)

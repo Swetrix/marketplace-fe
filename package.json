@@ -15,6 +15,7 @@
     "@uiw/codemirror-theme-noctis-lilac": "^4.19.7",
     "@uiw/react-codemirror": "^4.19.7",
     "axios": "^1.2.3",
+    "axios-auth-refresh": "^3.3.6",
     "clsx": "^1.2.1",
     "dayjs": "^1.11.7",
     "debug": "^4.3.4",
@@ -35,11 +36,11 @@
     "react-router-dom": "^5.3.4",
     "react-router-hash-link": "^2.4.3",
     "react-scripts": "5.0.1",
+    "react-snowfall": "^1.2.1",
     "redux": "^4.2.0",
     "redux-saga": "^1.2.2",
     "swetrix": "^2.0.0",
-    "web-vitals": "^2.1.4",
-    "react-snowfall": "^1.2.1"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
