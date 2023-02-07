@@ -20,7 +20,7 @@ const api = axios.create({
 
 const refreshAuthLogic = (failedRequest) =>
   axios
-    .post(`${baseURL}/v1/auth/refresh-token`, null, {
+    .post(`${baseURL}v1/auth/refresh-token`, null, {
       headers: {
         Authorization: `Bearer ${getRefreshToken}`,
       },
@@ -31,6 +31,13 @@ const refreshAuthLogic = (failedRequest) =>
       // eslint-disable-next-line
       failedRequest.response.config.headers.Authorization = `Bearer ${accessToken}`
       return Promise.resolve()
+    })
+    .catch((error) => {
+      debug('%s', error)
+      removeAccessToken()
+      removeRefreshToken()
+      store.dispatch(authActions.logout())
+      return Promise.reject(error)
     })
 
 // Instantiate the interceptor
