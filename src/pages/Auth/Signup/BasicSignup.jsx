@@ -5,6 +5,7 @@ import { useTranslation, Trans } from 'react-i18next'
 import _size from 'lodash/size'
 import _keys from 'lodash/keys'
 import _isEmpty from 'lodash/isEmpty'
+import _omit from 'lodash/omit'
 
 import Input from 'ui/Input'
 import Button from 'ui/Button'
@@ -35,7 +36,7 @@ const BasicSignup = () => {
   const onSubmit = (data) => {
     if (!isLoading) {
       setIsLoading(true)
-      dispatch(authActions.signupAsync(data, t, (result) => {
+      dispatch(authActions.signupAsync(_omit(data, 'tos'), t, (result) => {
         if (result) {
           trackCustom('SIGNUP_BASIC')
         } else {

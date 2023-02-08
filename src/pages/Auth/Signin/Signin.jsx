@@ -17,6 +17,7 @@ import {
 } from 'utils/validator'
 import { submit2FA } from 'api'
 import { setAccessToken } from 'utils/accessToken'
+import { setRefreshToken } from 'utils/refreshToken'
 
 const Signin = ({ login, loginSuccess, loginFailed }) => {
   const { t } = useTranslation('common')
@@ -80,8 +81,9 @@ const Signin = ({ login, loginSuccess, loginFailed }) => {
       setIsLoading(true)
 
       try {
-        const { access_token: accessToken, user } = await submit2FA(twoFACode)
-        setAccessToken(accessToken, form.dontRemember)
+        const { accessToken, refreshToken, user } = await submit2FA(twoFACode)
+        setAccessToken(accessToken)
+        setRefreshToken(refreshToken)
         loginSuccess(user)
       } catch (err) {
         if (_isString(err)) {

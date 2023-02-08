@@ -5,6 +5,7 @@ import { useTranslation, Trans } from 'react-i18next'
 import _size from 'lodash/size'
 import _keys from 'lodash/keys'
 import _isEmpty from 'lodash/isEmpty'
+import _omit from 'lodash/omit'
 
 import Title from 'components/Title'
 import { withAuthentication, auth } from 'hoc/protected'
@@ -70,7 +71,7 @@ const Signup = ({ signup }) => {
   const onSubmit = data => {
     if (!isLoading) {
       setIsLoading(true)
-      signup(data, t, (result) => {
+      signup(_omit(data, 'tos'), t, (result) => {
         if (result) {
           trackCustom('SIGNUP')
         } else {

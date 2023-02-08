@@ -21,6 +21,7 @@ export const SECURITY_EMAIL = 'security@swetrix.com'
 
 // Cookies
 export const TOKEN = 'access_token'
+export const REFRESH_TOKEN = 'refresh_token'
 export const GDPR_REQUEST = 'gdpr_request'
 export const CONFIRMATION_TIMEOUT = 'confirmation_timeout'
 
