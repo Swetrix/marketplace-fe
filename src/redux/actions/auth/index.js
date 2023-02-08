@@ -1,5 +1,6 @@
+import { logoutApi } from 'api'
 import { removeAccessToken } from 'utils/accessToken'
-import { removeRefreshToken } from 'utils/refreshToken'
+import { removeRefreshToken, getRefreshToken } from 'utils/refreshToken'
 import { types } from './types'
 
 export const authActions = {
@@ -25,6 +26,8 @@ export const authActions = {
   },
 
   logout() {
+    const refreshToken = getRefreshToken()
+    logoutApi(refreshToken)
     removeAccessToken()
     removeRefreshToken()
     return {

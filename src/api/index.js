@@ -8,8 +8,8 @@ import _isArray from 'lodash/isArray'
 import { authActions } from 'redux/actions/auth'
 import _map from 'lodash/map'
 
-import { getAccessToken, removeAccessToken, setAccessToken } from 'utils/accessToken'
-import { getRefreshToken, removeRefreshToken } from 'utils/refreshToken'
+import { getAccessToken, setAccessToken } from 'utils/accessToken'
+import { getRefreshToken, } from 'utils/refreshToken'
 
 const debug = Debug('swetrix:api')
 const baseURL = process.env.REACT_APP_API_URL
@@ -34,14 +34,29 @@ const refreshAuthLogic = (failedRequest) =>
     })
     .catch((error) => {
       debug('%s', error)
-      removeAccessToken()
-      removeRefreshToken()
       store.dispatch(authActions.logout())
       return Promise.reject(error)
     })
 
 // Instantiate the interceptor
-createAuthRefreshInterceptor(api, refreshAuthLogic)
+createAuthRefreshInterceptor(api, refreshAuthLogic, {
+  statusCodes: [401, 403],
+})
+
+export const logoutApi = (refreshToken) =>
+  axios
+    .post(`${baseURL}v1/auth/logout`, null, {
+      headers: {
+        Authorization: `Bearer ${refreshToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
 
 api.interceptors.request.use(
   (config) => {
@@ -53,18 +68,6 @@ api.interceptors.request.use(
     return config
   },
   (error) => {
-    return Promise.reject(error)
-  },
-)
-
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.data.statusCode === 401) {
-      removeAccessToken()
-      removeRefreshToken()
-      store.dispatch(authActions.logout())
-    }
     return Promise.reject(error)
   },
 )

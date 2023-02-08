@@ -12,6 +12,7 @@ import Loader from 'ui/Loader'
 
 import ScrollToTop from 'hoc/ScrollToTop'
 import { getAccessToken } from 'utils/accessToken'
+import { getRefreshToken } from 'utils/refreshToken'
 import { authActions } from 'redux/actions/auth'
 import { errorsActions } from 'redux/actions/errors'
 import { alertsActions } from 'redux/actions/alerts'
@@ -73,6 +74,7 @@ const App = () => {
   const { message, type } = useSelector(state => state.alerts)
   const themeType = useSelector(state => state.ui.theme.type)
   const accessToken = getAccessToken()
+  const refreshToken = getRefreshToken()
 
   useEffect(() => {
     const loaderEl = document.getElementById('loader')
@@ -87,7 +89,7 @@ const App = () => {
 
   useEffect(() => {
     (async () => {
-      if (accessToken && !authenticated) {
+      if ((accessToken && refreshToken) && !authenticated) {
         try {
           const me = await authMe()
           dispatch(UIActions.setThemeType(me.theme))
