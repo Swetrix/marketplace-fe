@@ -10,6 +10,8 @@ import { transitions, positions, Provider as AlertProvider } from '@blaumaus/rea
 import CrashHandler from 'pages/CrashHandler'
 import { trackViews } from 'utils/analytics'
 import AlertTemplate from 'ui/Alert'
+import { getAccessToken, removeAccessToken } from 'utils/accessToken'
+import { getRefreshToken } from 'utils/refreshToken'
 import App from './App'
 import i18next from './i18next'
 import './index.css'
@@ -31,6 +33,17 @@ if (process.env.NODE_ENV !== 'production') {
 
 const container = document.getElementById('root')
 const root = createRoot(container)
+
+const removeObsoleteAuthTokens = () => {
+  const accessToken = getAccessToken()
+  const refreshToken = getRefreshToken()
+
+  if (accessToken && !refreshToken) {
+    removeAccessToken()
+  }
+}
+
+removeObsoleteAuthTokens()
 
 // Disabled StrictMode until I fix issues related to navigation issues
 // Possibly it's related to 'Strict Mode has gotten stricter in React 18' -> https://reactjs.org/blog/2022/03/08/react-18-upgrade-guide.html#updates-to-strict-mode
