@@ -25,7 +25,7 @@ import Loader from 'ui/Loader'
 import { ActivePin, InactivePin, WarningPin } from 'ui/Pin'
 import routes from 'routes'
 import {
-  ENTRIES_PER_PAGE_DASHBOARD, tabsForDashboard, tabForInstallExtension, tabForPublishExtensions, extensionStatus,
+  ENTRIES_PER_PAGE_DASHBOARD, tabsForDashboard, tabForInstallExtension, tabForPublishExtensions, extensionStatuses,
 } from 'redux/constants'
 import { deleteInstallExtension } from 'api'
 
@@ -71,9 +71,9 @@ const ProjectCart = ({
                       <div className='cursor-pointer' onClick={redirectClick}>
                         <Cog6ToothIcon className='w-6 h-6 text-gray-400 hover:text-gray-500 mr-5' />
                       </div>
-                      {status === extensionStatus[0] ? (
+                      {status === extensionStatuses.PENDING ? (
                         <InactivePin label={status} />
-                      ) : status === 'ACCEPTED' ? (
+                      ) : status === extensionStatuses.ACCEPTED ? (
                           <ActivePin label={status} />
                         )
                         : (
