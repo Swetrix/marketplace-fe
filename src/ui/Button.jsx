@@ -1,15 +1,12 @@
 import React, { memo } from 'react'
 import cx from 'clsx'
 import PropTypes from 'prop-types'
-import { useSelector } from 'react-redux'
-import { THEME_TYPE } from 'redux/constants'
 import Spin from './icons/Spin'
 import './ButtonChristmas.css'
 
 const Button = ({
   text, children, primary, secondary, danger, onClick, white, small, regular, large, giant, type, className, loading, semiSmall, semiDanger, noBorder,
 }) => {
-  const themeType = useSelector((state) => state.ui.theme.type)
 
   return (
     <button
@@ -30,25 +27,12 @@ const Button = ({
         'cursor-not-allowed': loading,
       }, className)}
     >
-      {themeType === THEME_TYPE.christmas ? (
-        <span className={cx('inline-flex items-center', {
-          button3: text,
-          button2: semiSmall || regular || large || giant,
-        })}
-        >
-          {loading && (
-            <Spin />
-          )}
-          {text || children}
-        </span>
-      ) : (
-        <>
-          {loading && (
-          <Spin />
-          )}
-          {text || children}
-        </>
-      )}
+      <>
+        {loading && (
+        <Spin />
+        )}
+        {text || children}
+      </>
     </button>
   )
 }
