@@ -16,11 +16,11 @@ import routes from 'routes'
 import { authActions } from 'redux/actions/auth'
 import UIActions from 'redux/actions/ui'
 import {
-  whitelist, languages, languageFlag, BLOG_URL, THEME_TYPE, SDK_DOCS_URL,
+  whitelist, languages, languageFlag, BLOG_URL, SDK_DOCS_URL,
 } from 'redux/constants'
 import Dropdown from 'ui/Dropdown'
 
-const Header = ({ authenticated, theme, themeType }) => {
+const Header = ({ authenticated, theme }) => {
   const { t, i18n: { language } } = useTranslation('common')
   const dispatch = useDispatch()
   const buttonRef = useRef()
@@ -40,35 +40,12 @@ const Header = ({ authenticated, theme, themeType }) => {
   return (
     <Popover className='relative bg-white'>
       <header className='bg-indigo-600 dark:bg-gray-750 relative overflow-x-clip'>
-        {themeType === THEME_TYPE.christmas && (
-          <div className='santa-claus group'>
-            <div className='group-hover:cursor-pointer group-hover:translate-y-[-100px] transition-all ease-linear delay-100 duration-500'>
-              <div className='sc-head'>
-                <div className='sc-hat'>
-                  <div className='hat-tip' />
-                </div>
-                <div className='eyes' />
-                <div className='nose' />
-                <div className='beard' />
-                <div className='ears'>
-                  <div className='ear left' />
-                  <div className='ear right' />
-                </div>
-              </div>
-            </div>
-            <div className='sc-body' />
-          </div>
-        )}
         <nav className='mx-auto px-4 sm:px-6 lg:px-8' aria-label='Top'>
           <div className='w-full py-4 flex items-center justify-between border-b border-indigo-500 dark:border-gray-300 lg:border-none'>
             <div className='flex items-center'>
               <Link to={routes.main}>
                 <span className='sr-only'>Swetrix</span>
-                {themeType === THEME_TYPE.christmas ? (
-                  <img className='h-10' src='/assets/logo_white_christmas.png' alt='' />
-                ) : (
-                  <img className='h-10' src='/assets/logo_white.svg' alt='' />
-                )}
+                <img className='h-10' src='/assets/logo_white.svg' alt='' />
               </Link>
               <div className='hidden ml-10 space-x-1 lg:flex'>
                 <a href={BLOG_URL} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-2 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' target='_blank' rel='noreferrer noopener'>
@@ -185,11 +162,7 @@ const Header = ({ authenticated, theme, themeType }) => {
                 <Link to={routes.main}>
                   <span className='sr-only'>Swetrix</span>
                   {theme === 'dark' ? (
-                    themeType === THEME_TYPE.christmas ? (
-                      <img className='h-10' src='/assets/logo_white_christmas.png' alt='' />
-                    ) : (
-                      <img className='h-10' src='/assets/logo_white.svg' alt='' />
-                    )
+                    <img className='h-10' src='/assets/logo_white.svg' alt='' />
                   ) : (
                     <img className='h-10' src='/assets/logo_blue.svg' alt='' />
                   )}
