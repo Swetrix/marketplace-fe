@@ -66,4 +66,10 @@ export const THEME_TYPE = {
   christmas: 'christmas',
 }
 
-export const extensionStatus = ['PENDING']
+export const extensionStatuses = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
+  DELETED: 'DELETED',
+  NO_EXTENSION_UPLOADED: 'NO_EXTENSION_UPLOADED',
+}

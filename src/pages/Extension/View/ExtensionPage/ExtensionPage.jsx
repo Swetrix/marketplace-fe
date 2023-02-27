@@ -10,7 +10,7 @@ import { installExtension, deleteInstallExtension } from 'api'
 import '../../../../glider.css'
 import Button from 'ui/Button'
 import Title from 'components/Title'
-import { extensionStatus } from 'redux/constants'
+import { extensionStatuses } from 'redux/constants'
 
 const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions, authenticated, publishExtensions }) => {
   const { id } = useParams()
@@ -19,7 +19,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
   const [installLoading, setInstallLoading] = useState(false)
   const isInstalled = useMemo(() => !_isEmpty(_find(installExtensions, p => p.id === id) || {}), [installExtensions, id])
   const isPublish = useMemo(() => !_isEmpty(_find(publishExtensions, p => p.id === id) || {}), [publishExtensions, id])
-  const isPending = useMemo(() => extension.status === extensionStatus[0], [extension])
+  const isPending = useMemo(() => extension.status !== extensionStatuses.ACCEPTED, [extension])
 
   const install = async () => {
     if (!authenticated) {
@@ -56,7 +56,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
       <Title title={extension.name}>
         <div className='flex flex-col bg-gray-50 dark:bg-gray-800 py-6 px-4 sm:px-6 lg:px-8 min-h-min-footer-ad extensionPageGlider'>
           <div className='max-w-4xl mx-auto'>
-            {(isPublish || isPending) && (
+            {(isPublish && isPending) && (
               <div className='relative bg-indigo-600 dark:bg-gray-600 rounded-lg'>
                 <div className='mx-auto max-w-7xl py-3 px-3 sm:px-6 lg:px-8'>
                   <div className='pr-16 sm:px-16 sm:text-center'>
@@ -153,36 +153,22 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                   {extension.description}
                 </p>
               </div>
-              {/* <div className='relative bg-white dark:bg-gray-750 pt-5 px-4 min-h-72 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden pb-12'>
-              <div className='flex items-center justify-between mb-2'>
-                <h3 className='flex items-center text-lg leading-6 font-semibold text-gray-900 dark:text-gray-50'>
-                  Tags
-                </h3>
-              </div>
-              <div className='flex flex-row gap-3 flex-wrap w-full'>
-                <p className='rounded-lg border-2 flex-nowrap py-1 px-3 text-gray-900 dark:text-gray-50'>
-                  API
-                </p>
-                <p className='rounded-lg border-2 flex-nowrap py-1 px-3 text-gray-900 dark:text-gray-50'>
-                  API Client
-                </p>
-                <p className='rounded-lg border-2 flex-nowrap py-1 px-3 text-gray-900 dark:text-gray-50'>
-                  API Testing
-                </p>
-                <p className='rounded-lg border-2 flex-nowrap py-1 px-3 text-gray-900 dark:text-gray-50'>
-                  GraphQL
-                </p>
-                <p className='rounded-lg border-2 flex-nowrap py-1 px-3 text-gray-900 dark:text-gray-50'>
-                  keybindings
-                </p>
-                <p className='rounded-lg border-2 flex-nowrap py-1 px-3 text-gray-900 dark:text-gray-50'>
-                  OpenAPI
-                </p>
-                <p className='rounded-lg border-2 flex-nowrap py-1 px-3 text-gray-900 dark:text-gray-50'>
-                  REST
-                </p>
-              </div>
-            </div> */}
+              {!_isEmpty(extension.tags) && (
+                <div className='relative bg-white dark:bg-gray-750 pt-5 px-4 min-h-72 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden pb-12'>
+                  <div className='flex items-center justify-between mb-2'>
+                    <h3 className='flex items-center text-lg leading-6 font-semibold text-gray-900 dark:text-gray-50'>
+                      Tags
+                    </h3>
+                  </div>
+                  <div className='flex flex-row gap-3 flex-wrap w-full'>
+                    {_map(extension.tags, (tag) => (
+                      <p className='rounded-lg border-2 flex-nowrap py-1 px-3 text-gray-900 dark:text-gray-50'>
+                        {tag}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

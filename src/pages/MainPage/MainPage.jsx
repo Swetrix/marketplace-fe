@@ -17,6 +17,7 @@ const MainPage = ({ extensions, category }) => {
   const { t } = useTranslation()
   const [search, setSearch] = useState('')
   const history = useHistory()
+  const extensionsWithoutCategory = _filter(extensions, (extension) => !extension.category)
 
   const searchSubmit = (e) => {
     e.stopPropagation()
@@ -108,6 +109,40 @@ const MainPage = ({ extensions, category }) => {
                 })
               )}
             </div>
+            {!_isEmpty(extensionsWithoutCategory) && (
+              <div className='mt-6 relative p-5'>
+                <div className='flex items-center justify-between'>
+                  <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>
+                    Other
+                  </h2>
+                  <Button onClick={() => {
+                    history.push(
+                      `/search?term=&category=&sortBy=${sortByConstans.CREATED_AT}`
+                    )
+                  }} text='See more' primary regular />
+                </div>
+                <Glider
+                  hasArrows={extensionsWithoutCategory.length >= 5}
+                  slidesToScroll={6}
+                  resizeLock
+                  exactWidth
+                  itemWidth={210}
+                >
+                  {_map(extensionsWithoutCategory, (extension) => (
+                    <ExtensionsCard
+                      key={extension.id}
+                      id={extension.id}
+                      name={extension.name}
+                      stars={3}
+                      downloads={extension.usersQuantity}
+                      mainImage={extension.mainImage}
+                      price={extension.price}
+                      // companyLink='https://simpson.com'
+                      companyName={extension.owner?.nickname || 'Unknown'} />
+                  ))}
+                </Glider>
+              </div>
+            )}
           </div>
         </section>
       </div>
