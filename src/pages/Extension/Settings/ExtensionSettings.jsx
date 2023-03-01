@@ -220,13 +220,13 @@ const ExtensionSettings = ({
           data.mainImage && formData.append('mainImage', data.mainImage)
         }
         if (!_isString(data.file)) {
-          !_isEmpty(data.file) && formData.append('file', data.file)
+          !_isEmpty(data.file) && formData.append('extensionScript', data.file)
         }
         _forEach(data.additionalImages, (file) => {
           if (!_isString(file)) {
-            formData.append('additionalImages', file?.files)
+            formData.append('additionalImages[]', file?.files)
           } else {
-            formData.append('additionalImagesCdn', file)
+            formData.append('additionalImagesCdn[]', file)
           }
         })
         data.description && formData.append('description', data.description)
