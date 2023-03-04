@@ -48,7 +48,7 @@ const FILE_TYPE = {
   FILE: 'file',
 }
 const VERSION_TYPE = {
-  NOTHING: '',
+  NOTHING: 'nothing',
   PATCH: 'patch',
   MINOR: 'minor',
   MAJOR: 'major',
@@ -86,6 +86,7 @@ const ExtensionSettings = ({
   const [form, setForm] = useState({
     name: '',
     additionalImages: [],
+    additionalImagesToDelete: [],
     mainImageUrl: '',
     version: '',
     price: 0,
@@ -133,11 +134,13 @@ const ExtensionSettings = ({
         history.push(routes.dashboard)
       } else {
         setForm({
+          ...form,
           ...extension,
           category: extension.category?.name,
         })
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, extension, isLoading, isSettings, history, showError, extensionDeleting, t])
 
   const loadExtensionsFile = useCallback(async () => {
@@ -196,13 +199,15 @@ const ExtensionSettings = ({
             additionalImages: _filter(items.additionalImages, file => {
               return file?.files?.isUploading ? file.files.id !== rFiles.id : file !== rFiles
             }),
+            additionalImagesToDelete: [...items.additionalImagesToDelete, _isString(rFiles) && rFiles]
           }
         case FILE_TYPE.FILE:
           setIsEditCode(false)
           return {
             ...items,
             file: {},
-            fileURL: ''
+            fileURL: '',
+            additionalImagesToDelete: [...items.additionalImagesToDelete, _isString(rFiles) && rFiles]
           }
         default:
           return items
@@ -225,8 +230,11 @@ const ExtensionSettings = ({
         _forEach(data.additionalImages, (file) => {
           if (!_isString(file)) {
             formData.append('additionalImages[]', file?.files)
-          } else {
-            formData.append('additionalImagesCdn[]', file)
+          }
+        })
+        _forEach(data.additionalImagesToDelete, (fileId) => {
+          if (!_isEmpty(fileId) && _isString(fileId)) {
+            formData.append('additionalImagesToDelete[]', fileId)
           }
         })
         data.description && formData.append('description', data.description)
@@ -235,10 +243,8 @@ const ExtensionSettings = ({
           categoryID && formData.append('categoryID', categoryID)
         }
         if (isSettings) {
-          if (data.version !== extension.version) {
+          if (data.version !== extension.version && data.version !== VERSION_TYPE.NOTHING) {
             formData.append('version', data.version)
-          } else {
-            formData.append('version', '')
           }
           await updateExtension(id, formData)
             .then(() => {
