@@ -2,7 +2,6 @@ import React, { memo } from 'react'
 import cx from 'clsx'
 import PropTypes from 'prop-types'
 import Spin from './icons/Spin'
-import './ButtonChristmas.css'
 
 const Button = ({
   text, children, primary, secondary, danger, onClick, white, small, regular, large, giant, type, className, loading, semiSmall, semiDanger, noBorder,

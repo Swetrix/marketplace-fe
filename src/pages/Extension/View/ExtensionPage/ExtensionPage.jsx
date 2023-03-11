@@ -129,9 +129,8 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                     rewind
                   >
                     {_map(extension.additionalImages, ((image) => (
-                      <div className='glider-block border-2 border-white rounded-lg bg-gray-100 dark:bg-gray-800 dark:border-gray-900'>
+                      <div key={image} className='glider-block border-2 border-white rounded-lg bg-gray-100 dark:bg-gray-800 dark:border-gray-900'>
                         <img
-                          key={image}
                           alt=''
                           className='rounded-lg'
                           src={`${process.env.REACT_APP_CDN_URL}file/${image}` || 'https://via.placeholder.com/150'}
