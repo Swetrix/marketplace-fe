@@ -9,24 +9,24 @@ import PropTypes from 'prop-types'
 import {
   DONATE_URL, FIREFOX_ADDON_URL, CHROME_EXTENSION_URL, GITHUB_URL,
   LINKEDIN_URL, STATUSPAGE_URL, TWITTER_URL, BLOG_URL, ABOUT_PAGE_URL,
-  SDK_DOCS_URL,
+  SDK_DOCS_URL, PRIVACY_PAGE_URL, CONTACT_PAGE_URL, TERMS_PAGE_URL,
 } from 'redux/constants'
 import routes from 'routes'
 
 const navigation = {
   support: [
-    () => ({ key: 'docs', href: SDK_DOCS_URL }),
+   { key: 'docs', href: SDK_DOCS_URL },
   ],
   company: [
     { key: 'about', href: ABOUT_PAGE_URL },
-    { key: 'contact', href: routes.contact, internal: true },
+    { key: 'contact', href: CONTACT_PAGE_URL },
     { key: 'status', href: STATUSPAGE_URL },
     { key: 'donate', href: DONATE_URL },
     { key: 'blog', href: BLOG_URL },
   ],
   legal: [
-    { key: 'privacy', href: routes.privacy },
-    { key: 'terms', href: routes.terms },
+    { key: 'terms', href: TERMS_PAGE_URL },
+    { key: 'privacy', href: PRIVACY_PAGE_URL },
   ],
   social: [
     {
@@ -88,26 +88,41 @@ const Footer = ({ minimal, authenticated }) => {
       <footer className='bg-gray-800 dark:bg-gray-900'>
         <div className='max-w-7xl mx-auto py-8 px-4 overflow-hidden sm:px-6 lg:px-8'>
           <nav className='-mx-5 -my-2 flex flex-wrap justify-center' aria-label='Footer'>
+            
             <div className='px-5 py-2'>
-              <Link to={routes.contact} className='text-base text-gray-300 hover:text-white'>
+            <a href={CONTACT_PAGE_URL} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
                 {t('footer.contact')}
-              </Link>
+              </a>  
             </div>
+
             <div className='px-5 py-2'>
-              <Link to={routes.privacy} className='text-base text-gray-300 hover:text-white'>
+            <a href={SDK_DOCS_URL} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
+                {t('footer.docs')}
+              </a>  
+            </div>
+
+            
+            <div className='px-5 py-2'>
+            <a href={PRIVACY_PAGE_URL} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
                 {t('footer.pp')}
-              </Link>
+              </a>  
             </div>
+
+
             <div className='px-5 py-2'>
-              <Link to={routes.terms} className='text-base text-gray-300 hover:text-white'>
+            <a href={TERMS_PAGE_URL} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
                 {t('footer.tos')}
-              </Link>
+              </a>  
             </div>
+
+
             <div className='px-5 py-2'>
               <a href={ABOUT_PAGE_URL} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
                 {t('footer.about')}
               </a>
             </div>
+
+
             <div className='px-5 py-2'>
               <a href={STATUSPAGE_URL} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
                 {t('footer.status')}
@@ -170,14 +185,13 @@ const Footer = ({ minimal, authenticated }) => {
                   {t('footer.support')}
                 </h3>
                 <ul className='mt-4 space-y-4'>
-                  {_map(navigation.support, (func) => {
-                    const { key, href } = func(authenticated)
+                  {_map(navigation.support, ({ key, href }) => {
 
                     return (
                       <li key={key}>
-                        <HashLink to={href} className='text-base text-gray-300 hover:text-white'>
+                        <a href={href} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
                           {t(`footer.${key}`)}
-                        </HashLink>
+                        </a>
                       </li>
                     )
                   })}
@@ -210,11 +224,17 @@ const Footer = ({ minimal, authenticated }) => {
                   {t('footer.legal')}
                 </h3>
                 <ul className='mt-4 space-y-4'>
-                  {_map(navigation.legal, ({ key, href }) => (
+                  {_map(navigation.legal, ({ key, href, internal }) => (
                     <li key={key}>
+                    {internal ? (
                       <Link to={href} className='text-base text-gray-300 hover:text-white'>
                         {t(`footer.${key}`)}
                       </Link>
+                    ) : (
+                      <a href={href} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
+                        {t(`footer.${key}`)}
+                      </a>
+                    )}
                     </li>
                   ))}
                 </ul>
