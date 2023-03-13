@@ -132,12 +132,7 @@ const Header = ({ authenticated, theme }) => {
               <RssIcon className='w-5 h-5 mr-1' />
               {t('footer.blog')}
             </a>
-            {!authenticated && (
-                <HashLink to={`${routes.main}#pricing`} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-1 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' key='Pricing'>
-                  <CreditCardIcon className='w-5 h-5 mr-1' />
-                  {t('common.pricing')}
-                </HashLink>
-            )}
+            
             <a href={SDK_DOCS_URL} className='flex justify-center items-center text-base select-none font-medium text-white hover:text-indigo-50 py-1 px-2 dark:hover:bg-gray-700 hover:bg-indigo-500 rounded-md' target='_blank' rel='noreferrer noopener'>
               <DocumentTextIcon className='w-5 h-5 mr-1' />
               {t('common.docs')}
