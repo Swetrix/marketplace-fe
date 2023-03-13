@@ -92,6 +92,7 @@ const ExtensionSettings = ({
     price: 0,
     file: {},
     category: null,
+    companyLink: null
   })
   const [validated, setValidated] = useState(false)
   const [errors, setErrors] = useState({})
@@ -442,17 +443,17 @@ const ExtensionSettings = ({
               error={beenSubmitted ? errors.version : null}
             />
           )}
-          {/* <Input
-              name='price'
-              id='price'
-              type='number'
-              label={t('extension.settings.price')}
-              value={`${form.price}` || ''}
-              placeholder='0 (free), 1 (1$), 2 (2$)'
-              className='mb-4'
-              onChange={handleInput}
-              error={beenSubmitted ? errors.price : null}
-            /> */}
+          <Input
+            name='companyLink'
+            id='companyLink'
+            type='text'
+            label={t('Company link')}
+            value={form.companyLink}
+            placeholder='https://company.com'
+            className='mb-4'
+            onChange={handleInput}
+            error={beenSubmitted ? errors.companyLink : null}
+          />  
           <Select
             title={form.category || 'Select a category'}
             label={t('extension.settings.category')}
