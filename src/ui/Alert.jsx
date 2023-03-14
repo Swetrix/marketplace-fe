@@ -12,7 +12,6 @@ const AlertTemplate = ({
   const { type } = options
   const isInfo = type === 'info'
   const isSuccess = type === 'success'
-  const isError = type === 'error'
 
   return (
     <div
