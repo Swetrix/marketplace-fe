@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Input from 'ui/Input'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { useTranslation } from 'react-i18next'
@@ -13,7 +14,7 @@ import ExtensionsCard from 'components/ExtensionsCard'
 import _map from 'lodash/map'
 import Title from 'components/Title'
 
-const MainPage = ({ extensions, category }) => {
+const MainPage = ({ extensions, categories }) => {
   const { t } = useTranslation()
   const [search, setSearch] = useState('')
   const history = useHistory()
@@ -64,8 +65,8 @@ const MainPage = ({ extensions, category }) => {
         <section>
           <div className='max-w-[1400px] mx-auto py-10 px-4 sm:px-6 lg:px-8'>
             <div className='mt-6 relative p-5'>
-              {!_isEmpty(category) && (
-                _map(category, (item) => {
+              {!_isEmpty(categories) && (
+                _map(categories, (item) => {
                   const extensionForCategory = _filter(
                     extensions,
                     (extension) => extension.category?.name === item.name,
@@ -77,7 +78,7 @@ const MainPage = ({ extensions, category }) => {
                           <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>
                             {item.name}
                           </h2>
-                          <Button onClick={() => { 
+                          <Button onClick={() => {
                             history.push(
                               `/search?term=&category=${item.name}&sortBy=${sortByConstans.CREATED_AT}`,
                             )
@@ -145,6 +146,24 @@ const MainPage = ({ extensions, category }) => {
             )}
           </div>
         </section>
+      </div>
+      <div className='p-5 dark:bg-gray-900 mb-28 '>
+        <div className='flex items-center '>
+          <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white px-10'>
+            Filter by category / collection
+          </h2>
+        </div>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 px-10 gap-4 mt-2'>
+          {_map(categories, (category) => (
+            <Link
+              key={category.name}
+              to={`/search?term=&category=${category.name}&sortBy=${sortByConstans.CREATED_AT}`}
+              className='bg-gray-100 dark:bg-gray-800 text-gray-700 text-center dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 font-bold py-2 px-4 rounded'
+            >
+              {category.name}
+            </Link>
+          ))}
+        </div>
       </div>
     </Title>
   )
