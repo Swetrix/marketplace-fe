@@ -19,7 +19,6 @@ const MainPage = ({ extensions, categories }) => {
   const [search, setSearch] = useState('')
   const history = useHistory()
   const extensionsWithoutCategory = _filter(extensions, (extension) => !extension.category)
-
   const searchSubmit = (e) => {
     e.stopPropagation()
     e.preventDefault()
@@ -147,7 +146,7 @@ const MainPage = ({ extensions, categories }) => {
           </div>
         </section>
       </div>
-      <div className='p-5 dark:bg-gray-900 mb-28 '>
+      <div className='p-5 dark:bg-gray-900 pb-28 '>
         <div className='flex items-center '>
           <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white px-10'>
             Filter by category / collection
