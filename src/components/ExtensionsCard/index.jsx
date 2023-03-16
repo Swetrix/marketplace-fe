@@ -4,6 +4,7 @@ import React from 'react'
 import _replace from 'lodash/replace'
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline'
 import { useHistory } from 'react-router-dom'
+import _isEmpty from 'lodash/isEmpty'
 import routes from 'routes'
 
 const ExtensionsCard = ({
@@ -37,12 +38,11 @@ const ExtensionsCard = ({
           <div className='flex flex-col'>
             <p className='dark:text-gray-400 text-gray-500 text-sm leading-[10px]'>
               {subStr(companyName, 10)}
-            </p>
-            {/* <a href={companyLink} className='dark:text-indigo-400 cursor-pointer text-indigo-500 font-semibold border-0 text-sm'>
-              {_includes(companyLink, 'https://')
-                ? subStr(_replace(companyLink, 'https://', ''), 10)
-                : subStr(_replace(companyLink, 'http://', ''), 10)}
-            </a> */}
+            </p>     
+            {!_isEmpty(companyLink) && (
+              <a href={companyLink} className='dark:text-indigo-400 cursor-pointer text-indigo-500 font-semibold border-0 text-sm'>
+                {subStr(companyLink, 10)}      
+              </a>)}            
           </div>
           <div className='flex items-center'>
             <ArrowDownTrayIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
