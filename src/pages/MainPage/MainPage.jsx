@@ -19,6 +19,7 @@ const MainPage = ({ extensions, categories }) => {
   const [search, setSearch] = useState('')
   const history = useHistory()
   const extensionsWithoutCategory = _filter(extensions, (extension) => !extension.category)
+
   const searchSubmit = (e) => {
     e.stopPropagation()
     e.preventDefault()
