@@ -17,6 +17,8 @@ export const UTM_GENERATOR_URL = 'https://url.swetrix.com'
 export const DOCS_URL = 'https://docs.swetrix.com'
 export const SDK_DOCS_URL = DOCS_URL + '/sdk-introduction'
 
+export const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
+
 export const SUPPORTED_THEMES = ['light', 'dark']
 
 export const CONTACT_EMAIL = 'contact@swetrix.com'
