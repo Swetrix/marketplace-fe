@@ -37,7 +37,15 @@
     "delete": "Delete",
     "quit": "Quit",
     "enable": "Enable",
-    "disable": "Disable"
+    "disable": "Disable",
+    "account": "Account",
+    "accountSettings": "Account settings"
+  },
+    "header": {
+    "switchTheme": "Switch theme",
+    "dark": "Dark",
+    "light": "Light",
+    "signedInAs": "Signed in as"
   },
   "dashboard": {
     "create": "Create extension",
@@ -178,6 +186,8 @@
     "terms": "Terms",
     "status": "Status",
     "donate": "Donate",
-    "about": "About us"
+    "about": "About us",
+    "changelog": "Changelog"
+
   }
 }
