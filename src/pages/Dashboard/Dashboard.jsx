@@ -49,11 +49,11 @@ const ProjectCart = ({
   }
 
   return (
-    <li>
-      <div className='block cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-700'>
-        <div className='px-4 py-4 sm:px-6'>
+    <li className='overflow-hidden rounded-xl border border-gray-200 cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-slate-800 dark:hover:bg-slate-700 dark:border-slate-800/25'>
+      {/* <div className='block cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-700'> */}
+        <div className='py-4 px-4'>
           <div className='flex items-center justify-between'>
-            <p className='text-lg font-medium text-indigo-600 dark:text-gray-50 truncate'>
+            <p className='text-lg font-semibold text-slate-900 dark:text-gray-50 truncate'>
               {name}
             </p>
             <div className='ml-2 flex-shrink-0 flex'>
@@ -106,7 +106,7 @@ const ProjectCart = ({
             </div>
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </li>
   )
 }
@@ -239,8 +239,7 @@ const Dashboard = ({
                     {_isEmpty(_filter(extensions, ({ uiHidden }) => !uiHidden)) ? (
                       <Noextensions t={t} />
                     ) : (
-                      <div className='shadow overflow-hidden sm:rounded-md'>
-                        <ul className='divide-y divide-gray-200 dark:divide-gray-500'>
+                        <ul className='grid grid-cols-1 gap-x-6 gap-y-3 lg:gap-y-6 lg:grid-cols-3'>
                           {_map(_filter(extensions, ({ uiHidden }) => !uiHidden), ({
                             name, id, created, status, version, publish = false, installed,
                           }) => (
@@ -262,7 +261,6 @@ const Dashboard = ({
                             </div>
                           ))}
                         </ul>
-                      </div>
                     )}
                   </div>
                 )}
