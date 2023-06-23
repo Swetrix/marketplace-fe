@@ -19,7 +19,8 @@ const AdditionalImageUpload = ({ disabled, files, setFiles }) => {
   }
 
   return (
-    <div className='bg-gray-200 dark:bg-gray-700 p-4 border-2 border-dashed border-[#cbd5e0] dark:border-gray-750 relative'>
+    <div
+      className='dark:bg-slate-800 p-4 border-2 border-dashed border-gray-300 dark:border-slate-700/80 relative'>
       <input
         disabled={disabled}
         type={files?.length >= 5 ? 'hidden' : 'file'}

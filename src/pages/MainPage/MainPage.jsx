@@ -55,7 +55,7 @@ const MainPage = ({ extensions, category }) => {
             />
             <button
               type='submit'
-              className='-ml-px mb-2 mt-1 relative inline-flex items-center space-x-2 px-4 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 dark:bg-gray-800 dark:border-0 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'
+              className='-ml-px mb-2 mt-1 relative inline-flex items-center space-x-2 px-4 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 dark:bg-slate-900 dark:border-0 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'
             >
               <MagnifyingGlassIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
             </button>
@@ -77,7 +77,7 @@ const MainPage = ({ extensions, category }) => {
                           <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>
                             {item.name}
                           </h2>
-                          <Button onClick={() => { 
+                          <Button onClick={() => {
                             history.push(
                               `/search?term=&category=${item.name}&sortBy=${sortByConstans.CREATED_AT}`,
                             )
