@@ -14,7 +14,7 @@ const routes = Object.freeze({
   contact: '/contact',
   search: '/search',
   view_extensions: '/extensions/:id',
-  changelog: '/changelog',
+  changelog: 'https://swetrix.com/changelog',
   billing: '/billing',
   features: '/features',
 

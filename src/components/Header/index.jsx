@@ -196,39 +196,39 @@ const ProfileMenu = ({
 
           <Menu.Item>
             {({ active }) => (
-              <Link
-                to={routes.changelog}
+              <a
+                href='https://swetrix.com/changelog'        
                 className={cx('block px-4 py-2 text-sm text-gray-700 dark:text-gray-50', {
                   'bg-gray-100 dark:bg-slate-800': active,
                 })}
               >
                 {t('footer.changelog')}
-              </Link>
+              </a>
             )}
           </Menu.Item>
           <Menu.Item>
             {({ active }) => (
-              <Link
-                to={routes.contact}
+              <a
+                href='https://swetrix.com/contact'
                 className={cx('block px-4 py-2 text-sm text-gray-700 dark:text-gray-50', {
                   'bg-gray-100 dark:bg-slate-800': active,
                 })}
               >
                 {t('footer.support')}
-              </Link>
+              </a>
             )}
           </Menu.Item>
           {!isSelfhosted && (
             <Menu.Item>
               {({ active }) => (
-                <Link
-                  to={routes.billing}
+                <a
+                  href='https://swetrix.com/billing'
                   className={cx('block px-4 py-2 text-sm text-gray-700 dark:text-gray-50', {
                     'bg-gray-100 dark:bg-slate-800': active,
                   })}
                 >
                   {t('common.billing')}
-                </Link>
+                </a>
               )}
             </Menu.Item>
           )}
