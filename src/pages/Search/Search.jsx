@@ -84,7 +84,7 @@ const Search = ({
             <button
               onClick={() => getExtensions()}
               type='submit'
-              className='-ml-px mb-2 mt-1 relative inline-flex items-center space-x-2 px-4 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 dark:bg-gray-800 dark:border-0 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'
+              className='-ml-px mb-2 mt-1 relative inline-flex items-center space-x-2 px-4 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 dark:bg-slate-900 dark:border-0 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'
             >
               <MagnifyingGlassIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
             </button>
@@ -105,7 +105,8 @@ const Search = ({
                   selectItemClassName='text-gray-700 block px-2 py-1 text-base cursor-pointer hover:bg-gray-200 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
                   onSelect={(item) => {
                     if (item.id === 'all') return setFilterCategory('')
-                    else return setFilterCategory(item.name)}
+                    else return setFilterCategory(item.name)
+                  }
                   }
                 />
               </div>
@@ -121,7 +122,7 @@ const Search = ({
               </div> */}
             </div>
           </div>
-          <div className={loading || _isEmpty(extensions) ? 'flex justify-center align-middle' :'grid auto-rows-min grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 mt-4 gap-1'}>
+          <div className={loading || _isEmpty(extensions) ? 'flex justify-center align-middle' : 'grid auto-rows-min grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 mt-4 gap-1'}>
             {loading
               ? (
                 <div className='mx-auto pt-40'>
@@ -130,13 +131,13 @@ const Search = ({
               )
               : _isEmpty(extensions)
                 ? <p className='text-gray-200 text-2xl pt-40 text-center'>This param don`t have extension</p>
-                :_map(extensions, ((item) => (
-                <ExtensionsCard key={item.id} id={item.id} name={item.name} stars={4} downloads={item.usersQuantity} price={item.price} companyName={item.owner?.nickname || ''} mainImage={item.mainImage} />
-              )))}
+                : _map(extensions, ((item) => (
+                  <ExtensionsCard key={item.id} id={item.id} name={item.name} stars={4} downloads={item.usersQuantity} price={item.price} companyName={item.owner?.nickname || ''} mainImage={item.mainImage} />
+                )))}
           </div>
           {pageAmount > 1 && (
             <div className='mt-2'>
-              <Pagination page={page} setPage={setPage} pageAmount={pageAmount} total={total} limit={limit}/>
+              <Pagination page={page} setPage={setPage} pageAmount={pageAmount} total={total} limit={limit} />
             </div>
           )}
         </div>

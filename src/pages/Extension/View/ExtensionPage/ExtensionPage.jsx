@@ -54,7 +54,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
   return (
     <>
       <Title title={extension.name}>
-        <div className='flex flex-col bg-gray-50 dark:bg-gray-800 py-6 px-4 sm:px-6 lg:px-8 min-h-min-footer-ad extensionPageGlider'>
+        <div className='flex flex-col bg-gray-50 dark:bg-slate-900 py-6 px-4 sm:px-6 lg:px-8 min-h-min-footer-ad extensionPageGlider'>
           <div className='max-w-4xl mx-auto'>
             {(isPublish && isPending) && (
               <div className='relative bg-indigo-600 dark:bg-gray-600 rounded-lg'>
@@ -129,7 +129,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                     rewind
                   >
                     {_map(extension.additionalImages, ((image) => (
-                      <div key={image} className='glider-block border-2 border-white rounded-lg bg-gray-100 dark:bg-gray-800 dark:border-gray-900'>
+                      <div key={image} className='glider-block border-2 border-white rounded-lg bg-gray-100 dark:bg-slate-900 dark:border-gray-900'>
                         <img
                           alt=''
                           className='rounded-lg'

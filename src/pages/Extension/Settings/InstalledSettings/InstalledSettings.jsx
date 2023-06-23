@@ -60,7 +60,7 @@ const InstalledSettings = ({ extensions, setInstallExtensions, generateError }) 
   }
 
   return (
-    <div className='min-h-min-footer bg-gray-50 dark:bg-gray-800 flex flex-col py-6 px-4 sm:px-6 lg:px-8'>
+    <div className='min-h-min-footer bg-gray-50 dark:bg-slate-900 flex flex-col py-6 px-4 sm:px-6 lg:px-8'>
       <div className='max-w-7xl w-full mx-auto'>
         <Input
           onChange={handleInput}

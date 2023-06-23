@@ -53,7 +53,7 @@ const Fallback = () => {
   }, [])
 
   return (
-    <div className='bg-gray-50 dark:bg-gray-800 min-h-page'>
+    <div className='bg-gray-50 dark:bg-slate-900 min-h-page'>
       {showLoader && (
         <Loader />
       )}

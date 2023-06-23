@@ -108,8 +108,8 @@ const ExtensionSettings = ({
   const [code, setCode] = useState('')
 
   useEffect(() => {
-    if (isWarningCodeSave){
-      setTimeout(()=> setIsWarningCodeSave(false), 4000)
+    if (isWarningCodeSave) {
+      setTimeout(() => setIsWarningCodeSave(false), 4000)
     }
   }, [isWarningCodeSave])
 
@@ -141,7 +141,7 @@ const ExtensionSettings = ({
         })
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, extension, isLoading, isSettings, history, showError, extensionDeleting, t])
 
   const loadExtensionsFile = useCallback(async () => {
@@ -342,7 +342,7 @@ const ExtensionSettings = ({
       if (validated) {
         onSubmit(form)
       }
-    } else{
+    } else {
       setIsWarningCodeSave(true)
       showError(t('extension.settings.noSaveCode'))
     }
@@ -358,7 +358,7 @@ const ExtensionSettings = ({
   return (
     <Title title={title}>
       <div
-        className={cx('min-h-min-footer bg-gray-50 dark:bg-gray-800 flex flex-col py-6 px-4 sm:px-6 lg:px-8', {
+        className={cx('min-h-min-footer bg-gray-50 dark:bg-slate-900 flex flex-col py-6 px-4 sm:px-6 lg:px-8', {
           'pb-40': isSettings,
         })}
       >

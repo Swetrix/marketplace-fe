@@ -67,20 +67,20 @@ const ProjectCart = ({
                     </div>
                   )
                 ) : (
-                    <>
-                      <div className='cursor-pointer' onClick={redirectClick}>
-                        <Cog6ToothIcon className='w-6 h-6 text-gray-400 hover:text-gray-500 mr-5' />
-                      </div>
-                      {status === extensionStatuses.PENDING ? (
-                        <InactivePin label={status} />
-                      ) : status === extensionStatuses.ACCEPTED ? (
-                          <ActivePin label={status} />
-                        )
-                        : (
-                          <WarningPin label={status} />
-                        )
-                      }
-                    </>
+                  <>
+                    <div className='cursor-pointer' onClick={redirectClick}>
+                      <Cog6ToothIcon className='w-6 h-6 text-gray-400 hover:text-gray-500 mr-5' />
+                    </div>
+                    {status === extensionStatuses.PENDING ? (
+                      <InactivePin label={status} />
+                    ) : status === extensionStatuses.ACCEPTED ? (
+                      <ActivePin label={status} />
+                    )
+                      : (
+                        <WarningPin label={status} />
+                      )
+                    }
+                  </>
                 )
               }
             </div>
@@ -193,7 +193,7 @@ const Dashboard = ({
 
   return (
     <Title title={t('titles.dashboard')}>
-      <div className='min-h-min-footer bg-gray-50 dark:bg-gray-800'>
+      <div className='min-h-min-footer bg-gray-50 dark:bg-slate-900'>
         <div className='flex flex-col py-6 px-4 sm:px-6 lg:px-8'>
           <div className='max-w-7xl w-full mx-auto'>
             <div className='flex justify-between'>
@@ -214,7 +214,7 @@ const Dashboard = ({
                       type='button'
                       onClick={() => setTabExtensions(tab.name)}
                       className={cx('whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-md', {
-                        'border-indigo-500 text-indigo-600 dark:text-indigo-500': tabExtensions === tab.name,
+                        'border-slate-900 text-slate-900 dark:text-gray-50 dark:border-gray-50': tabExtensions === tab.name,
                         'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-300': tabExtensions !== tab.name,
                       })}
                       aria-current={tab.name === tabExtensions ? 'page' : undefined}
@@ -227,7 +227,7 @@ const Dashboard = ({
             </div>
             {isLoading ? (
               <Title title={t('titles.dashboard')}>
-                <div className='min-h-min-footer bg-gray-50 dark:bg-gray-800'>
+                <div className='min-h-min-footer bg-gray-50 dark:bg-slate-900'>
                   <Loader />
                 </div>
               </Title>
