@@ -56,14 +56,14 @@ const ProjectCart = ({
             <p className='text-lg font-semibold text-slate-900 dark:text-gray-50 truncate'>
               {name}
             </p>
-            <div className='ml-2 flex-shrink-0 flex'>
+            <div className='flex items-center gap-2'>
               {
                 !publish ? (
                   installed ? (
-                    <ActivePin className='mr-2' label='installed' />
+                    <ActivePin label='installed' />
                   ) : (
                     <div className='cursor-pointer' onClick={redirectExtSettings}>
-                      <Cog6ToothIcon className='w-6 h-6 text-gray-400 hover:text-gray-500 mr-5' />
+                      <Cog6ToothIcon className='w-6 h-6 text-gray-400 hover:text-gray-500' />
                     </div>
                   )
                 ) : (
@@ -85,14 +85,26 @@ const ProjectCart = ({
               }
             </div>
           </div>
-          <div className='mt-2 sm:flex sm:justify-between'>
-            <div className='sm:flex flex-col'>
-              <div className='mt-2 flex items-center text-sm text-gray-500 dark:text-gray-300 sm:mt-0'>
+          <div className='mt-1 flex-shrink-0 flex gap-2'>
+              <div className='mt-1 flex items-center text-sm text-gray-500 dark:text-gray-300'>
                 {t('dashboard.version')}
                 {`: v${version}`}
-              </div>
             </div>
-            <div className='mt-2 flex items-center text-sm text-gray-500 dark:text-gray-300'>
+            {/* <div className='mt-2 flex items-center text-sm text-gray-500 dark:text-gray-300'>
+              <CalendarIcon className='flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400 dark:text-gray-300' />
+              <p>
+                {t('dashboard.createdOn')}
+                &nbsp;
+                <time dateTime={dayjs(created).format('YYYY-MM-DD')}>
+                  {language === 'en'
+                    ? dayjs(created).locale(language).format('MMMM D, YYYY')
+                    : dayjs(created).locale(language).format('D MMMM, YYYY')}
+                </time>
+              </p>
+            </div> */}
+          </div>
+					{/* <div className='mt-1 flex-shrink-0 flex gap-2'> */}
+					<div className='mt-3 flex-shrink-0 flex gap-2 flex items-center text-sm text-gray-500 dark:text-gray-300'>
               <CalendarIcon className='flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400 dark:text-gray-300' />
               <p>
                 {t('dashboard.createdOn')}
@@ -104,7 +116,7 @@ const ProjectCart = ({
                 </time>
               </p>
             </div>
-          </div>
+					{/* </div> */}
         </div>
       {/* </div> */}
     </li>
@@ -205,7 +217,7 @@ const Dashboard = ({
                 {t('dashboard.create')}
               </span>
             </div>
-            <div className='mt-6'>
+            <div className='mt-6 mb-2'>
               {publishTotal > 0 && (
                 <nav className='-mb-px flex space-x-8'>
                   {_map(tabsForDashboard, (tab) => (
@@ -270,8 +282,7 @@ const Dashboard = ({
                     {_isEmpty(publishExtensions) ? (
                       <Noextensions t={t} />
                     ) : (
-                      <div className='shadow overflow-hidden sm:rounded-md'>
-                        <ul className='divide-y divide-gray-200 dark:divide-gray-500'>
+                        <ul className='grid grid-cols-1 gap-x-6 gap-y-3 lg:gap-y-6 lg:grid-cols-3'>
                           {_map(publishExtensions, (extension) => (
                             <div key={extension.id}>
                               <Link to={_replace(routes.extension, ':id', extension.id)}>
@@ -289,7 +300,6 @@ const Dashboard = ({
                             </div>
                           ))}
                         </ul>
-                      </div>
                     )}
                   </div>
                 )}
