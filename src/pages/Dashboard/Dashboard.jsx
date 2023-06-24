@@ -13,7 +13,7 @@ import _filter from 'lodash/filter'
 import _ceil from 'lodash/ceil'
 import { useTranslation } from 'react-i18next'
 import {
-  CalendarIcon, FolderPlusIcon, Cog6ToothIcon,
+  CalendarIcon, FolderPlusIcon, AdjustmentsVerticalIcon, ArrowTopRightOnSquareIcon
 } from '@heroicons/react/24/outline'
 import { XCircleIcon } from '@heroicons/react/24/solid'
 
@@ -31,7 +31,7 @@ import { deleteInstallExtension } from 'api'
 
 import Pagination from 'ui/Pagination'
 
-const ProjectCart = ({
+const ExtensionsCart = ({
   name, created, status, t, id, language, installed, publish, version, onDelete,
 }) => {
   const history = useHistory()
@@ -50,27 +50,33 @@ const ProjectCart = ({
 
   return (
     <li className='overflow-hidden rounded-xl border border-gray-200 cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-slate-800 dark:hover:bg-slate-700 dark:border-slate-800/25'>
-      {/* <div className='block cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-700'> */}
         <div className='py-4 px-4'>
           <div className='flex items-center justify-between'>
             <p className='text-lg font-semibold text-slate-900 dark:text-gray-50 truncate'>
               {name}
             </p>
-            <div className='flex items-center gap-2'>
+            <div className='flex items-center gap-2' onClick={(e) => e.stopPropagation()}>
               {
                 !publish ? (
                   installed ? (
                     <ActivePin label='installed' />
                   ) : (
-                    <div className='cursor-pointer' onClick={redirectExtSettings}>
-                      <Cog6ToothIcon className='w-6 h-6 text-gray-400 hover:text-gray-500' />
-                    </div>
+										<div className='flex items-center gap-2'>
+											<div className='cursor-pointer' onClick={redirectExtSettings}>
+												<AdjustmentsVerticalIcon className='w-6 h-6 text-gray-800 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-500' />
+											</div>
+											<a
+											href={_replace(routes.extension, ':id', id)}
+											aria-label='name (opens in a new tab)'
+											target='_blank'
+											rel='noopener noreferrer'
+											>
+												<ArrowTopRightOnSquareIcon className='w-6 h-6 text-gray-800 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-500' />
+										</a>
+								</div>
                   )
                 ) : (
                   <>
-                    <div className='cursor-pointer' onClick={redirectClick}>
-                      <Cog6ToothIcon className='w-6 h-6 text-gray-400 hover:text-gray-500 mr-5' />
-                    </div>
                     {status === extensionStatuses.PENDING ? (
                       <InactivePin label={status} />
                     ) : status === extensionStatuses.ACCEPTED ? (
@@ -80,7 +86,19 @@ const ProjectCart = ({
                         <WarningPin label={status} />
                       )
                     }
-                  </>
+										<div className='flex items-center gap-2'>
+											<div className='cursor-pointer' onClick={redirectClick}>
+											<AdjustmentsVerticalIcon className='w-6 h-6 text-gray-800 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-500' /></div>
+											<a
+											href={_replace(routes.extension, ':id', publish.id)}
+											aria-label='name (opens in a new tab)'
+											target='_blank'
+											rel='noopener noreferrer'
+											>
+											<ArrowTopRightOnSquareIcon className='w-6 h-6 text-gray-800 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-500' />
+										</a>
+									</div>
+                </>
                 )
               }
             </div>
@@ -90,21 +108,8 @@ const ProjectCart = ({
                 {t('dashboard.version')}
                 {`: v${version}`}
             </div>
-            {/* <div className='mt-2 flex items-center text-sm text-gray-500 dark:text-gray-300'>
-              <CalendarIcon className='flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400 dark:text-gray-300' />
-              <p>
-                {t('dashboard.createdOn')}
-                &nbsp;
-                <time dateTime={dayjs(created).format('YYYY-MM-DD')}>
-                  {language === 'en'
-                    ? dayjs(created).locale(language).format('MMMM D, YYYY')
-                    : dayjs(created).locale(language).format('D MMMM, YYYY')}
-                </time>
-              </p>
-            </div> */}
           </div>
-					{/* <div className='mt-1 flex-shrink-0 flex gap-2'> */}
-					<div className='mt-3 flex-shrink-0 flex gap-2 flex items-center text-sm text-gray-500 dark:text-gray-300'>
+					<div className='mt-3 flex-shrink-0 flex gap-2 items-center text-sm text-gray-500 dark:text-gray-300'>
               <CalendarIcon className='flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400 dark:text-gray-300' />
               <p>
                 {t('dashboard.createdOn')}
@@ -116,12 +121,21 @@ const ProjectCart = ({
                 </time>
               </p>
             </div>
-					{/* </div> */}
         </div>
-      {/* </div> */}
     </li>
   )
 }
+
+const AddExtensions = ({ t, onClick }) => (
+  <li onClick={onClick} className='flex cursor-pointer justify-center items-center rounded-lg border-2 border-dashed h-auto min-h-[120px] group border-gray-300 hover:border-gray-400'>
+    <div>
+      <FolderPlusIcon className='mx-auto h-12 w-12 text-gray-400 dark:text-gray-200 group-hover:text-gray-500 group-hover:dark:text-gray-400' />
+      <span className='mt-2 block text-sm font-semibold text-gray-900 dark:text-gray-50 group-hover:dark:text-gray-400'>
+        {t('dashboard.newExtensions')}
+      </span>
+    </div>
+  </li>
+)
 
 const Noextensions = ({ t }) => (
   <p className='mt-5 text-center dark:text-gray-50'>
@@ -214,7 +228,7 @@ const Dashboard = ({
               </h2>
               <span onClick={onNewExtension} className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 text-sm'>
                 <FolderPlusIcon className='w-5 h-5 mr-1' />
-                {t('dashboard.create')}
+                {t('dashboard.newExtensions')}
               </span>
             </div>
             <div className='mt-6 mb-2'>
@@ -257,7 +271,7 @@ const Dashboard = ({
                           }) => (
                             <div key={id}>
                               <Link to={_replace(routes.extension, ':id', id)}>
-                                <ProjectCart
+                                <ExtensionsCart
                                   t={t}
                                   id={id}
                                   language={language}
@@ -286,7 +300,7 @@ const Dashboard = ({
                           {_map(publishExtensions, (extension) => (
                             <div key={extension.id}>
                               <Link to={_replace(routes.extension, ':id', extension.id)}>
-                                <ProjectCart
+                                <ExtensionsCart
                                   t={t}
                                   language={language}
                                   name={extension.name}
@@ -299,6 +313,7 @@ const Dashboard = ({
                               </Link>
                             </div>
                           ))}
+													<AddExtensions t={t} onClick={onNewExtension}/>
                         </ul>
                     )}
                   </div>
