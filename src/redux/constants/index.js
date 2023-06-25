@@ -24,6 +24,14 @@ export const SUPPORTED_THEMES = ['light', 'dark']
 export const CONTACT_EMAIL = 'contact@swetrix.com'
 export const SECURITY_EMAIL = 'security@swetrix.com'
 
+export const LS_VIEW_PREFS_SETTING = 'proj-view-preferences'
+export const LS_CAPTCHA_VIEW_PREFS_SETTING = 'captcha-view-preferences'
+
+// Environment variables
+export const isSelfhosted = Boolean(
+   process.env.SELFHOSTED,
+)
+
 // Cookies
 export const TOKEN = 'access_token'
 export const REFRESH_TOKEN = 'refresh_token'
