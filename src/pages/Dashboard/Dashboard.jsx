@@ -50,18 +50,25 @@ const ExtensionsCart = ({
 
   return (
     <li className='overflow-hidden rounded-xl border border-gray-200 cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-slate-800 dark:hover:bg-slate-700 dark:border-slate-800/25'>
-        <div className='py-4 px-4'>
-          <div className='flex items-center justify-between'>
+        <div className='py-4 px-4 min-h-[148px] flex flex-col'>
+          <div className='flex items-start xs:items-center justify-between'>
             <p className='text-lg font-semibold text-slate-900 dark:text-gray-50 truncate'>
               {name}
             </p>
-            <div className='flex items-center gap-2' onClick={(e) => e.stopPropagation()}>
+
+					{/* version */}
+          <div className='ml-5 flex gap-2 flex-col items-end xs:flex-row xs:items-center' onClick={(e) => e.stopPropagation()}>
+						<div className='flex-shrink-0 order-1 xs:order-none flex gap-2'>
+							<div className='flex items-center text-sm text-gray-500 dark:text-gray-300'>
+								{t('dashboard.version')}
+								{`: v${version}`}
+							</div>
+							</div>
+
+					{/* icons */}
               {
                 !publish ? (
-                  installed ? (
-                    <ActivePin label='installed' />
-                  ) : (
-										<div className='flex items-center gap-2'>
+										<div className='flex justify-center items-center gap-2'>
 											<div className='cursor-pointer' onClick={redirectExtSettings}>
 												<AdjustmentsVerticalIcon className='w-6 h-6 text-gray-800 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-500' />
 											</div>
@@ -74,19 +81,11 @@ const ExtensionsCart = ({
 												<ArrowTopRightOnSquareIcon className='w-6 h-6 text-gray-800 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-500' />
 										</a>
 								</div>
-                  )
+                  
                 ) : (
                   <>
-                    {status === extensionStatuses.PENDING ? (
-                      <InactivePin label={status} />
-                    ) : status === extensionStatuses.ACCEPTED ? (
-                      <ActivePin label={status} />
-                    )
-                      : (
-                        <WarningPin label={status} />
-                      )
-                    }
-										<div className='flex items-center gap-2'>
+								{/* publish */}
+										<div className='flex-shrink-0 flex items-center gap-2'>
 											<div className='cursor-pointer' onClick={redirectClick}>
 											<AdjustmentsVerticalIcon className='w-6 h-6 text-gray-800 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-500' /></div>
 											<a
@@ -103,13 +102,34 @@ const ExtensionsCart = ({
               }
             </div>
           </div>
+
+
+					{/* label */}
           <div className='mt-1 flex-shrink-0 flex gap-2'>
-              <div className='mt-1 flex items-center text-sm text-gray-500 dark:text-gray-300'>
-                {t('dashboard.version')}
-                {`: v${version}`}
-            </div>
+						{
+              !publish ? (
+								installed && <ActivePin className='dark:!text-gray-300 dark:!bg-slate-600' label='installed' />
+                ) : (
+                  <>
+										{status === extensionStatuses.PENDING ? (
+                      <InactivePin className='dark:!text-gray-300 dark:!bg-slate-600' label={status} />
+                    ) : status === extensionStatuses.ACCEPTED ? (
+                      <ActivePin className='dark:!text-gray-300 dark:!bg-slate-600' label={status} />
+                    )
+                      : (
+                        <WarningPin className='dark:!text-gray-300 dark:!bg-slate-600' label={status} />
+                      )
+                    }
+                  </>
+                )
+              }
           </div>
-					<div className='mt-3 flex-shrink-0 flex gap-2 items-center text-sm text-gray-500 dark:text-gray-300'>
+
+
+					{/* calendar */}
+					<div className='mt-auto'>
+
+					<div className='flex flex-shrink-0 gap-2 items-end text-sm text-gray-500 dark:text-gray-300'>
               <CalendarIcon className='flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400 dark:text-gray-300' />
               <p>
                 {t('dashboard.createdOn')}
@@ -121,13 +141,14 @@ const ExtensionsCart = ({
                 </time>
               </p>
             </div>
+					</div>
         </div>
     </li>
   )
 }
 
 const AddExtensions = ({ t, onClick }) => (
-  <li onClick={onClick} className='flex cursor-pointer justify-center items-center rounded-lg border-2 border-dashed h-auto min-h-[120px] group border-gray-300 hover:border-gray-400'>
+  <li onClick={onClick} className='flex cursor-pointer justify-center items-center rounded-lg border-2 border-dashed h-auto min-h-[148px] group border-gray-300 hover:border-gray-400'>
     <div>
       <FolderPlusIcon className='mx-auto h-12 w-12 text-gray-400 dark:text-gray-200 group-hover:text-gray-500 group-hover:dark:text-gray-400' />
       <span className='mt-2 block text-sm font-semibold text-gray-900 dark:text-gray-50 group-hover:dark:text-gray-400'>
