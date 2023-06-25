@@ -108,8 +108,8 @@ const ExtensionSettings = ({
   const [code, setCode] = useState('')
 
   useEffect(() => {
-    if (isWarningCodeSave){
-      setTimeout(()=> setIsWarningCodeSave(false), 4000)
+    if (isWarningCodeSave) {
+      setTimeout(() => setIsWarningCodeSave(false), 4000)
     }
   }, [isWarningCodeSave])
 
@@ -141,7 +141,7 @@ const ExtensionSettings = ({
         })
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, extension, isLoading, isSettings, history, showError, extensionDeleting, t])
 
   const loadExtensionsFile = useCallback(async () => {
@@ -241,7 +241,7 @@ const ExtensionSettings = ({
         data.description && formData.append('description', data.description)
         if (data.category) {
           const categoryID = _find(categories, ({ name }) => name === form.category)?.id
-          categoryID && formData.append('categoryID', categoryID)
+          categoryID && formData.append('categoryId', categoryID)
         }
         if (isSettings) {
           if (data.version !== extension.version && data.version !== VERSION_TYPE.NOTHING) {
@@ -342,7 +342,7 @@ const ExtensionSettings = ({
       if (validated) {
         onSubmit(form)
       }
-    } else{
+    } else {
       setIsWarningCodeSave(true)
       showError(t('extension.settings.noSaveCode'))
     }
@@ -358,7 +358,7 @@ const ExtensionSettings = ({
   return (
     <Title title={title}>
       <div
-        className={cx('min-h-min-footer bg-gray-50 dark:bg-gray-800 flex flex-col py-6 px-4 sm:px-6 lg:px-8', {
+        className={cx('min-h-min-footer bg-gray-50 dark:bg-slate-900 flex flex-col py-6 px-4 sm:px-6 lg:px-8', {
           'pb-40': isSettings,
         })}
       >
@@ -386,7 +386,7 @@ const ExtensionSettings = ({
             value={form.description || ''}
             placeholder={'My extension does blah blah blah, it provides such great features as blah and blah.'}
             hint={'Here you should describe your extension in details. What does it do? How does it work? Add a features list, changelog, or whatever else you think best describes it.'}
-            className='mt-4'
+            className='mt-4 mb-4'
             onChange={handleInput}
             error={beenSubmitted ? errors.description : null}
           />
@@ -450,10 +450,10 @@ const ExtensionSettings = ({
             label={t('Company link')}
             value={form.companyLink}
             placeholder='https://company.com'
-            className='mb-4'
+            className='mb-4 mt-4'
             onChange={handleInput}
             error={beenSubmitted ? errors.companyLink : null}
-          />  
+          />
           <Select
             title={form.category || 'Select a category'}
             label={t('extension.settings.category')}

@@ -1,4 +1,4 @@
-<img src="/public/assets/logo_blue.svg" alt="" height="100" />
+<img src="/public/assets/logo_blue.png" alt="" height="80" />
 
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/swetrix/marketplace-fe/issues)
 

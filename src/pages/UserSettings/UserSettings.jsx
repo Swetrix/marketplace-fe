@@ -79,7 +79,7 @@ const UserSettings = ({
 
   return (
     <Title title={t('titles.profileSettings')}>
-      <div className='min-h-min-footer bg-gray-50 dark:bg-gray-800 flex flex-col py-6 px-4 sm:px-6 lg:px-8'>
+      <div className='min-h-min-footer bg-gray-50 dark:bg-slate-900 flex flex-col py-6 px-4 sm:px-6 lg:px-8'>
         <form className='max-w-7xl w-full mx-auto' onSubmit={handleSubmit}>
           <div className='flex items-end justify-between'>
             <h2 className='mt-2 text-3xl font-bold text-gray-900 dark:text-gray-50'>
@@ -106,8 +106,8 @@ const UserSettings = ({
             placeholder='you@example.com'
             className='mt-4'
             disabled
-            // onChange={handleInput}
-            // error={beenSubmitted ? errors.email : null}
+          // onChange={handleInput}
+          // error={beenSubmitted ? errors.email : null}
           />
           <Input
             name='nickname'

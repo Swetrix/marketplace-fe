@@ -48,7 +48,7 @@
     "signedInAs": "Signed in as"
   },
   "dashboard": {
-    "create": "Create extension",
+    "newExtensions": "New extension",
     "createdOn": "Created on",
     "version": "Version",
     "noextensions": "No extensions to display here yet"
