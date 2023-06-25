@@ -8,7 +8,7 @@ import MainPage from './MainPage'
 
 const mapStateToProps = (state) => ({
   extensions: state.ui.extensions.extensions,
-  category: state.ui.extensions.category,
+  categories: state.ui.extensions.category,
   publishExtensions: state.ui.extensions.publishExtensions,
   isLoading: state.ui.extensions.isLoading,
   user: state.auth.user,
