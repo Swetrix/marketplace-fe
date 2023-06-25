@@ -51,14 +51,14 @@ const ExtensionsCart = ({
   return (
     <li className='overflow-hidden rounded-xl border border-gray-200 cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-slate-800 dark:hover:bg-slate-700 dark:border-slate-800/25'>
         <div className='py-4 px-4 min-h-[148px] flex flex-col'>
-          <div className='flex items-start xs:items-center justify-between'>
+          <div className='flex items-start justify-between'>
             <p className='text-lg font-semibold text-slate-900 dark:text-gray-50 truncate'>
               {name}
             </p>
 
 					{/* version */}
-          <div className='ml-5 flex gap-2 flex-col items-end xs:flex-row xs:items-center' onClick={(e) => e.stopPropagation()}>
-						<div className='flex-shrink-0 order-1 xs:order-none flex gap-2'>
+          <div className='flex ml-5 gap-2 flex-row items-center' onClick={(e) => e.stopPropagation()}>
+						<div className='hidden xs:flex flex-shrink-0 gap-2'>
 							<div className='flex items-center text-sm text-gray-500 dark:text-gray-300'>
 								{t('dashboard.version')}
 								{`: v${version}`}
@@ -129,11 +129,20 @@ const ExtensionsCart = ({
 					{/* calendar */}
 					<div className='mt-auto'>
 
-					<div className='flex flex-shrink-0 gap-2 items-end text-sm text-gray-500 dark:text-gray-300'>
-              <CalendarIcon className='flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400 dark:text-gray-300' />
+					<div className='xs:hidden flex flex-shrink-0 gap-2'>
+							<div className='flex items-center text-sm text-gray-500 dark:text-gray-300'>
+								{t('dashboard.version')}
+								{`: v${version}`}
+							</div>
+							</div>
+
+					<div className='mt-1 flex flex-shrink-0 gap-2 items-end text-sm text-gray-500 dark:text-gray-300'>
+              <CalendarIcon className='flex-shrink-0 mr-0 xs:mr-1.5 h-5 w-5 text-gray-400 dark:text-gray-300' />
               <p>
+								<span className='hidden xs:inline'>
                 {t('dashboard.createdOn')}
                 &nbsp;
+								</span>
                 <time dateTime={dayjs(created).format('YYYY-MM-DD')}>
                   {language === 'en'
                     ? dayjs(created).locale(language).format('MMMM D, YYYY')
@@ -247,10 +256,13 @@ const Dashboard = ({
               <h2 className='mt-2 text-3xl font-bold text-gray-900 dark:text-gray-50'>
                 {t('titles.dashboard')}
               </h2>
-              <span onClick={onNewExtension} className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 text-sm'>
+							<span
+                onClick={onNewExtension}
+                className='!pl-2 inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-3 py-2 text-sm'
+              >
                 <FolderPlusIcon className='w-5 h-5 mr-1' />
-                {t('dashboard.newExtensions')}
-              </span>
+                {t('dashboard.newExtensions')}              
+								</span>
             </div>
             <div className='mt-6 mb-2'>
               {publishTotal > 0 && (
