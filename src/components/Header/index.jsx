@@ -28,7 +28,7 @@ import UIActions from 'redux/actions/ui'
 
 import {
   whitelist, languages, languageFlag, isSelfhosted, BLOG_URL,
-  DOCS_URL, isBrowser,
+  DOCS_URL,
 } from 'redux/constants'
 import Dropdown from 'ui/Dropdown'
 
@@ -268,7 +268,7 @@ const AuthedHeader = ({
 }) => (
   <header
     className={cx('relative overflow-x-clip', {
-      'bg-gray-50 dark:bg-slate-900 border-b border-gray-200 dark:border-slate-600/40': colourBackground,
+      'bg-gray-50 dark:bg-slate-900 border-b border-gray-200 dark:border-slate-600/40 dark:bg-slate-900': colourBackground,
     })}
   >
     <nav className='mx-auto px-4 sm:px-6 lg:px-8' aria-label='Top'>
@@ -396,7 +396,7 @@ const NotAuthedHeader = ({
   switchTheme, theme, onLanguageChange, t, language, colourBackground,
 }) => (
   <header
-    className={cx('relative overflow-x-clip', {
+    className={cx('relative overflow-x-clip dark:bg-slate-900', {
       'bg-gray-50 dark:bg-slate-900 border-b border-gray-200 dark:border-slate-600/40': colourBackground,
     })}
   >
@@ -536,16 +536,14 @@ const NotAuthedHeader = ({
 )
 
 
-const Header= ({ ssrTheme }) => {
+const Header= ({ theme }) => {
   const { t, i18n: { language } } = useTranslation('common')
 
   const dispatch = useDispatch()
   const { authenticated, user } = useSelector((state) => state.auth)
-  const reduxTheme = useSelector((state) => state.ui.theme.theme)
   const { pathname } = useLocation()
   // @ts-ignore
   const buttonRef = useRef()
-  const theme = isBrowser ? reduxTheme : ssrTheme
 
   const [rawStatus, status] = useMemo(() => {
     const { trialEndDate } = (user || {})

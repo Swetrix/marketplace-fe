@@ -25,10 +25,6 @@ export const SECURITY_EMAIL = 'security@swetrix.com'
 export const LS_VIEW_PREFS_SETTING = 'proj-view-preferences'
 export const LS_CAPTCHA_VIEW_PREFS_SETTING = 'captcha-view-preferences'
 
-// Swetrix vs ...
-export const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined'
-
-
 // Environment variables
 export const isSelfhosted = Boolean(
    process.env.SELFHOSTED,
