@@ -68,11 +68,6 @@
   top: 160px;
 }
 
-.extensionPageGlider .glider-block img {
-  height: 400px;
-  width: 100%;
-}
-
 .glider-prev:hover,
 .glider-next:hover,
 .glider-prev:focus,

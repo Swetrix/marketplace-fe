@@ -7,7 +7,7 @@ import _map from 'lodash/map'
 import _isEmpty from 'lodash/isEmpty'
 import _filter from 'lodash/filter'
 import { installExtension, deleteInstallExtension } from 'api'
-import '../../../../glider.css'
+import 'glider-js/glider.min.css'
 import Button from 'ui/Button'
 import Title from 'components/Title'
 import { extensionStatuses } from 'redux/constants'
@@ -54,7 +54,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
   return (
     <>
       <Title title={extension.name}>
-        <div className='flex flex-col bg-gray-50 dark:bg-slate-900 py-6 px-4 sm:px-6 lg:px-8 min-h-min-footer-ad extensionPageGlider'>
+        <div className='bg-gray-50 dark:bg-slate-900 py-6 px-4 sm:px-6 lg:px-8 min-h-min-footer-ad extensionPageGlider'>
           <div className='max-w-4xl mx-auto'>
             {(isPublish && isPending) && (
               <div className='relative bg-indigo-600 dark:bg-gray-600 rounded-lg'>
@@ -118,21 +118,22 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                   )}
                 </div>
               </div>
-              <div className='w-full max-w-[1200px] py-4'>
+              <div className='w-full mx-auto max-w-[800px] py-4'>
                 {!_isEmpty(extension.additionalImages) && (
                   <Glider
-                    hasArrows
                     slidesToScroll={1}
-                    slidesToShow={1}
+                    // slidesToShow={1}
                     resizeLock
+                    // resizeLock
+                    // exactWidth
                     // exactWidth
                     rewind
                   >
                     {_map(extension.additionalImages, ((image) => (
-                      <div key={image} className='glider-block border-2 border-white rounded-lg bg-gray-100 dark:bg-slate-900 dark:border-gray-900'>
+                      <div key={image} className='border-2 border-white rounded-lg bg-gray-100 dark:bg-slate-900 dark:border-gray-900'>
                         <img
                           alt=''
-                          className='rounded-lg'
+                          className='rounded-lg w-full max-w-[800px] max-h-[400px]'
                           src={`${process.env.REACT_APP_CDN_URL}file/${image}` || 'https://via.placeholder.com/150'}
                         />
                       </div>
