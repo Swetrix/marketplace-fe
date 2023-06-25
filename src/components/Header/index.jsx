@@ -267,8 +267,8 @@ const AuthedHeader = ({
   user, switchTheme, theme, onLanguageChange, rawStatus, status, t, language, logoutHandler, colourBackground,
 }) => (
   <header
-    className={cx('relative overflow-x-clip', {
-      'bg-gray-50 dark:bg-slate-900 border-b border-gray-200 dark:border-slate-600/40 dark:bg-slate-900': colourBackground,
+    className={cx('relative overflow-x-clip dark:bg-slate-900', {
+      'bg-gray-50 dark:bg-slate-900 border-b border-gray-200 dark:border-slate-600/40': colourBackground,
     })}
   >
     <nav className='mx-auto px-4 sm:px-6 lg:px-8' aria-label='Top'>
