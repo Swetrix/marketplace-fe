@@ -70,6 +70,7 @@ const UserSettings = ({
   const handleSubmit = e => {
     e.preventDefault()
     e.stopPropagation()
+
     setBeenSubmitted(true)
 
     if (validated) {
