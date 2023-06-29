@@ -231,8 +231,7 @@ const ProfileMenu = ({
                 </a>
               )}
             </Menu.Item>
-          )}
-          
+          )}          
         </div>
 
         <Menu.Item>
