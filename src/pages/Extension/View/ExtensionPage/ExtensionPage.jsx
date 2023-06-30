@@ -11,6 +11,7 @@ import 'glider-js/glider.min.css'
 import Button from 'ui/Button'
 import Title from 'components/Title'
 import { extensionStatuses } from 'redux/constants'
+import StarsRaiting from 'ui/StarsRaiting'
 
 const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions, authenticated, publishExtensions }) => {
   const { id } = useParams()
@@ -172,24 +173,38 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
             </div>
           </div>
         </div>
+
 				<section className='bg-white dark:bg-gray-900 py-8 lg:py-16'>
-  <div className='max-w-2xl mx-auto px-4'>
-      <div className='flex justify-between items-center mb-6'>
+        <div className='max-w-2xl mx-auto px-4'>
+            <div className='flex justify-between items-center mb-6'>
         <h2 className='text-lg lg:text-2xl font-bold text-gray-900 dark:text-white'>Discussion (20)</h2>
-    </div>
-    <form className='mb-6'>
-        <div className='py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700'>
+          <div className='flex flex-row items-center gap-1'>
+              <StarsRaiting stars='3.5' />
+          </div>
+          
+          </div>
+          <form className='mb-6'>
+          
+            <div className='py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700'>
             <label htmlFor='comment' className='sr-only'>Your comment</label>
+
             <textarea id='comment' rows='6'
                 className='px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
                 placeholder='Write a comment...' required></textarea>
-        </div>
-        <button type='submit'
-            className='inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800'>
-            Post comment
-        </button>
-    </form>
-    <article className='p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900'>
+            </div>
+
+            <div className='flex justify-end'>
+            <Button
+              type='submit'
+              primary
+              className='inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800'
+            >
+              Submit
+            </Button>
+            </div>
+          </form>
+
+          <article className='p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900'>
         <footer className='flex justify-between items-center mb-2'>
             <div className='flex items-center'>
                 <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'><img
@@ -240,8 +255,9 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                 Reply
             </button>
         </div>
-    </article>
-    <article className='p-6 mb-6 ml-6 lg:ml-12 text-base bg-white rounded-lg dark:bg-gray-900'>
+          </article>
+
+          <article className='p-6 mb-6 ml-6 lg:ml-12 text-base bg-white rounded-lg dark:bg-gray-900'>
         <footer className='flex justify-between items-center mb-2'>
             <div className='flex items-center'>
                 <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'><img
@@ -290,8 +306,9 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                 Reply
             </button>
         </div>
-    </article>
-    <article className='p-6 mb-6 text-base bg-white border-t border-gray-200 dark:border-gray-700 dark:bg-gray-900'>
+          </article>
+
+          <article className='p-6 mb-6 text-base bg-white border-t border-gray-200 dark:border-gray-700 dark:bg-gray-900'>
         <footer className='flex justify-between items-center mb-2'>
             <div className='flex items-center'>
                 <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'><img
@@ -340,8 +357,9 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                 Reply
             </button>
         </div>
-    </article>
-    <article className='p-6 text-base bg-white border-t border-gray-200 dark:border-gray-700 dark:bg-gray-900'>
+          </article>
+
+          <article className='p-6 text-base bg-white border-t border-gray-200 dark:border-gray-700 dark:bg-gray-900'>
         <footer className='flex justify-between items-center mb-2'>
             <div className='flex items-center'>
                 <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'><img
@@ -389,8 +407,8 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                 Reply
             </button>
         </div>
-    </article>
-  </div>
+          </article>
+        </div>
 </section>
       </Title>
     </>
