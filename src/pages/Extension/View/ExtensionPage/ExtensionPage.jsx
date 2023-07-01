@@ -127,9 +127,6 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
   }
 
 	const addComment = async () => {
-		console.log(extension.id, 'extension')
-		console.log(user.id, 'user')
-
     await createComment(user.id, {
 			extensionId: extension.id,
 			text: 'loremloremloremlorem loremlorem loremlorem',
@@ -153,10 +150,6 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
       })
 	}
 
-	useEffect(() => {
-		getAllComments()
-		addComment()
-	}, [])
 
   return (
     <>
@@ -361,9 +354,8 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
 						</div>
 					</section>
         </div>
-<<<<<<< HEAD
 
-				<section className='bg-white dark:bg-gray-900 py-8 lg:py-16'>
+				{/* <section className='bg-white dark:bg-gray-900 py-8 lg:py-16'>
         <div className='max-w-2xl mx-auto px-4'>
             <div className='flex flex-col justify-start items-start mb-6'>
             <h2 className='text-lg lg:text-2xl font-bold text-gray-900 dark:text-white'>Discussion (20)</h2>
@@ -510,9 +502,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
           }
    
         </div>
-      </section>
-=======
->>>>>>> b860e7076a248a75acde8334693364738d10d98b
+      </section> */}
       </Title>
     </>
   )
