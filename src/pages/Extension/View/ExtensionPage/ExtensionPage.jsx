@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 // import StarsRaiting from 'ui/StarsRaiting'
 import Glider from 'react-glider'
@@ -6,7 +6,7 @@ import _find from 'lodash/find'
 import _map from 'lodash/map'
 import _isEmpty from 'lodash/isEmpty'
 import _filter from 'lodash/filter'
-import { installExtension, deleteInstallExtension } from 'api'
+import { installExtension, deleteInstallExtension, createComment, getComments } from 'api'
 import 'glider-js/glider.min.css'
 import Button from 'ui/Button'
 import Title from 'components/Title'
@@ -14,11 +14,12 @@ import { extensionStatuses } from 'redux/constants'
 import StarsRaiting from 'ui/StarsRaiting'
 import { ExtensionCommentList } from 'data/ExtensionCommentList'
 
-const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions, authenticated, publishExtensions }) => {
+const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions, authenticated, publishExtensions, user }) => {
   const { id } = useParams()
   const extension = useMemo(() => _find([...extensions, ...publishExtensions], p => p.id === id) || {}, [extensions, publishExtensions, id])
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [installLoading, setInstallLoading] = useState(false)
+	const [comments, setComments] = useState(ExtensionCommentList)
   const isInstalled = useMemo(() => !_isEmpty(_find(installExtensions, p => p.id === id) || {}), [installExtensions, id])
   const isPublish = useMemo(() => !_isEmpty(_find(publishExtensions, p => p.id === id) || {}), [publishExtensions, id])
   const isPending = useMemo(() => extension.status !== extensionStatuses.ACCEPTED, [extension])
@@ -52,6 +53,38 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
       })
     setDeleteLoading(false)
   }
+
+	const addComment = async () => {
+		console.log(extension.id, 'extension')
+		console.log(user.id, 'user')
+
+    await createComment(user.id, {
+			extensionId: extension.id,
+			text: 'loremloremloremlorem loremlorem loremlorem',
+			rating: 2,
+		})
+      .then((response) => {
+				console.log(response)
+        // setComments(prevState => [...prevState, response])
+      }).catch((err) => {
+        showError(`Error installing extension: ${err.message}`)
+      })
+	}
+
+	const getAllComments = () => {
+		getComments()
+      .then((response) => {
+        console.log(response)
+      })
+      .catch(() => {
+        showError('apiNotifications.somethingWentWrong')
+      })
+	}
+
+	useEffect(() => {
+		getAllComments()
+		addComment()
+	}, [])
 
   return (
     <>
@@ -207,7 +240,7 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
           </form>
 
           {
-            _map(ExtensionCommentList, (item) => (
+            _map(comments, (item) => (
               <div key={item.id}>
                 <article className='p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900'>
                   <footer className='flex justify-between items-center mb-2'>
