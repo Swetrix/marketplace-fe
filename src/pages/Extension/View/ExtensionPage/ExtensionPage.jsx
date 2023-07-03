@@ -117,6 +117,7 @@ const ExtensionPage = ({
   )
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [installLoading, setInstallLoading] = useState(false)
+  const [commentInputs, setCommentInputs] = useState({})
   const [comments, setComments] = useState(ExtensionCommentList)
   const isInstalled = useMemo(
     () => !_isEmpty(_find(installExtensions, (p) => p.id === id) || {}),
@@ -189,6 +190,13 @@ const ExtensionPage = ({
       .catch(() => {
         showError('apiNotifications.somethingWentWrong')
       })
+  }
+
+  const toggleCommentInput = (commentId) => {
+    setCommentInputs((prevInputs) => ({
+      ...prevInputs,
+      [commentId]: !prevInputs[commentId],
+    }))
   }
 
   return (
@@ -327,6 +335,7 @@ const ExtensionPage = ({
               )}
             </div>
           </div>
+
           <section className='bg-white dark:bg-gray-900 py-8 lg:py-16'>
             <div className='max-w-2xl mx-auto px-4'>
               <div className='flex flex-col justify-start items-start mb-6'>
@@ -334,7 +343,7 @@ const ExtensionPage = ({
                   Discussion (20)
                 </h2>
                 <div className='flex flex-row items-center gap-1 mt-2'>
-                  <StarsRaiting stars='3.5' />
+                  <StarsRaiting stars='2' />
                 </div>
               </div>
               <form className='mb-6'>
@@ -360,6 +369,7 @@ const ExtensionPage = ({
                   </Button>
                 </div>
               </form>
+
               {_map(comments, (item) => (
                 <div key={item.id}>
                   <article className='p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900'>
@@ -391,6 +401,7 @@ const ExtensionPage = ({
                     </p>
                     <div className='flex items-center mt-4 space-x-4'>
                       <button
+                        onClick={() => toggleCommentInput(item.id)}
                         type='button'
                         className='flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400'
                       >
@@ -412,6 +423,26 @@ const ExtensionPage = ({
                         Reply
                       </button>
                     </div>
+
+                    {commentInputs[item.id] && (
+                      <div className='w-full flex flex-col items-end'>
+                        <textarea
+                          id='comment'
+                          rows='6'
+                          className='my-3 px-4 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
+                          placeholder='Write a comment...'
+                          required
+                        ></textarea>
+
+                        <Button
+                          type='submit'
+                          primary
+                          className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
+                        >
+                          Submit
+                        </Button>
+                      </div>
+                    )}
                   </article>
 
                   {item.subComment &&
@@ -441,10 +472,11 @@ const ExtensionPage = ({
                         <p className='text-gray-500 dark:text-gray-400'>
                           {subItem.description}
                         </p>
-                        <div className='flex items-center mt-4 space-x-4'>
+                        <div className='flex flex-col items-start mt-4 space-x-4'>
                           <button
                             type='button'
                             className='flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400'
+                            onClick={() => toggleCommentInput(subItem.id)}
                           >
                             <svg
                               aria-hidden='true'
@@ -464,6 +496,26 @@ const ExtensionPage = ({
                             Reply
                           </button>
                         </div>
+
+                        {commentInputs[subItem.id] && (
+                          <div className='w-full flex flex-col items-end'>
+                            <textarea
+                              id='comment'
+                              rows='6'
+                              className='my-3 px-4 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
+                              placeholder='Write a comment...'
+                              required
+                            ></textarea>
+
+                            <Button
+                              type='submit'
+                              primary
+                              className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
+                            >
+                              Submit
+                            </Button>
+                          </div>
+                        )}
                       </article>
                     ))}
                 </div>
