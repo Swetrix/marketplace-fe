@@ -193,10 +193,15 @@ const ExtensionPage = ({
   }
 
   const toggleCommentInput = (commentId) => {
-    setCommentInputs((prevInputs) => ({
-      ...prevInputs,
-      [commentId]: !prevInputs[commentId],
-    }))
+    setCommentInputs((prevInputs) => {
+      const updateInputs = Object.fromEntries(
+        _map(Object.entries(prevInputs), ([id]) => [id, false])
+      )
+      return {
+        ...updateInputs,
+        [commentId]: !prevInputs[commentId],
+      }
+    })
   }
 
   return (
@@ -429,7 +434,7 @@ const ExtensionPage = ({
                         <textarea
                           id='comment'
                           rows='6'
-                          className='my-3 px-4 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
+                          className='my-3 px-4 w-full text-sm text-gray-900 border-0 rounded-md focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
                           placeholder='Write a comment...'
                           required
                         ></textarea>
@@ -502,7 +507,7 @@ const ExtensionPage = ({
                             <textarea
                               id='comment'
                               rows='6'
-                              className='my-3 px-4 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
+                              className='my-3 px-4 w-full text-sm text-gray-900 border-0 rounded-md focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
                               placeholder='Write a comment...'
                               required
                             ></textarea>
