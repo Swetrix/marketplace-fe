@@ -331,7 +331,10 @@ const ExtensionPage = ({
                   </div>
                   <div className='flex flex-row gap-3 flex-wrap w-full'>
                     {_map(extension.tags, (tag) => (
-                      <p className='rounded-lg border-2 flex-nowrap py-1 px-3 text-gray-900 dark:text-gray-50'>
+                      <p
+                        key={tag}
+                        className='rounded-lg border-2 flex-nowrap py-1 px-3 text-gray-900 dark:text-gray-50'
+                      >
                         {tag}
                       </p>
                     ))}
@@ -452,7 +455,10 @@ const ExtensionPage = ({
 
                   {item.subComment &&
                     _map(item.subComment, (subItem) => (
-                      <article className='p-6 mb-6 ml-6 lg:ml-12 text-base bg-white rounded-lg dark:bg-gray-900'>
+                      <article
+                        key={subItem.id}
+                        className='p-6 mb-6 ml-6 lg:ml-12 text-base bg-white rounded-lg dark:bg-gray-900'
+                      >
                         <footer className='flex justify-between items-center mb-2'>
                           <div className='flex items-center'>
                             <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'>
