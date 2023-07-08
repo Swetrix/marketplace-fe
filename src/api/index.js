@@ -311,9 +311,7 @@ export const deleteInstallExtension = (extensionId) =>
 
 		export const getComments = (extensionId, userId, offset, limit,) =>
 		api
-			.get(`/comments`, {
-				extensionId, userId, offset, limit,
-			})
+		.get(`/comments?extensionId=${extensionId}`)
 			.then((response) => response.data)
 			.catch((error) => {
 				debug('%s', error)

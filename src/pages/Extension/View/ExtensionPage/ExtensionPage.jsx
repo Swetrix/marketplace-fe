@@ -119,7 +119,9 @@ const ExtensionPage = ({
   const [installLoading, setInstallLoading] = useState(false)
   const [commentInputs, setCommentInputs] = useState({})
 	const [commentForm, setCommentForm] = useState()
-  const [comments, setComments] = useState(ExtensionCommentList)
+  const [comments, setComments] = useState({comments: [], count: 0})
+	const [beenSubmitted, setBeenSubmitted] = useState(false)
+
   const isInstalled = useMemo(
     () => !_isEmpty(_find(installExtensions, (p) => p.id === id) || {}),
     [installExtensions, id]
@@ -168,14 +170,14 @@ const ExtensionPage = ({
     setDeleteLoading(false)
   }
 
-  const addComment = async (text, rating) => {
+  const addComment = async (text) => {
     await createComment(user.id, {
       extensionId: extension.id,
       text,
       rating: 2,
     })
       .then((response) => {
-        console.log(response)
+        console.log(response, 'addComment')
         setComments(prevState => [...prevState, response])
       })
       .catch((err) => {
@@ -183,15 +185,15 @@ const ExtensionPage = ({
       })
   }
 
-  const getAllComments = () => {
-    getComments(extension.id)
-      .then((response) => {
-        console.log(response)
+  const getAllComments = (extensionId) => {
+		// console.log(extension.id, 'extensionId')
+			getComments(extensionId)
+			.then((response) => {
 				setComments(response)
-      })
-      .catch(() => {
-        showError('apiNotifications.somethingWentWrong')
-      })
+			})
+			.catch(() => {
+				showError('apiNotifications.somethingWentWrong')
+			})
   }
 
   const toggleCommentInput = (commentId) => {
@@ -209,26 +211,26 @@ const ExtensionPage = ({
 	const handleSubmit = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    // setBeenSubmitted(true)
+    setBeenSubmitted(true)
 
     // if (validated) {
     //   onSubmit(form)
     // }
-		addComment()
+		addComment(commentForm)
+		setCommentForm('')
   }
 
-
-	console.log(commentForm, 'commentForm')
 
 	const handleInput = (event) => {
     const { target } = event
     setCommentForm(target.value)
   }
 
+console.log(beenSubmitted, 'beenSubmitted')
+
 	useEffect(() => {
-		// addComment()
-		getAllComments()
-	}, [])
+		getAllComments(extension.id)
+	}, [beenSubmitted])
 
   return (
     <>
@@ -374,7 +376,7 @@ const ExtensionPage = ({
             <div className='max-w-2xl mx-auto px-4'>
               <div className='flex flex-col justify-start items-start mb-6'>
                 <h2 className='text-lg lg:text-2xl font-bold text-gray-900 dark:text-white'>
-                  Discussion (20)
+                  Discussion {comments.count}
                 </h2>
                 <div className='flex flex-row items-center gap-1 mt-2'>
                   <StarsRaiting stars='2' />
@@ -387,6 +389,7 @@ const ExtensionPage = ({
                   </label>
                   <textarea
                     id='comment'
+										value={commentForm}
 										onChange={handleInput}
                     rows='6'
                     className='px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
@@ -405,16 +408,17 @@ const ExtensionPage = ({
                 </div>
               </form>
 
-              {_map(comments, (item) => (
-                <div key={item.id}>
+
+              {_map(comments.comments, (item) => (
+								<div key={item.id}>
                   <article className='p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900'>
                     <footer className='flex justify-between items-center mb-2'>
                       <div className='flex items-center'>
                         <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'>
                           <img
                             className='mr-2 w-6 h-6 rounded-full'
-                            src={item.icon}
-                            alt='Michael Gough'
+                            src='#'
+                            alt='userName'
                           />
                           User name
                         </p>
@@ -481,7 +485,7 @@ const ExtensionPage = ({
                     )}
                   </article>
 
-                  {item.reply &&
+                  {/* {item.reply &&
                     _map(item.reply, (reply) => (
                       <article
                         key={reply.id}
@@ -556,7 +560,7 @@ const ExtensionPage = ({
                           </div>
                         )}
                       </article>
-                    ))}
+                    ))} */}
                 </div>
               ))}
             </div>
