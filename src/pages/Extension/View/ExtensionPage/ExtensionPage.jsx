@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo, useState } from 'react'
+import React, { Fragment, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 // import StarsRaiting from 'ui/StarsRaiting'
 import Glider from 'react-glider'
@@ -118,6 +118,7 @@ const ExtensionPage = ({
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [installLoading, setInstallLoading] = useState(false)
   const [commentInputs, setCommentInputs] = useState({})
+	const [commentForm, setCommentForm] = useState()
   const [comments, setComments] = useState(ExtensionCommentList)
   const isInstalled = useMemo(
     () => !_isEmpty(_find(installExtensions, (p) => p.id === id) || {}),
@@ -167,15 +168,15 @@ const ExtensionPage = ({
     setDeleteLoading(false)
   }
 
-  const addComment = async () => {
+  const addComment = async (text, rating) => {
     await createComment(user.id, {
       extensionId: extension.id,
-      text: 'loremloremloremlorem loremlorem loremlorem',
+      text,
       rating: 2,
     })
       .then((response) => {
         console.log(response)
-        // setComments(prevState => [...prevState, response])
+        setComments(prevState => [...prevState, response])
       })
       .catch((err) => {
         showError(`Error installing extension: ${err.message}`)
@@ -183,9 +184,10 @@ const ExtensionPage = ({
   }
 
   const getAllComments = () => {
-    getComments()
+    getComments(extension.id)
       .then((response) => {
         console.log(response)
+				setComments(response)
       })
       .catch(() => {
         showError('apiNotifications.somethingWentWrong')
@@ -203,6 +205,30 @@ const ExtensionPage = ({
       }
     })
   }
+
+	const handleSubmit = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    // setBeenSubmitted(true)
+
+    // if (validated) {
+    //   onSubmit(form)
+    // }
+		addComment()
+  }
+
+
+	console.log(commentForm, 'commentForm')
+
+	const handleInput = (event) => {
+    const { target } = event
+    setCommentForm(target.value)
+  }
+
+	useEffect(() => {
+		// addComment()
+		getAllComments()
+	}, [])
 
   return (
     <>
@@ -249,12 +275,12 @@ const ExtensionPage = ({
                     <p className='text-base text-gray-900 dark:text-gray-50'>
                       {extension.usersQuantity} users
                     </p>
-                    {/* <span> | </span>
+                    <span> | </span>
                   <div className='flex flex-row items-center gap-1'>
                     <StarsRaiting stars='3.5' />
-                  </div> */}
-                    {/* <span> | </span>
-              <p className='text-base text-gray-900 dark:text-gray-50'>9$</p> */}
+                  </div>
+                    <span> | </span>
+              <p className='text-base text-gray-900 dark:text-gray-50'>9$</p>
                   </div>
                 </div>
                 <div className='flex flex-row items-end pl-12'>
@@ -354,13 +380,14 @@ const ExtensionPage = ({
                   <StarsRaiting stars='2' />
                 </div>
               </div>
-              <form className='mb-6'>
+              <form onSubmit={handleSubmit} className='mb-6'>
                 <div className='py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700'>
                   <label htmlFor='comment' className='sr-only'>
                     Your comment
                   </label>
                   <textarea
                     id='comment'
+										onChange={handleInput}
                     rows='6'
                     className='px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
                     placeholder='Write a comment...'
@@ -389,14 +416,14 @@ const ExtensionPage = ({
                             src={item.icon}
                             alt='Michael Gough'
                           />
-                          {item.name}
+                          User name
                         </p>
                         <p className='text-sm text-gray-600 dark:text-gray-400'>
                           <time
                             dateTime='2022-02-08'
                             title='February 8th, 2022'
                           >
-                            {item.data}
+                            {item.addedAt}
                           </time>
                         </p>
                       </div>
@@ -405,7 +432,7 @@ const ExtensionPage = ({
                       </div>
                     </footer>
                     <p className='text-gray-500 dark:text-gray-400'>
-                      {item.description}
+                      {item.text}
                     </p>
                     <div className='flex items-center mt-4 space-x-4'>
                       <button
@@ -443,6 +470,7 @@ const ExtensionPage = ({
                         ></textarea>
 
                         <Button
+													onClick={(e) => addComment(e)}
                           type='submit'
                           primary
                           className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
@@ -453,10 +481,10 @@ const ExtensionPage = ({
                     )}
                   </article>
 
-                  {item.subComment &&
-                    _map(item.subComment, (subItem) => (
+                  {item.reply &&
+                    _map(item.reply, (reply) => (
                       <article
-                        key={subItem.id}
+                        key={reply.id}
                         className='p-6 mb-6 ml-6 lg:ml-12 text-base bg-white rounded-lg dark:bg-gray-900'
                       >
                         <footer className='flex justify-between items-center mb-2'>
@@ -464,30 +492,30 @@ const ExtensionPage = ({
                             <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'>
                               <img
                                 className='mr-2 w-6 h-6 rounded-full'
-                                src={subItem.icon}
+                                src={reply.icon}
                                 alt='Jese Leos'
                               />
-                              {subItem.name}
+                              {reply.name}
                             </p>
                             <p className='text-sm text-gray-600 dark:text-gray-400'>
                               <time
                                 dateTime='2022-02-12'
                                 title='February 12th, 2022'
                               >
-                                {subItem.data}
+                                {reply.data}
                               </time>
                             </p>
                           </div>
                           <CommentMenu />
                         </footer>
                         <p className='text-gray-500 dark:text-gray-400'>
-                          {subItem.description}
+                          {reply.text}
                         </p>
                         <div className='flex flex-col items-start mt-4 space-x-4'>
                           <button
                             type='button'
                             className='flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400'
-                            onClick={() => toggleCommentInput(subItem.id)}
+                            onClick={() => toggleCommentInput(reply.id)}
                           >
                             <svg
                               aria-hidden='true'
@@ -508,7 +536,7 @@ const ExtensionPage = ({
                           </button>
                         </div>
 
-                        {commentInputs[subItem.id] && (
+                        {commentInputs[reply.id] && (
                           <div className='w-full flex flex-col items-end'>
                             <textarea
                               id='comment'

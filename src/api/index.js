@@ -309,10 +309,10 @@ export const deleteInstallExtension = (extensionId) =>
 			})
 		}
 
-		export const getComments = (offset, limit, extensionId, userId) =>
+		export const getComments = (extensionId, userId, offset, limit,) =>
 		api
 			.get(`/comments`, {
-				offset, limit, extensionId, userId
+				extensionId, userId, offset, limit,
 			})
 			.then((response) => response.data)
 			.catch((error) => {
