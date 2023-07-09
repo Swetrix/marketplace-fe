@@ -284,7 +284,6 @@ export const deleteInstallExtension = (extensionId) =>
     })
 
 		export const createComment = (userId, comment) =>
-		{
 			api
 			.post(`/comments?userId=${userId}`, comment)
 			.then((response) => response.data)
@@ -294,12 +293,10 @@ export const deleteInstallExtension = (extensionId) =>
         ? error.response.data
         : error.response.data.message
 			})
-		}
 
-		export const replyToComment = (commentId, comment) =>
-		{
+		export const replyToComment = (commentId, reply) =>
 			api
-			.post(`/comments${commentId}/reply`, comment)
+			.post(`/comments${commentId}/reply`, reply)
 			.then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
@@ -307,7 +304,6 @@ export const deleteInstallExtension = (extensionId) =>
         ? error.response.data
         : error.response.data.message
 			})
-		}
 
 		export const getComments = (extensionId, userId, offset, limit,) =>
 		api

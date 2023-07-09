@@ -11,6 +11,7 @@ import {
   deleteInstallExtension,
   createComment,
   getComments,
+	replyToComment,
 } from 'api'
 import 'glider-js/glider.min.css'
 import Button from 'ui/Button'
@@ -20,6 +21,7 @@ import StarsRaiting from 'ui/StarsRaiting'
 import { ExtensionCommentList } from 'data/ExtensionCommentList'
 import cx from 'clsx'
 import { Menu, Transition } from '@headlessui/react'
+import { useTranslation } from 'react-i18next'
 
 const CommentMenu = () => {
   return (
@@ -110,6 +112,7 @@ const ExtensionPage = ({
   user,
 }) => {
   const { id } = useParams()
+	const { t, i18n: { language } } = useTranslation('common')
   const extension = useMemo(
     () =>
       _find([...extensions, ...publishExtensions], (p) => p.id === id) || {},
@@ -120,7 +123,6 @@ const ExtensionPage = ({
   const [commentInputs, setCommentInputs] = useState({})
 	const [commentForm, setCommentForm] = useState()
   const [comments, setComments] = useState({comments: [], count: 0})
-	const [beenSubmitted, setBeenSubmitted] = useState(false)
 
   const isInstalled = useMemo(
     () => !_isEmpty(_find(installExtensions, (p) => p.id === id) || {}),
@@ -177,13 +179,27 @@ const ExtensionPage = ({
       rating: 2,
     })
       .then((response) => {
-        console.log(response, 'addComment')
-        setComments(prevState => [...prevState, response])
+				setComments((prevState) => ({
+					comments: [...prevState.comments, response],
+					count: prevState.count + 1,
+				}))
       })
       .catch((err) => {
-        showError(`Error installing extension: ${err.message}`)
+				showError(`Error add a comment: ${err.message}`)
       })
-  }
+		}
+		
+		console.log(comments, 'comments')
+
+	const replyComment = async (commentId, reply) => {
+		await replyToComment(commentId, reply)
+		.then((response) => {
+			console.log(response, 'replyResponse')
+		})
+		.catch((err) => {
+			showError(`Error reply to comment: ${err.message}`)
+		})
+	}
 
   const getAllComments = (extensionId) => {
 		// console.log(extension.id, 'extensionId')
@@ -211,8 +227,6 @@ const ExtensionPage = ({
 	const handleSubmit = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    setBeenSubmitted(true)
-
     // if (validated) {
     //   onSubmit(form)
     // }
@@ -226,11 +240,9 @@ const ExtensionPage = ({
     setCommentForm(target.value)
   }
 
-console.log(beenSubmitted, 'beenSubmitted')
-
 	useEffect(() => {
 		getAllComments(extension.id)
-	}, [beenSubmitted])
+	}, [])
 
   return (
     <>
@@ -376,7 +388,7 @@ console.log(beenSubmitted, 'beenSubmitted')
             <div className='max-w-2xl mx-auto px-4'>
               <div className='flex flex-col justify-start items-start mb-6'>
                 <h2 className='text-lg lg:text-2xl font-bold text-gray-900 dark:text-white'>
-                  Discussion {comments.count}
+                  {t('comments.discussion')} {comments.count}
                 </h2>
                 <div className='flex flex-row items-center gap-1 mt-2'>
                   <StarsRaiting stars='2' />
@@ -385,7 +397,7 @@ console.log(beenSubmitted, 'beenSubmitted')
               <form onSubmit={handleSubmit} className='mb-6'>
                 <div className='py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700'>
                   <label htmlFor='comment' className='sr-only'>
-                    Your comment
+									{t('comments.writeComment')}
                   </label>
                   <textarea
                     id='comment'
@@ -393,7 +405,7 @@ console.log(beenSubmitted, 'beenSubmitted')
 										onChange={handleInput}
                     rows='6'
                     className='px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
-                    placeholder='Write a comment...'
+                    placeholder={t('comments.writeComment')}
                     required
                   ></textarea>
                 </div>
@@ -409,7 +421,9 @@ console.log(beenSubmitted, 'beenSubmitted')
               </form>
 
 
-              {_map(comments.comments, (item) => (
+							{_isEmpty(comments.comments) ? <div className='mt-10 text-lg lg:text-2xl font-bold text-gray-900 dark:text-white text-center'>{t('comments.empty')}</div> 
+								: <div>
+								{_map(comments.comments, (item) => (
 								<div key={item.id}>
                   <article className='p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900'>
                     <footer className='flex justify-between items-center mb-2'>
@@ -462,14 +476,13 @@ console.log(beenSubmitted, 'beenSubmitted')
                         Reply
                       </button>
                     </div>
-
                     {commentInputs[item.id] && (
                       <div className='w-full flex flex-col items-end'>
                         <textarea
                           id='comment'
                           rows='6'
                           className='my-3 px-4 w-full text-sm text-gray-900 border-0 rounded-md focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
-                          placeholder='Write a comment...'
+                          placeholder={t('comments.writeComment')}
                           required
                         ></textarea>
 
@@ -485,61 +498,63 @@ console.log(beenSubmitted, 'beenSubmitted')
                     )}
                   </article>
 
-                  {/* {item.reply &&
+
+                  {item.reply &&
                     _map(item.reply, (reply) => (
                       <article
                         key={reply.id}
                         className='p-6 mb-6 ml-6 lg:ml-12 text-base bg-white rounded-lg dark:bg-gray-900'
                       >
-                        <footer className='flex justify-between items-center mb-2'>
-                          <div className='flex items-center'>
-                            <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'>
-                              <img
-                                className='mr-2 w-6 h-6 rounded-full'
-                                src={reply.icon}
-                                alt='Jese Leos'
-                              />
-                              {reply.name}
-                            </p>
-                            <p className='text-sm text-gray-600 dark:text-gray-400'>
-                              <time
-                                dateTime='2022-02-12'
-                                title='February 12th, 2022'
-                              >
-                                {reply.data}
-                              </time>
-                            </p>
-                          </div>
-                          <CommentMenu />
-                        </footer>
-                        <p className='text-gray-500 dark:text-gray-400'>
-                          {reply.text}
+                    <footer className='flex justify-between items-center mb-2'>
+                      <div className='flex items-center'>
+                        <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'>
+                          <img
+                            className='mr-2 w-6 h-6 rounded-full'
+                            src='#'
+                            alt='userName'
+                          />
+                          User name
                         </p>
-                        <div className='flex flex-col items-start mt-4 space-x-4'>
-                          <button
-                            type='button'
-                            className='flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400'
-                            onClick={() => toggleCommentInput(reply.id)}
+                        <p className='text-sm text-gray-600 dark:text-gray-400'>
+                          <time
+                            dateTime='2022-02-08'
+                            title='February 8th, 2022'
                           >
-                            <svg
-                              aria-hidden='true'
-                              className='mr-1 w-4 h-4'
-                              fill='none'
-                              stroke='currentColor'
-                              viewBox='0 0 24 24'
-                              xmlns='http://www.w3.org/2000/svg'
-                            >
-                              <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                strokeWidth='2'
-                                d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
-                              ></path>
-                            </svg>
-                            Reply
-                          </button>
-                        </div>
-
+                            {item.addedAt}
+                          </time>
+                        </p>
+                      </div>
+                      <div>
+                        <CommentMenu />
+                      </div>
+                    </footer>
+                    <p className='text-gray-500 dark:text-gray-400'>
+                      {item.text}
+                    </p>
+                    <div className='flex items-center mt-4 space-x-4'>
+                      <button
+                        onClick={() => toggleCommentInput(item.id)}
+                        type='button'
+                        className='flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400'
+                      >
+                        <svg
+                          aria-hidden='true'
+                          className='mr-1 w-4 h-4'
+                          fill='none'
+                          stroke='currentColor'
+                          viewBox='0 0 24 24'
+                          xmlns='http://www.w3.org/2000/svg'
+                        >
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='2'
+                            d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
+                          ></path>
+                        </svg>
+                        Reply
+                      </button>
+                    </div>
                         {commentInputs[reply.id] && (
                           <div className='w-full flex flex-col items-end'>
                             <textarea
@@ -550,19 +565,21 @@ console.log(beenSubmitted, 'beenSubmitted')
                               required
                             ></textarea>
 
-                            <Button
-                              type='submit'
-                              primary
-                              className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
-                            >
-                              Submit
-                            </Button>
-                          </div>
-                        )}
-                      </article>
-                    ))} */}
+                          <Button
+                            type='submit'
+                            primary
+                            className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
+                          >
+                            Submit
+                          </Button>
+                        </div>
+                      )}
+                    </article>
+                    ))}
                 </div>
-              ))}
+              ))}	
+						</div>
+						}
             </div>
           </section>
         </div>
