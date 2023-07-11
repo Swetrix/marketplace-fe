@@ -180,10 +180,10 @@ const ExtensionPage = ({
       rating: 2,
     })
       .then((response) => {
-				setComments((prevState) => ({
-					comments: [...prevState.comments, response],
-					count: prevState.count + 1,
-				}))
+				setComments({
+					comments: [...comments.comments, response],
+					count: comments.count + 1,
+				})
       })
       .catch((err) => {
 				showError(`Error add a comment: ${err.message}`)
@@ -195,15 +195,12 @@ const ExtensionPage = ({
 		await replyToComment(commentId, {reply: reply})
 		.then((response) => {
 			toggleCommentInput(commentId)
-			setComments((prevState) => 
-			({
-				comments: _map(prevState.comments, (comment) => comment.id === commentId ? { ...comment, reply: reply } : comment),
-				count: prevState.count
-			})
+			setComments({
+				comments: _map(comments.comments, (comment) => comment.id === commentId ? { ...comment, reply: reply } : comment),
+				count: comments.count
+			}
 		)
-
-			console.log(response, 'replyResponse')
-		})
+	})
 		.catch((err) => {
 			showError(`Error reply to comment: ${err.message}`)
 		})
@@ -216,7 +213,6 @@ const ExtensionPage = ({
 			})
 			.catch((e) => {
 				showError('apiNotifications.somethingWentWrong')
-				console.log(e.message)
 			})
   }
 
@@ -236,8 +232,6 @@ const ExtensionPage = ({
 		e.preventDefault()
     e.stopPropagation()
 
-		console.log(e.target.id, 'ID')
-
 		if(e.target.id === 'mainForm') {
 			addComment(commentForm) 
 		} else replyComment(commentId, commentForm)
@@ -254,8 +248,6 @@ const ExtensionPage = ({
 	useEffect(() => {
 		getAllComments(extension.id)
 	}, [])
-
-	console.log(comments)
 
   return (
     <>
@@ -395,7 +387,7 @@ const ExtensionPage = ({
                 </div>
               )}
             </div>
-          </div>
+
 
           <section className='bg-white dark:bg-gray-900 py-8 lg:py-16'>
             <div className='max-w-2xl mx-auto px-4'>
@@ -597,6 +589,8 @@ const ExtensionPage = ({
 						}
             </div>
           </section>
+
+          </div>
         </div>
       </Title>
     </>
