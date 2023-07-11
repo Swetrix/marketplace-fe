@@ -296,7 +296,7 @@ export const deleteInstallExtension = (extensionId) =>
 
 		export const replyToComment = (commentId, reply) =>
 			api
-			.post(`/comments${commentId}/reply`, reply)
+			.post(`/comments/${commentId}/reply`, reply)
 			.then((response) => response.data)
     .catch((error) => {
       debug('%s', error)

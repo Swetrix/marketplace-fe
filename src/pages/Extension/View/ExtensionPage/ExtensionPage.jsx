@@ -189,11 +189,18 @@ const ExtensionPage = ({
       })
 		}
 		
-		console.log(comments, 'comments')
 
 	const replyComment = async (commentId, reply) => {
-		await replyToComment(commentId, reply)
+		await replyToComment(commentId, {reply: reply})
 		.then((response) => {
+			toggleCommentInput(commentId)
+			setComments((prevState) => 
+			({
+				comments: _map(prevState.comments, (comment) => comment.id === commentId ? { ...comment, reply: reply } : comment),
+				count: prevState.count
+			})
+		)
+
 			console.log(response, 'replyResponse')
 		})
 		.catch((err) => {
@@ -202,7 +209,6 @@ const ExtensionPage = ({
 	}
 
   const getAllComments = (extensionId) => {
-		// console.log(extension.id, 'extensionId')
 			getComments(extensionId)
 			.then((response) => {
 				setComments(response)
@@ -224,13 +230,16 @@ const ExtensionPage = ({
     })
   }
 
-	const handleSubmit = (e) => {
-    e.preventDefault()
+	const handleSubmit = (e, commentId) => {
+		e.preventDefault()
     e.stopPropagation()
-    // if (validated) {
-    //   onSubmit(form)
-    // }
-		addComment(commentForm)
+
+		console.log(e.target.id, 'ID')
+
+		if(e.target.id === 'mainForm') {
+			addComment(commentForm) 
+		} else replyComment(commentId, commentForm)
+
 		setCommentForm('')
   }
 
@@ -243,6 +252,8 @@ const ExtensionPage = ({
 	useEffect(() => {
 		getAllComments(extension.id)
 	}, [])
+
+	console.log(comments)
 
   return (
     <>
@@ -394,7 +405,7 @@ const ExtensionPage = ({
                   <StarsRaiting stars='2' />
                 </div>
               </div>
-              <form onSubmit={handleSubmit} className='mb-6'>
+              <form id='mainForm' onSubmit={handleSubmit} className='mb-6'>
                 <div className='py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700'>
                   <label htmlFor='comment' className='sr-only'>
 									{t('comments.writeComment')}
@@ -477,32 +488,32 @@ const ExtensionPage = ({
                       </button>
                     </div>
                     {commentInputs[item.id] && (
-                      <div className='w-full flex flex-col items-end'>
+                      <form id='replyForm' onSubmit={(e) => handleSubmit(e, item.id)} className='w-full flex flex-col items-end'>
                         <textarea
                           id='comment'
                           rows='6'
+													value={commentForm}
+													onChange={handleInput}
                           className='my-3 px-4 w-full text-sm text-gray-900 border-0 rounded-md focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
                           placeholder={t('comments.writeComment')}
                           required
                         ></textarea>
 
                         <Button
-													onClick={(e) => addComment(e)}
                           type='submit'
                           primary
                           className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
                         >
                           Submit
                         </Button>
-                      </div>
+                      </form>
                     )}
                   </article>
 
 
-                  {item.reply &&
-                    _map(item.reply, (reply) => (
+                  {item.reply && (
                       <article
-                        key={reply.id}
+                        key={item.id}
                         className='p-6 mb-6 ml-6 lg:ml-12 text-base bg-white rounded-lg dark:bg-gray-900'
                       >
                     <footer className='flex justify-between items-center mb-2'>
@@ -520,7 +531,7 @@ const ExtensionPage = ({
                             dateTime='2022-02-08'
                             title='February 8th, 2022'
                           >
-                            {item.addedAt}
+                            reply.addedAt
                           </time>
                         </p>
                       </div>
@@ -529,9 +540,9 @@ const ExtensionPage = ({
                       </div>
                     </footer>
                     <p className='text-gray-500 dark:text-gray-400'>
-                      {item.text}
+                      {item.reply}
                     </p>
-                    <div className='flex items-center mt-4 space-x-4'>
+                    {/* <div className='flex items-center mt-4 space-x-4'>
                       <button
                         onClick={() => toggleCommentInput(item.id)}
                         type='button'
@@ -554,12 +565,14 @@ const ExtensionPage = ({
                         </svg>
                         Reply
                       </button>
-                    </div>
-                        {commentInputs[reply.id] && (
-                          <div className='w-full flex flex-col items-end'>
+                    </div> */}
+                        {/* {commentInputs[reply.id] && (
+                          <form id='replyForm' onSubmit={(e) => handleSubmit(e, reply.id)} className='w-full flex flex-col items-end'>
                             <textarea
                               id='comment'
                               rows='6'
+															value={commentForm}
+															onChange={handleInput}
                               className='my-3 px-4 w-full text-sm text-gray-900 border-0 rounded-md focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
                               placeholder='Write a comment...'
                               required
@@ -572,10 +585,10 @@ const ExtensionPage = ({
                           >
                             Submit
                           </Button>
-                        </div>
-                      )}
+                        </form>
+                      )} */}
                     </article>
-                    ))}
+                    )}
                 </div>
               ))}	
 						</div>
