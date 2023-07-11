@@ -11,7 +11,7 @@ import {
   deleteInstallExtension,
   createComment,
   getComments,
-	replyToComment,
+  replyToComment,
 } from 'api'
 import 'glider-js/glider.min.css'
 import Button from 'ui/Button'
@@ -106,15 +106,18 @@ const ExtensionPage = ({
   extensions,
   showError,
   setExtensions,
-	comments,
-	setComments,
+  comments,
+  setComments,
   installExtensions,
   authenticated,
   publishExtensions,
   user,
 }) => {
   const { id } = useParams()
-	const { t, i18n: { language } } = useTranslation('common')
+  const {
+    t,
+    i18n: { language },
+  } = useTranslation('common')
   const extension = useMemo(
     () =>
       _find([...extensions, ...publishExtensions], (p) => p.id === id) || {},
@@ -123,7 +126,7 @@ const ExtensionPage = ({
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [installLoading, setInstallLoading] = useState(false)
   const [commentInputs, setCommentInputs] = useState({})
-	const [commentForm, setCommentForm] = useState()
+  const [commentForm, setCommentForm] = useState()
 
   const isInstalled = useMemo(
     () => !_isEmpty(_find(installExtensions, (p) => p.id === id) || {}),
@@ -180,40 +183,40 @@ const ExtensionPage = ({
       rating: 2,
     })
       .then((response) => {
-				setComments({
-					comments: [...comments.comments, response],
-					count: comments.count + 1,
-				})
+        setComments({
+          comments: [...comments.comments, response],
+          count: comments.count + 1,
+        })
       })
       .catch((err) => {
-				showError(`Error add a comment: ${err.message}`)
+        showError(`Error add a comment: ${err.message}`)
       })
-		}
-		
+  }
 
-	const replyComment = async (commentId, reply) => {
-		await replyToComment(commentId, {reply: reply})
-		.then((response) => {
-			toggleCommentInput(commentId)
-			setComments({
-				comments: _map(comments.comments, (comment) => comment.id === commentId ? { ...comment, reply: reply } : comment),
-				count: comments.count
-			}
-		)
-	})
-		.catch((err) => {
-			showError(`Error reply to comment: ${err.message}`)
-		})
-	}
+  const replyComment = async (commentId, reply) => {
+    await replyToComment(commentId, { reply: reply })
+      .then((response) => {
+        toggleCommentInput(commentId)
+        setComments({
+          comments: _map(comments.comments, (comment) =>
+            comment.id === commentId ? { ...comment, reply: reply } : comment
+          ),
+          count: comments.count,
+        })
+      })
+      .catch((err) => {
+        showError(`Error reply to comment: ${err.message}`)
+      })
+  }
 
   const getAllComments = async (extensionId) => {
-			await getComments(extensionId)
-			.then((response) => {
-				setComments(response)
-			})
-			.catch((e) => {
-				showError('apiNotifications.somethingWentWrong')
-			})
+    await getComments(extensionId)
+      .then((response) => {
+        setComments(response)
+      })
+      .catch((e) => {
+        showError('apiNotifications.somethingWentWrong')
+      })
   }
 
   const toggleCommentInput = (commentId) => {
@@ -228,26 +231,25 @@ const ExtensionPage = ({
     })
   }
 
-	const handleSubmit = (e, commentId) => {
-		e.preventDefault()
+  const handleSubmit = (e, commentId) => {
+    e.preventDefault()
     e.stopPropagation()
 
-		if(e.target.id === 'mainForm') {
-			addComment(commentForm) 
-		} else replyComment(commentId, commentForm)
+    if (e.target.id === 'mainForm') {
+      addComment(commentForm)
+    } else replyComment(commentId, commentForm)
 
-		setCommentForm('')
+    setCommentForm('')
   }
 
-
-	const handleInput = (event) => {
+  const handleInput = (event) => {
     const { target } = event
     setCommentForm(target.value)
   }
 
-	useEffect(() => {
-		getAllComments(extension.id)
-	}, [])
+  useEffect(() => {
+    getAllComments(extension.id)
+  }, [])
 
   return (
     <>
@@ -295,11 +297,13 @@ const ExtensionPage = ({
                       {extension.usersQuantity} users
                     </p>
                     <span> | </span>
-                  <div className='flex flex-row items-center gap-1'>
-                    <StarsRaiting stars='3.5' />
-                  </div>
+                    <div className='flex flex-row items-center gap-1'>
+                      <StarsRaiting stars='3.5' />
+                    </div>
                     <span> | </span>
-              <p className='text-base text-gray-900 dark:text-gray-50'>9$</p>
+                    <p className='text-base text-gray-900 dark:text-gray-50'>
+                      9$
+                    </p>
                   </div>
                 </div>
                 <div className='flex flex-row items-end pl-12'>
@@ -388,155 +392,160 @@ const ExtensionPage = ({
               )}
             </div>
 
-
-          <section className='bg-white dark:bg-gray-900 py-8 lg:py-16'>
-            <div className='max-w-2xl mx-auto px-4'>
-              <div className='flex flex-col justify-start items-start mb-6'>
-                <h2 className='text-lg lg:text-2xl font-bold text-gray-900 dark:text-white'>
-                  {t('comments.discussion')} {comments.count}
-                </h2>
-                <div className='flex flex-row items-center gap-1 mt-2'>
-                  <StarsRaiting stars='1' />
+            <section className='bg-white dark:bg-gray-900 py-8 lg:py-16'>
+              <div className='max-w-2xl mx-auto px-4'>
+                <div className='flex flex-col justify-start items-start mb-6'>
+                  <h2 className='text-lg lg:text-2xl font-bold text-gray-900 dark:text-white'>
+                    {t('comments.discussion')} {comments.count}
+                  </h2>
+                  <div className='flex flex-row items-center gap-1 mt-2'>
+                    <StarsRaiting stars='1' />
+                  </div>
                 </div>
-              </div>
-              <form id='mainForm' onSubmit={handleSubmit} className='mb-6'>
-                <div className='py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700'>
-                  <label htmlFor='comment' className='sr-only'>
-									{t('comments.writeComment')}
-                  </label>
-                  <textarea
-                    id='comment'
-										value={commentForm}
-										onChange={handleInput}
-                    rows='6'
-                    className='px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
-                    placeholder={t('comments.writeComment')}
-                    required
-                  ></textarea>
-                </div>
-                <div className='flex justify-end'>
-                  <Button
-                    type='submit'
-                    primary
-                    className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
-                  >
-                    Submit
-                  </Button>
-                </div>
-              </form>
+                <form id='mainForm' onSubmit={handleSubmit} className='mb-6'>
+                  <div className='py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700'>
+                    <label htmlFor='comment' className='sr-only'>
+                      {t('comments.writeComment')}
+                    </label>
+                    <textarea
+                      id='comment'
+                      value={commentForm}
+                      onChange={handleInput}
+                      rows='6'
+                      className='px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
+                      placeholder={t('comments.writeComment')}
+                      required
+                    ></textarea>
+                  </div>
+                  <div className='flex justify-end'>
+                    <Button
+                      type='submit'
+                      primary
+                      className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                </form>
 
+                {_isEmpty(comments.comments) ? (
+                  <div className='mt-10 text-lg lg:text-2xl font-bold text-gray-900 dark:text-white text-center'>
+                    {t('comments.empty')}
+                  </div>
+                ) : (
+                  <div>
+                    {_map(comments.comments, (item) => (
+                      <div key={item.id}>
+                        <article className='p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900'>
+                          <footer className='flex justify-between items-center mb-2'>
+                            <div className='flex items-center'>
+                              <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'>
+                                <img
+                                  className='mr-2 w-6 h-6 rounded-full'
+                                  src='#'
+                                  alt='userName'
+                                />
+                                User name
+                              </p>
+                              <p className='text-sm text-gray-600 dark:text-gray-400'>
+                                <time
+                                  dateTime='2022-02-08'
+                                  title='February 8th, 2022'
+                                >
+                                  {item.addedAt}
+                                </time>
+                              </p>
+                            </div>
+                            <div>
+                              <CommentMenu />
+                            </div>
+                          </footer>
+                          <p className='text-gray-500 dark:text-gray-400'>
+                            {item.text}
+                          </p>
+                          <div className='flex items-center mt-4 space-x-4'>
+                            <button
+                              onClick={() => toggleCommentInput(item.id)}
+                              type='button'
+                              className='flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400'
+                            >
+                              <svg
+                                aria-hidden='true'
+                                className='mr-1 w-4 h-4'
+                                fill='none'
+                                stroke='currentColor'
+                                viewBox='0 0 24 24'
+                                xmlns='http://www.w3.org/2000/svg'
+                              >
+                                <path
+                                  strokeLinecap='round'
+                                  strokeLinejoin='round'
+                                  strokeWidth='2'
+                                  d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
+                                ></path>
+                              </svg>
+                              Reply
+                            </button>
+                          </div>
+                          {commentInputs[item.id] && (
+                            <form
+                              id='replyForm'
+                              onSubmit={(e) => handleSubmit(e, item.id)}
+                              className='w-full flex flex-col items-end'
+                            >
+                              <textarea
+                                id='comment'
+                                rows='6'
+                                value={commentForm}
+                                onChange={handleInput}
+                                className='my-3 px-4 w-full text-sm text-gray-900 border-0 rounded-md focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
+                                placeholder={t('comments.writeComment')}
+                                required
+                              ></textarea>
 
-							{_isEmpty(comments.comments) ? <div className='mt-10 text-lg lg:text-2xl font-bold text-gray-900 dark:text-white text-center'>{t('comments.empty')}</div> 
-								: <div>
-								{_map(comments.comments, (item) => (
-								<div key={item.id}>
-                  <article className='p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900'>
-                    <footer className='flex justify-between items-center mb-2'>
-                      <div className='flex items-center'>
-                        <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'>
-                          <img
-                            className='mr-2 w-6 h-6 rounded-full'
-                            src='#'
-                            alt='userName'
-                          />
-                          User name
-                        </p>
-                        <p className='text-sm text-gray-600 dark:text-gray-400'>
-                          <time
-                            dateTime='2022-02-08'
-                            title='February 8th, 2022'
+                              <Button
+                                type='submit'
+                                primary
+                                className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
+                              >
+                                Submit
+                              </Button>
+                            </form>
+                          )}
+                        </article>
+
+                        {item.reply && (
+                          <article
+                            key={item.id}
+                            className='p-6 mb-6 ml-6 lg:ml-12 text-base bg-white rounded-lg dark:bg-gray-900'
                           >
-                            {item.addedAt}
-                          </time>
-                        </p>
-                      </div>
-                      <div>
-                        <CommentMenu />
-                      </div>
-                    </footer>
-                    <p className='text-gray-500 dark:text-gray-400'>
-                      {item.text}
-                    </p>
-                    <div className='flex items-center mt-4 space-x-4'>
-                      <button
-                        onClick={() => toggleCommentInput(item.id)}
-                        type='button'
-                        className='flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400'
-                      >
-                        <svg
-                          aria-hidden='true'
-                          className='mr-1 w-4 h-4'
-                          fill='none'
-                          stroke='currentColor'
-                          viewBox='0 0 24 24'
-                          xmlns='http://www.w3.org/2000/svg'
-                        >
-                          <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth='2'
-                            d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
-                          ></path>
-                        </svg>
-                        Reply
-                      </button>
-                    </div>
-                    {commentInputs[item.id] && (
-                      <form id='replyForm' onSubmit={(e) => handleSubmit(e, item.id)} className='w-full flex flex-col items-end'>
-                        <textarea
-                          id='comment'
-                          rows='6'
-													value={commentForm}
-													onChange={handleInput}
-                          className='my-3 px-4 w-full text-sm text-gray-900 border-0 rounded-md focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
-                          placeholder={t('comments.writeComment')}
-                          required
-                        ></textarea>
-
-                        <Button
-                          type='submit'
-                          primary
-                          className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
-                        >
-                          Submit
-                        </Button>
-                      </form>
-                    )}
-                  </article>
-
-
-                  {item.reply && (
-                      <article
-                        key={item.id}
-                        className='p-6 mb-6 ml-6 lg:ml-12 text-base bg-white rounded-lg dark:bg-gray-900'
-                      >
-                    <footer className='flex justify-between items-center mb-2'>
-                      <div className='flex items-center'>
-                        <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'>
-                          <img
-                            className='mr-2 w-6 h-6 rounded-full'
-                            src='#'
-                            alt='userName'
-                          />
-                          User name
-                        </p>
-                        <p className='text-sm text-gray-600 dark:text-gray-400'>
-                          <time
-                            dateTime='2022-02-08'
-                            title='February 8th, 2022'
-                          >
-                            reply.addedAt
-                          </time>
-                        </p>
-                      </div>
-                      <div>
-                        <CommentMenu />
-                      </div>
-                    </footer>
-                    <p className='text-gray-500 dark:text-gray-400'>
-                      {item.reply}
-                    </p>
-                    {/* <div className='flex items-center mt-4 space-x-4'>
+                            <footer className='flex justify-between items-center mb-2'>
+                              <div className='flex items-center'>
+                                <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'>
+                                  <img
+                                    className='mr-2 w-6 h-6 rounded-full'
+                                    src='#'
+                                    alt='userName'
+                                  />
+                                  User name
+                                </p>
+                                <p className='text-sm text-gray-600 dark:text-gray-400'>
+                                  <time
+                                    dateTime='2022-02-08'
+                                    title='February 8th, 2022'
+                                  >
+                                    reply.addedAt
+                                  </time>
+                                </p>
+                              </div>
+                              <div>
+                                <CommentMenu />
+                              </div>
+                            </footer>
+                            <p className='text-gray-500 dark:text-gray-400'>
+                              {item.reply}
+                            </p>
+                            {/* <div className='flex items-center mt-4 space-x-4'>
                       <button
                         onClick={() => toggleCommentInput(item.id)}
                         type='button'
@@ -560,7 +569,7 @@ const ExtensionPage = ({
                         Reply
                       </button>
                     </div> */}
-                        {/* {commentInputs[reply.id] && (
+                            {/* {commentInputs[reply.id] && (
                           <form id='replyForm' onSubmit={(e) => handleSubmit(e, reply.id)} className='w-full flex flex-col items-end'>
                             <textarea
                               id='comment'
@@ -581,15 +590,14 @@ const ExtensionPage = ({
                           </Button>
                         </form>
                       )} */}
-                    </article>
-                    )}
-                </div>
-              ))}	
-						</div>
-						}
-            </div>
-          </section>
-
+                          </article>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </section>
           </div>
         </div>
       </Title>
