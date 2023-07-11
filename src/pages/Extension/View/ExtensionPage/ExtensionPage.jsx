@@ -351,7 +351,7 @@ const ExtensionPage = ({
                   Discussion (20)
                 </h2>
                 <div className='flex flex-row items-center gap-1 mt-2'>
-                  <StarsRaiting stars='2' />
+                  <StarsRaiting stars='1' />
                 </div>
               </div>
               <form className='mb-6'>
