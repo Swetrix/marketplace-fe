@@ -10,6 +10,7 @@ const getInitialState = () => {
     extensions: [],
     publishExtensions: [],
     installExtensions: [],
+		comments: {comments: [], count: 0},
     isLoading: true,
     isLoadingPublish: true,
     isLoadingInstall: true,
@@ -288,6 +289,15 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
         category,
       }
     }
+
+		case types.SET_COMMENTS: {
+			const {comments} = payload
+
+			return {
+				...state,
+				comments
+		}
+	}
 
     default:
       return state
