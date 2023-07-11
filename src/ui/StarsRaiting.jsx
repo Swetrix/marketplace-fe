@@ -16,7 +16,7 @@ const StarsRaiting = ({ stars }) => {
           <svg
             key={index}
             xmlns='http://www.w3.org/2000/svg'
-            className='w-[14px] h-[14px] text-yellow-400 dark:text-yellow-600'
+            className='w-[14px] h-[14px] text-yellow-400 dark:text-yellow- hover:text-yellow-200'
             fill='currentColor'
             viewBox='0 0 24 24'
             stroke='currentColor'
@@ -33,7 +33,7 @@ const StarsRaiting = ({ stars }) => {
           <svg
             key={index}
             xmlns='http://www.w3.org/2000/svg'
-            className='w-[14px] h-[14px]'
+            className='w-[14px] h-[14px] hover:text-yellow-300'
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
