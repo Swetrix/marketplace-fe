@@ -106,6 +106,8 @@ const ExtensionPage = ({
   extensions,
   showError,
   setExtensions,
+	comments,
+	setComments,
   installExtensions,
   authenticated,
   publishExtensions,
@@ -122,7 +124,6 @@ const ExtensionPage = ({
   const [installLoading, setInstallLoading] = useState(false)
   const [commentInputs, setCommentInputs] = useState({})
 	const [commentForm, setCommentForm] = useState()
-  const [comments, setComments] = useState({comments: [], count: 0})
 
   const isInstalled = useMemo(
     () => !_isEmpty(_find(installExtensions, (p) => p.id === id) || {}),
@@ -208,13 +209,14 @@ const ExtensionPage = ({
 		})
 	}
 
-  const getAllComments = (extensionId) => {
-			getComments(extensionId)
+  const getAllComments = async (extensionId) => {
+			await getComments(extensionId)
 			.then((response) => {
 				setComments(response)
 			})
-			.catch(() => {
+			.catch((e) => {
 				showError('apiNotifications.somethingWentWrong')
+				console.log(e.message)
 			})
   }
 
