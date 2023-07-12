@@ -399,7 +399,7 @@ const ExtensionPage = ({
                     {t('comments.discussion')} {comments.count}
                   </h2>
                   <div className='flex flex-row items-center gap-1 mt-2'>
-                    <StarsRaiting stars='1' />
+                    <StarsRaiting stars='3' />
                   </div>
                 </div>
                 <form id='mainForm' onSubmit={handleSubmit} className='mb-6'>

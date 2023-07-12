@@ -33,7 +33,7 @@ const StarsRaiting = ({ stars }) => {
           <svg
             key={index}
             xmlns='http://www.w3.org/2000/svg'
-            className='w-[14px] h-[14px] hover:text-yellow-300 dark:hover:text-yellow-600'
+            className='w-[14px] h-[14px] text-yellow-200 hover:text-yellow-300 dark:text-yellow-600 dark:hover:text-yellow-400'
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
