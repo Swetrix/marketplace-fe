@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
-// import StarsRaiting from 'ui/StarsRaiting'
 import Glider from 'react-glider'
 import _find from 'lodash/find'
 import _map from 'lodash/map'
@@ -298,7 +297,7 @@ const ExtensionPage = ({
                     </p>
                     <span> | </span>
                     <div className='flex flex-row items-center gap-1'>
-                      <StarsRaiting stars='3.5' />
+                      <StarsRaiting disabled stars='3' />
                     </div>
                     <span> | </span>
                     <p className='text-base text-gray-900 dark:text-gray-50'>
@@ -399,7 +398,7 @@ const ExtensionPage = ({
                     {t('comments.discussion')} {comments.count}
                   </h2>
                   <div className='flex flex-row items-center gap-1 mt-2'>
-                    <StarsRaiting stars='3' />
+                    <StarsRaiting />
                   </div>
                 </div>
                 <form id='mainForm' onSubmit={handleSubmit} className='mb-6'>

@@ -1,22 +1,36 @@
 import React from 'react'
 import _map from 'lodash/map'
 
-const StarsRaiting = ({ stars }) => {
-  const [selectedStars, setSelectedStars] = React.useState(0)
-  console.log(selectedStars, 'selectedStars')
+const StarsRaiting = ({ stars = 0, disabled = false }) => {
+  let currentStars = 0
+  const [selectedStars, setSelectedStars] = React.useState(currentStars)
+
+  if (stars) {
+    currentStars = stars
+  } else {
+    currentStars = selectedStars
+  }
 
   const handleStar = (index) => {
-    setSelectedStars(index + 1)
+    if (!disabled) {
+      setSelectedStars(index + 1)
+    }
   }
+
+  console.log(currentStars, 'currentStars')
 
   return (
     <div className='flex flex-row flex-wrap justify-between max-w-[75px] w-full'>
       {_map(Array(5), (_, index) =>
-        stars && selectedStars > index ? (
+        currentStars > index ? (
           <svg
             key={index}
             xmlns='http://www.w3.org/2000/svg'
-            className='w-[14px] h-[14px] text-yellow-400 dark:text-yellow-600 dark:hover:text-yellow-400 hover:text-yellow-200'
+            className={`w-[14px] h-[14px] text-yellow-400 ${
+              disabled
+                ? ''
+                : ' dark:text-yellow-600 dark:hover:text-yellow-400 hover:text-yellow-200'
+            }`}
             fill='currentColor'
             viewBox='0 0 24 24'
             stroke='currentColor'
@@ -33,7 +47,9 @@ const StarsRaiting = ({ stars }) => {
           <svg
             key={index}
             xmlns='http://www.w3.org/2000/svg'
-            className='w-[14px] h-[14px] text-yellow-200 hover:text-yellow-300 dark:text-yellow-600 dark:hover:text-yellow-400'
+            className={`w-[14px] h-[14px] text-yellow-200  dark:text-yellow-600  ${
+              disabled ? '' : 'dark:hover:text-yellow-400 hover:text-yellow-300'
+            }`}
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
