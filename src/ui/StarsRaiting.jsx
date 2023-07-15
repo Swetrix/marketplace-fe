@@ -17,8 +17,6 @@ const StarsRaiting = ({ stars = 0, disabled = false }) => {
     }
   }
 
-  console.log(currentStars, 'currentStars')
-
   return (
     <div className='flex flex-row flex-wrap justify-between max-w-[75px] w-full'>
       {_map(Array(5), (_, index) =>

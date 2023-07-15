@@ -1,10 +1,13 @@
 import React, { Fragment, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Glider from 'react-glider'
+
 import _find from 'lodash/find'
 import _map from 'lodash/map'
 import _isEmpty from 'lodash/isEmpty'
 import _filter from 'lodash/filter'
+import _ceil from 'lodash/ceil'
+
 import {
   installExtension,
   deleteInstallExtension,
@@ -21,6 +24,7 @@ import { ExtensionCommentList } from 'data/ExtensionCommentList'
 import cx from 'clsx'
 import { Menu, Transition } from '@headlessui/react'
 import { useTranslation } from 'react-i18next'
+import Pagination from 'ui/Pagination'
 
 const CommentMenu = () => {
   return (
@@ -126,6 +130,13 @@ const ExtensionPage = ({
   const [installLoading, setInstallLoading] = useState(false)
   const [commentInputs, setCommentInputs] = useState({})
   const [commentForm, setCommentForm] = useState()
+  const [commentsTest, setCommentsTest] = useState(ExtensionCommentList)
+  const [page, setPage] = useState(1)
+  const [total, setTotal] = useState(10)
+  const limit = 5
+  console.log(page, 'page')
+
+  const pageAmount = useMemo(() => _ceil(total / limit), [total, limit])
 
   const isInstalled = useMemo(
     () => !_isEmpty(_find(installExtensions, (p) => p.id === id) || {}),
@@ -249,6 +260,22 @@ const ExtensionPage = ({
   useEffect(() => {
     getAllComments(extension.id)
   }, [])
+
+  React.useEffect(() => {
+    let start
+    let end
+
+    if (page === 1) {
+      start = 0
+      end = 4
+    } else {
+      start = 5
+      end = 10
+    }
+
+    const currentPageComment = ExtensionCommentList.slice(start, end)
+    setCommentsTest(currentPageComment)
+  }, [commentsTest, page])
 
   return (
     <>
@@ -427,13 +454,13 @@ const ExtensionPage = ({
                   </div>
                 </form>
 
-                {_isEmpty(comments.comments) ? (
+                {_isEmpty(commentsTest) ? (
                   <div className='mt-10 text-lg lg:text-2xl font-bold text-gray-900 dark:text-white text-center'>
                     {t('comments.empty')}
                   </div>
                 ) : (
                   <div>
-                    {_map(comments.comments, (item) => (
+                    {_map(commentsTest, (item) => (
                       <div key={item.id}>
                         <article className='p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900'>
                           <footer className='flex justify-between items-center mb-2'>
@@ -596,6 +623,18 @@ const ExtensionPage = ({
                   </div>
                 )}
               </div>
+
+              {pageAmount > 1 && (
+                <div className='mt-2'>
+                  <Pagination
+                    page={page}
+                    setPage={setPage}
+                    pageAmount={pageAmount}
+                    total={2}
+                    limit={1}
+                  />
+                </div>
+              )}
             </section>
           </div>
         </div>
