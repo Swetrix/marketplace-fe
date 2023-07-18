@@ -2,6 +2,8 @@ import React, { Fragment, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Glider from 'react-glider'
 
+import { useAlert } from '@blaumaus/react-alert'
+
 import _find from 'lodash/find'
 import _map from 'lodash/map'
 import _isEmpty from 'lodash/isEmpty'
@@ -116,6 +118,7 @@ const ExtensionPage = ({
   publishExtensions,
   user,
 }) => {
+  const alert = useAlert()
   const { id } = useParams()
   const {
     t,
@@ -241,15 +244,22 @@ const ExtensionPage = ({
     })
   }
 
-  const handleSubmit = (e, commentId) => {
+  const handleSubmit = async (e, commentId) => {
     e.preventDefault()
     e.stopPropagation()
 
-    if (e.target.id === 'mainForm') {
-      addComment(commentForm)
-    } else replyComment(commentId, commentForm)
-
-    setCommentForm('')
+    try {
+      if (e.target.id === 'mainForm') {
+        await addComment(commentForm)
+        alert.success('Comment added successfully')
+      } else {
+        await replyComment(commentId, commentForm)
+        alert.success('Reply added successfully')
+      }
+      setCommentForm('')
+    } catch (error) {
+      alert.error(`Error: ${error.message}`)
+    }
   }
 
   const handleInput = (event) => {
