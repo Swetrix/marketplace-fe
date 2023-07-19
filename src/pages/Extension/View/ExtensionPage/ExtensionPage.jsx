@@ -20,7 +20,7 @@ import {
 import 'glider-js/glider.min.css'
 import Button from 'ui/Button'
 import Title from 'components/Title'
-import { extensionStatuses } from 'redux/constants'
+import { ENTRIES_PER_PAGE_COMMENTS, extensionStatuses } from 'redux/constants'
 import StarsRaiting from 'ui/StarsRaiting'
 import { ExtensionCommentList } from 'data/ExtensionCommentList'
 import cx from 'clsx'
@@ -140,13 +140,13 @@ const ExtensionPage = ({
   const [installLoading, setInstallLoading] = useState(false)
   const [commentInputs, setCommentInputs] = useState('')
   const [commentForm, setCommentForm] = useState({text: '', rating: 0})
-  const [commentsTest, setCommentsTest] = useState(ExtensionCommentList)
+  // const [commentsTest, setCommentsTest] = useState(ExtensionCommentList)
   const [page, setPage] = useState(1)
-  const [total, setTotal] = useState(10)
-  const limit = 5
-  console.log(page, 'page')
+  const [total, setTotal] = useState(comments.count)
 
-  const pageAmount = useMemo(() => _ceil(total / limit), [total, limit])
+  const pageAmount = useMemo(() => _ceil(total / ENTRIES_PER_PAGE_COMMENTS), [total])
+	console.log(pageAmount, 'pageAmount')
+	console.log(comments.count, 'count', ENTRIES_PER_PAGE_COMMENTS)
 
   const isInstalled = useMemo(
     () => !_isEmpty(_find(installExtensions, (p) => p.id === id) || {}),
@@ -230,7 +230,7 @@ const ExtensionPage = ({
   }
 
   const getAllComments = async (extensionId) => {
-    await getComments(extensionId)
+    await getComments(extensionId, ENTRIES_PER_PAGE_COMMENTS, (page - 1) * ENTRIES_PER_PAGE_COMMENTS)
       .then((response) => {
         setComments(response)
       })
@@ -283,7 +283,7 @@ const ExtensionPage = ({
 
   useEffect(() => {
     getAllComments(extension.id)
-  }, [])
+  }, [page])
 
   // React.useEffect(() => {
   //   let start
@@ -610,9 +610,9 @@ const ExtensionPage = ({
                   <Pagination
                     page={page}
                     setPage={setPage}
-                    pageAmount={pageAmount}
-                    total={2}
-                    limit={1}
+										pageAmount={pageAmount || 0}
+                    total={total}
+                    limit={ENTRIES_PER_PAGE_COMMENTS}
                   />
                 </div>
               )}

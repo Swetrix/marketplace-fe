@@ -305,9 +305,9 @@ export const deleteInstallExtension = (extensionId) =>
         : error.response.data.message
 			})
 
-		export const getComments = (extensionId, userId, offset, limit,) =>
+		export const getComments = (extensionId, limit, offset, userId) =>
 		api
-		.get(`/comments?extensionId=${extensionId}`)
+		.get(`/comments?extensionId=${extensionId}&limit=${limit}&offset=${offset}`)
 			.then((response) => response.data)
 			.catch((error) => {
 				debug('%s', error)

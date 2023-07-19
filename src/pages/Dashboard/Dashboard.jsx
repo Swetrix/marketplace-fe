@@ -354,6 +354,8 @@ const Dashboard = ({
               </>
             )}
 
+						{console.log(dashboardPaginationPage, 'sss')}
+
             {
               pageAmount > 1 && (
                 <Pagination page={tabExtensions === tabForPublishExtensions ? dashboardPaginationPagePublish : dashboardPaginationPage} setPage={tabExtensions === tabForPublishExtensions ? (page) => setDashboardPaginationPagePublish(page) : (page) => setDashboardPaginationPage(page)} pageAmount={pageAmount || 0} total={tabExtensions === tabForPublishExtensions ? publishTotal : total} />
