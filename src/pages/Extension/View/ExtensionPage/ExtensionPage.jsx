@@ -138,7 +138,7 @@ const ExtensionPage = ({
   )
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [installLoading, setInstallLoading] = useState(false)
-  const [commentInputs, setCommentInputs] = useState({})
+  const [commentInputs, setCommentInputs] = useState('')
   const [commentForm, setCommentForm] = useState({text: '', rating: 0})
   const [commentsTest, setCommentsTest] = useState(ExtensionCommentList)
   const [page, setPage] = useState(1)
@@ -239,17 +239,12 @@ const ExtensionPage = ({
       })
   }
 
-  const toggleCommentInput = (commentId) => {
-    setCommentInputs((prevInputs) => {
-      const updateInputs = Object.fromEntries(
-        _map(Object.entries(prevInputs), ([id]) => [id, false])
-      )
-      return {
-        ...updateInputs,
-        [commentId]: !prevInputs[commentId],
-      }
-    })
+
+	const toggleCommentInput = (commentId) => {
+    setCommentInputs((prevState) => prevState === commentId ? '' : commentId)
   }
+
+	console.log(commentInputs)
 
   const handleSubmit = async (e, commentId) => {
     e.preventDefault()
@@ -544,7 +539,7 @@ const ExtensionPage = ({
                               Reply
                             </button>
                           </div>
-                          {commentInputs[item.id] && (
+                          {commentInputs === item.id && (
                             <form
                               id='replyForm'
                               onSubmit={(e) => handleSubmit(e, item.id)}
