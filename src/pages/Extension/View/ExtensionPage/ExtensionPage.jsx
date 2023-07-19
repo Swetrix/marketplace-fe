@@ -28,6 +28,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { useTranslation } from 'react-i18next'
 import Pagination from 'ui/Pagination'
 
+
 const CommentMenu = () => {
   return (
     <Menu as='div' className='relative'>
@@ -446,7 +447,8 @@ const ExtensionPage = ({
               )}
             </div>
 
-            <section className='bg-white dark:bg-gray-900 py-8 lg:py-16'>
+						{extension.status !== extensionStatuses.ACCEPTED ? <></> : 
+						<section className='bg-white dark:bg-gray-900 py-8 lg:py-16'>
               <div className='max-w-2xl mx-auto px-4'>
                 <div className='flex flex-col justify-start items-start mb-6'>
                   <h2 className='text-lg lg:text-2xl font-bold text-gray-900 dark:text-white'>
@@ -619,7 +621,7 @@ const ExtensionPage = ({
                   />
                 </div>
               )}
-            </section>
+            </section>}
           </div>
         </div>
       </Title>
