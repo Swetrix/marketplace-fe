@@ -5,6 +5,8 @@ const StarsRaiting = ({ stars = 0, disabled = false, onClick }) => {
   let currentStars = 0
   const [selectedStars, setSelectedStars] = React.useState(currentStars)
 
+	console.log(stars, 'STARS')
+
   if (stars) {
     currentStars = stars
   } else {

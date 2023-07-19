@@ -329,7 +329,7 @@ export const deleteInstallExtension = (extensionId) =>
 
 			export const deleteComment = (commentId) =>
 			api
-				.delete(`/comments${commentId}`)
+				.delete(`/comments/${commentId}`)
 				.then((response) => response.data)
 				.catch((error) => {
 					debug('%s', error)

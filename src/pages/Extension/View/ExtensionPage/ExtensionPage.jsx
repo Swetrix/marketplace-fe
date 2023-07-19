@@ -16,6 +16,7 @@ import {
   createComment,
   getComments,
   replyToComment,
+	deleteComment,
 } from 'api'
 import 'glider-js/glider.min.css'
 import Button from 'ui/Button'
@@ -29,7 +30,7 @@ import { useTranslation } from 'react-i18next'
 import Pagination from 'ui/Pagination'
 
 
-const CommentMenu = () => {
+const CommentMenu = ({commentId, removeComment}) => {
   return (
     <Menu as='div' className='relative'>
       <div>
@@ -80,7 +81,7 @@ const CommentMenu = () => {
                     'bg-gray-100 dark:bg-slate-800': active,
                   }
                 )}
-                onClick={() => console.log('Remove')}
+                onClick={() => removeComment(commentId)}
               >
                 Remove
               </div>
@@ -207,6 +208,8 @@ const ExtensionPage = ({
           comments: [...comments.comments, response],
           count: comments.count + 1,
         })
+				setCommentForm({text: '', rating: 0})
+				console.log('SSSSSSSSSS')
       })
       .catch((err) => {
         showError(`Error add a comment: ${err.message}`)
@@ -216,7 +219,8 @@ const ExtensionPage = ({
   const replyComment = async (commentId, reply) => {
     await replyToComment(commentId, { reply: reply })
       .then((response) => {
-        toggleCommentInput(commentId)
+				toggleCommentInput(commentId)
+				setCommentForm({text: '', rating: 0})
         setComments({
           comments: _map(comments.comments, (comment) =>
             comment.id === commentId ? { ...comment, reply: reply } : comment
@@ -239,6 +243,19 @@ const ExtensionPage = ({
       })
   }
 
+	const removeComment = async (commentId) => {
+		await deleteComment(commentId)
+			.then((response) => {
+				console.log(response)
+				setComments({
+          comments: _filter(comments.comments, (comment) => comment.id !== commentId),
+          count: comments.count - 1,
+        })
+			})
+			.catch((e) => {
+				showError('apiNotifications.somethingWentWrong')
+			})
+	}
 
 	const toggleCommentInput = (commentId) => {
     setCommentInputs((prevState) => prevState === commentId ? '' : commentId)
@@ -258,19 +275,19 @@ const ExtensionPage = ({
         await replyComment(commentId, commentForm.text)
         alert.success('Reply added successfully')
       }
-      setCommentForm({})
     } catch (error) {
       alert.error(`Error: ${error.message}`)
     }
   }
 
 	const handleRating = (rating) => {
-		console.log(rating)
 		setCommentForm(oldForm => ({
       ...oldForm,
       rating,
     }))
 	}
+
+	console.log(commentForm, 'commentForm')
 
   const handleInput = (event) => {
     const { target } = event
@@ -450,7 +467,7 @@ const ExtensionPage = ({
                     {t('comments.discussion')} {comments.count}
                   </h2>
                   <div className='flex flex-row items-center gap-1 mt-2'>
-                    <StarsRaiting onClick={handleRating}/>
+                    <StarsRaiting  stars={commentForm.rating} onClick={handleRating}/>
                   </div>
                 </div>
                 <form id='mainForm' onSubmit={handleSubmit} className='mb-6'>
@@ -506,7 +523,7 @@ const ExtensionPage = ({
                               </p>
                             </div>
                             <div>
-                              <CommentMenu />
+                              <CommentMenu commentId={item.id} removeComment={removeComment} />
                             </div>
                           </footer>
 													<div className='my-2'>
@@ -590,9 +607,9 @@ const ExtensionPage = ({
                                   </time>
                                 </p>
                               </div>
-                              <div>
-                                <CommentMenu />
-                              </div>
+                              {/* <div>
+                                <CommentMenu commentId={item.id} removeComment={removeComment} />
+                              </div> */}
                             </footer>
                             <p className='text-gray-500 dark:text-gray-400'>
                               {item.reply}
