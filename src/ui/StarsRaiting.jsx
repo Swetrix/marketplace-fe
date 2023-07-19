@@ -1,7 +1,7 @@
 import React from 'react'
 import _map from 'lodash/map'
 
-const StarsRaiting = ({ stars = 0, disabled = false }) => {
+const StarsRaiting = ({ stars = 0, disabled = false, onClick }) => {
   let currentStars = 0
   const [selectedStars, setSelectedStars] = React.useState(currentStars)
 
@@ -14,6 +14,7 @@ const StarsRaiting = ({ stars = 0, disabled = false }) => {
   const handleStar = (index) => {
     if (!disabled) {
       setSelectedStars(index + 1)
+			onClick(index + 1)
     }
   }
 

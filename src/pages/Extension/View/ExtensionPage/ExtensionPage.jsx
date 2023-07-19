@@ -107,6 +107,12 @@ const CommentMenu = () => {
   )
 }
 
+const NoComments = ({ t }) => (
+  <p className='mt-5 text-center dark:text-gray-50'>
+    {t('comments.nocomments')}
+  </p>
+)
+
 const ExtensionPage = ({
   extensions,
   showError,
@@ -132,7 +138,7 @@ const ExtensionPage = ({
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [installLoading, setInstallLoading] = useState(false)
   const [commentInputs, setCommentInputs] = useState({})
-  const [commentForm, setCommentForm] = useState()
+  const [commentForm, setCommentForm] = useState({text: '', rating: 0})
   const [commentsTest, setCommentsTest] = useState(ExtensionCommentList)
   const [page, setPage] = useState(1)
   const [total, setTotal] = useState(10)
@@ -189,11 +195,11 @@ const ExtensionPage = ({
     setDeleteLoading(false)
   }
 
-  const addComment = async (text) => {
+  const addComment = async ({text, rating}) => {
     await createComment(user.id, {
       extensionId: extension.id,
       text,
-      rating: 2,
+      rating,
     })
       .then((response) => {
         setComments({
@@ -253,39 +259,51 @@ const ExtensionPage = ({
         await addComment(commentForm)
         alert.success('Comment added successfully')
       } else {
-        await replyComment(commentId, commentForm)
+        await replyComment(commentId, commentForm.text)
         alert.success('Reply added successfully')
       }
-      setCommentForm('')
+      setCommentForm({})
     } catch (error) {
       alert.error(`Error: ${error.message}`)
     }
   }
 
+	const handleRating = (rating) => {
+		console.log(rating)
+		setCommentForm(oldForm => ({
+      ...oldForm,
+      rating,
+    }))
+	}
+
   const handleInput = (event) => {
     const { target } = event
-    setCommentForm(target.value)
+
+		setCommentForm(oldForm => ({
+      ...oldForm,
+      text: target.value,
+    }))
   }
 
   useEffect(() => {
     getAllComments(extension.id)
   }, [])
 
-  React.useEffect(() => {
-    let start
-    let end
+  // React.useEffect(() => {
+  //   let start
+  //   let end
 
-    if (page === 1) {
-      start = 0
-      end = 4
-    } else {
-      start = 5
-      end = 10
-    }
+  //   if (page === 1) {
+  //     start = 0
+  //     end = 4
+  //   } else {
+  //     start = 5
+  //     end = 10
+  //   }
 
-    const currentPageComment = ExtensionCommentList.slice(start, end)
-    setCommentsTest(currentPageComment)
-  }, [commentsTest, page])
+  //   const currentPageComment = ExtensionCommentList.slice(start, end)
+  //   setCommentsTest(currentPageComment)
+  // }, [page])
 
   return (
     <>
@@ -435,7 +453,7 @@ const ExtensionPage = ({
                     {t('comments.discussion')} {comments.count}
                   </h2>
                   <div className='flex flex-row items-center gap-1 mt-2'>
-                    <StarsRaiting />
+                    <StarsRaiting onClick={handleRating}/>
                   </div>
                 </div>
                 <form id='mainForm' onSubmit={handleSubmit} className='mb-6'>
@@ -445,7 +463,7 @@ const ExtensionPage = ({
                     </label>
                     <textarea
                       id='comment'
-                      value={commentForm}
+                      value={commentForm.text}
                       onChange={handleInput}
                       rows='6'
                       className='px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
@@ -464,13 +482,11 @@ const ExtensionPage = ({
                   </div>
                 </form>
 
-                {_isEmpty(commentsTest) ? (
-                  <div className='mt-10 text-lg lg:text-2xl font-bold text-gray-900 dark:text-white text-center'>
-                    {t('comments.empty')}
-                  </div>
+                {_isEmpty(comments.comments) ? (
+									<NoComments t={t}/>
                 ) : (
                   <div>
-                    {_map(commentsTest, (item) => (
+                    {_map(comments.comments, (item) => (
                       <div key={item.id}>
                         <article className='p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900'>
                           <footer className='flex justify-between items-center mb-2'>
@@ -496,6 +512,9 @@ const ExtensionPage = ({
                               <CommentMenu />
                             </div>
                           </footer>
+													<div className='my-2'>
+														<StarsRaiting stars={item.rating} disabled/>
+													</div>
                           <p className='text-gray-500 dark:text-gray-400'>
                             {item.text}
                           </p>
@@ -532,7 +551,7 @@ const ExtensionPage = ({
                               <textarea
                                 id='comment'
                                 rows='6'
-                                value={commentForm}
+                                value={commentForm.text}
                                 onChange={handleInput}
                                 className='my-3 px-4 w-full text-sm text-gray-900 border-0 rounded-md focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
                                 placeholder={t('comments.writeComment')}
@@ -581,51 +600,6 @@ const ExtensionPage = ({
                             <p className='text-gray-500 dark:text-gray-400'>
                               {item.reply}
                             </p>
-                            {/* <div className='flex items-center mt-4 space-x-4'>
-                      <button
-                        onClick={() => toggleCommentInput(item.id)}
-                        type='button'
-                        className='flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400'
-                      >
-                        <svg
-                          aria-hidden='true'
-                          className='mr-1 w-4 h-4'
-                          fill='none'
-                          stroke='currentColor'
-                          viewBox='0 0 24 24'
-                          xmlns='http://www.w3.org/2000/svg'
-                        >
-                          <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth='2'
-                            d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
-                          ></path>
-                        </svg>
-                        Reply
-                      </button>
-                    </div> */}
-                            {/* {commentInputs[reply.id] && (
-                          <form id='replyForm' onSubmit={(e) => handleSubmit(e, reply.id)} className='w-full flex flex-col items-end'>
-                            <textarea
-                              id='comment'
-                              rows='6'
-															value={commentForm}
-															onChange={handleInput}
-                              className='my-3 px-4 w-full text-sm text-gray-900 border-0 rounded-md focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
-                              placeholder='Write a comment...'
-                              required
-                            ></textarea>
-
-                          <Button
-                            type='submit'
-                            primary
-                            className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
-                          >
-                            Submit
-                          </Button>
-                        </form>
-                      )} */}
                           </article>
                         )}
                       </div>
