@@ -28,6 +28,7 @@ import cx from 'clsx'
 import { Menu, Transition } from '@headlessui/react'
 import { useTranslation } from 'react-i18next'
 import Pagination from 'ui/Pagination'
+import Loader from 'ui/Loader'
 
 
 const CommentMenu = ({commentId, removeComment}) => {
@@ -140,12 +141,12 @@ const ExtensionPage = ({
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [installLoading, setInstallLoading] = useState(false)
   const [commentInputs, setCommentInputs] = useState('')
-  const [commentForm, setCommentForm] = useState({text: '', rating: 0})
+  const [commentForm, setCommentForm] = useState({text: '', rating: 5})
   // const [commentsTest, setCommentsTest] = useState(ExtensionCommentList)
+	const [isLoadingComments, setLoadingComments] = useState(true)
   const [page, setPage] = useState(1)
-  const [total, setTotal] = useState(comments.count)
 
-  const pageAmount = useMemo(() => _ceil(total / ENTRIES_PER_PAGE_COMMENTS), [total])
+  const pageAmount = useMemo(() => _ceil(comments.count / ENTRIES_PER_PAGE_COMMENTS), [comments.count])
 	console.log(pageAmount, 'pageAmount')
 	console.log(comments.count, 'count', ENTRIES_PER_PAGE_COMMENTS)
 
@@ -161,6 +162,8 @@ const ExtensionPage = ({
     () => extension.status !== extensionStatuses.ACCEPTED,
     [extension]
   )
+
+	console.log(extension, user)
 
   const install = async () => {
     if (!authenticated) {
@@ -208,7 +211,7 @@ const ExtensionPage = ({
           comments: [...comments.comments, response],
           count: comments.count + 1,
         })
-				setCommentForm({text: '', rating: 0})
+				setCommentForm({text: '', rating: 5})
 				alert.success('Comment added successfully')
       })
       .catch((err) => {
@@ -220,7 +223,7 @@ const ExtensionPage = ({
     await replyToComment(commentId, { reply: reply })
       .then((response) => {
 				toggleCommentInput(commentId)
-				setCommentForm({text: '', rating: 0})
+				setCommentForm({text: '', rating: 5})
         setComments({
           comments: _map(comments.comments, (comment) =>
             comment.id === commentId ? {...comment, reply: reply} : comment
@@ -235,6 +238,7 @@ const ExtensionPage = ({
   }
 
   const getAllComments = async (extensionId) => {
+		setLoadingComments(true)
     await getComments(extensionId, ENTRIES_PER_PAGE_COMMENTS, (page - 1) * ENTRIES_PER_PAGE_COMMENTS)
       .then((response) => {
         setComments(response)
@@ -242,6 +246,8 @@ const ExtensionPage = ({
       .catch((err) => {
         showError(`Error get a comments: ${err}`)
       })
+
+			setLoadingComments(false)
   }
 
 	const removeComment = async (commentId) => {
@@ -453,17 +459,22 @@ const ExtensionPage = ({
             </div>
 
 						{extension.status !== extensionStatuses.ACCEPTED ? <></> : 
-						<section className=' py-8 lg:py-16'>
+						isLoadingComments ? <div className='min-h-min-footer bg-gray-50 dark:bg-slate-900'>
+							<Loader />
+						</div> : (
+							<section className=' py-8 lg:py-16'>
               <div className='max-w-2xl mx-auto px-4'>
-                <div className='flex flex-col justify-start items-start mb-6'>
+								{!_isEmpty(comments.comments) && <div className='flex flex-col justify-start items-start mb-3'>
                   <h2 className='text-lg lg:text-2xl font-bold text-gray-900 dark:text-white'>
                     {t('comments.discussion')} {comments.count}
                   </h2>
-                  <div className='flex flex-row items-center gap-1 mt-2'>
+                </div> 
+								}
+
+								{true && <form id='mainForm' onSubmit={handleSubmit} className='mb-6'>
+                  <div className='flex flex-row items-center gap-1 mb-6'>
                     <StarsRaiting  stars={commentForm.rating} onClick={handleRating}/>
                   </div>
-                </div>
-                <form id='mainForm' onSubmit={handleSubmit} className='mb-6'>
                   <div className='py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700'>
                     <label htmlFor='comment' className='sr-only'>
                       {t('comments.writeComment')}
@@ -488,6 +499,7 @@ const ExtensionPage = ({
                     </Button>
                   </div>
                 </form>
+								}
 
                 {_isEmpty(comments.comments) ? (
 									<NoComments t={t}/>
@@ -495,7 +507,7 @@ const ExtensionPage = ({
                   <div>
                     {_map(comments.comments, (item) => (
                       <div key={item.id}>
-                        <article className='p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-800'>
+                        <article className='p-6 mb-6 text-base rounded-lg'>
                           <footer className='flex justify-between items-center mb-2'>
                             <div className='flex items-center'>
                               <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'>
@@ -579,7 +591,7 @@ const ExtensionPage = ({
                         {item.reply && (
                           <article
                             key={item.id}
-                            className='p-6 mb-6 ml-6 lg:ml-12 text-base bg-white rounded-lg dark:bg-gray-800'
+                            className='p-6 mb-6 ml-6 lg:ml-12 text-base rounded-lg'
                           >
                             <footer className='flex justify-between items-center mb-2'>
                               <div className='flex items-center'>
@@ -614,6 +626,8 @@ const ExtensionPage = ({
                   </div>
                 )}
               </div>
+							
+							{console.log(page, 'page', pageAmount, 'pageAmount', comments.count, 'total', ENTRIES_PER_PAGE_COMMENTS, 'ENTRIES_PER_PAGE_COMMENTS')}
 
               {pageAmount > 1 && (
                 <div className='mt-2'>
@@ -621,12 +635,13 @@ const ExtensionPage = ({
                     page={page}
                     setPage={setPage}
 										pageAmount={pageAmount || 0}
-                    total={total}
+                    total={comments.count}
                     limit={ENTRIES_PER_PAGE_COMMENTS}
                   />
                 </div>
               )}
-            </section>}
+            </section>
+						)}
           </div>
         </div>
       </Title>
