@@ -23,7 +23,6 @@ import Button from 'ui/Button'
 import Title from 'components/Title'
 import { ENTRIES_PER_PAGE_COMMENTS, extensionStatuses } from 'redux/constants'
 import StarsRaiting from 'ui/StarsRaiting'
-import { ExtensionCommentList } from 'data/ExtensionCommentList'
 import cx from 'clsx'
 import { Menu, Transition } from '@headlessui/react'
 import { useTranslation } from 'react-i18next'
@@ -142,13 +141,10 @@ const ExtensionPage = ({
   const [installLoading, setInstallLoading] = useState(false)
   const [commentInputs, setCommentInputs] = useState('')
   const [commentForm, setCommentForm] = useState({text: '', rating: 5})
-  // const [commentsTest, setCommentsTest] = useState(ExtensionCommentList)
 	const [isLoadingComments, setLoadingComments] = useState(true)
   const [page, setPage] = useState(1)
 
   const pageAmount = useMemo(() => _ceil(comments.count / ENTRIES_PER_PAGE_COMMENTS), [comments.count])
-	console.log(pageAmount, 'pageAmount')
-	console.log(comments.count, 'count', ENTRIES_PER_PAGE_COMMENTS)
 
   const isInstalled = useMemo(
     () => !_isEmpty(_find(installExtensions, (p) => p.id === id) || {}),
@@ -162,8 +158,6 @@ const ExtensionPage = ({
     () => extension.status !== extensionStatuses.ACCEPTED,
     [extension]
   )
-
-	console.log(extension, user)
 
   const install = async () => {
     if (!authenticated) {
@@ -253,7 +247,6 @@ const ExtensionPage = ({
 	const removeComment = async (commentId) => {
 		await deleteComment(commentId)
 			.then((response) => {
-				console.log(response)
 				setComments({
           comments: _filter(comments.comments, (comment) => comment.id !== commentId),
           count: comments.count - 1,
@@ -270,8 +263,6 @@ const ExtensionPage = ({
     setCommentInputs((prevState) => prevState === commentId ? '' : commentId)
   }
 
-	console.log(commentInputs)
-
   const handleSubmit = async (e, commentId) => {
     e.preventDefault()
     e.stopPropagation()
@@ -286,8 +277,6 @@ const ExtensionPage = ({
     }))
 	}
 
-	console.log(commentForm, 'commentForm')
-
   const handleInput = (event) => {
     const { target } = event
 
@@ -300,22 +289,6 @@ const ExtensionPage = ({
   useEffect(() => {
     getAllComments(extension.id)
   }, [page])
-
-  // React.useEffect(() => {
-  //   let start
-  //   let end
-
-  //   if (page === 1) {
-  //     start = 0
-  //     end = 4
-  //   } else {
-  //     start = 5
-  //     end = 10
-  //   }
-
-  //   const currentPageComment = ExtensionCommentList.slice(start, end)
-  //   setCommentsTest(currentPageComment)
-  // }, [page])
 
   return (
     <>
@@ -627,8 +600,6 @@ const ExtensionPage = ({
                 )}
               </div>
 							
-							{console.log(page, 'page', pageAmount, 'pageAmount', comments.count, 'total', ENTRIES_PER_PAGE_COMMENTS, 'ENTRIES_PER_PAGE_COMMENTS')}
-
               {pageAmount > 1 && (
                 <div className='mt-2'>
                   <Pagination
