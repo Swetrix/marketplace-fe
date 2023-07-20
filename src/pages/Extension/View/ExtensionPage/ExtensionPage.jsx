@@ -209,10 +209,10 @@ const ExtensionPage = ({
           count: comments.count + 1,
         })
 				setCommentForm({text: '', rating: 0})
-				console.log('SSSSSSSSSS')
+				alert.success('Comment added successfully')
       })
       .catch((err) => {
-        showError(`Error add a comment: ${err.message}`)
+        showError(`Error add a comment: ${err}`)
       })
   }
 
@@ -223,13 +223,14 @@ const ExtensionPage = ({
 				setCommentForm({text: '', rating: 0})
         setComments({
           comments: _map(comments.comments, (comment) =>
-            comment.id === commentId ? { ...comment, reply: reply } : comment
+            comment.id === commentId ? {...comment, reply: reply} : comment
           ),
           count: comments.count,
         })
+				alert.success('Reply added successfully')
       })
       .catch((err) => {
-        showError(`Error reply to comment: ${err.message}`)
+        showError(`Error reply to comment: ${err}`)
       })
   }
 
@@ -238,8 +239,8 @@ const ExtensionPage = ({
       .then((response) => {
         setComments(response)
       })
-      .catch((e) => {
-        showError('apiNotifications.somethingWentWrong')
+      .catch((err) => {
+        showError(`Error get a comments: ${err}`)
       })
   }
 
@@ -251,10 +252,12 @@ const ExtensionPage = ({
           comments: _filter(comments.comments, (comment) => comment.id !== commentId),
           count: comments.count - 1,
         })
+				alert.success('Comment successfully deleted')
+
 			})
-			.catch((e) => {
-				showError('apiNotifications.somethingWentWrong')
-			})
+      .catch((err) => {
+        showError(`Error remove to comments: ${err}`)
+      })
 	}
 
 	const toggleCommentInput = (commentId) => {
@@ -267,17 +270,7 @@ const ExtensionPage = ({
     e.preventDefault()
     e.stopPropagation()
 
-    try {
-      if (e.target.id === 'mainForm') {
-        await addComment(commentForm)
-        alert.success('Comment added successfully')
-      } else {
-        await replyComment(commentId, commentForm.text)
-        alert.success('Reply added successfully')
-      }
-    } catch (error) {
-      alert.error(`Error: ${error.message}`)
-    }
+		e.target.id === 'mainForm' ? await addComment(commentForm) : await replyComment(commentId, commentForm.text)
   }
 
 	const handleRating = (rating) => {
@@ -460,7 +453,7 @@ const ExtensionPage = ({
             </div>
 
 						{extension.status !== extensionStatuses.ACCEPTED ? <></> : 
-						<section className='bg-white dark:bg-gray-900 py-8 lg:py-16'>
+						<section className=' py-8 lg:py-16'>
               <div className='max-w-2xl mx-auto px-4'>
                 <div className='flex flex-col justify-start items-start mb-6'>
                   <h2 className='text-lg lg:text-2xl font-bold text-gray-900 dark:text-white'>
@@ -502,7 +495,7 @@ const ExtensionPage = ({
                   <div>
                     {_map(comments.comments, (item) => (
                       <div key={item.id}>
-                        <article className='p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900'>
+                        <article className='p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-800'>
                           <footer className='flex justify-between items-center mb-2'>
                             <div className='flex items-center'>
                               <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'>
@@ -511,7 +504,7 @@ const ExtensionPage = ({
                                   src='#'
                                   alt='userName'
                                 />
-                                User name
+                                {item.userId}
                               </p>
                               <p className='text-sm text-gray-600 dark:text-gray-400'>
                                 <time
@@ -586,7 +579,7 @@ const ExtensionPage = ({
                         {item.reply && (
                           <article
                             key={item.id}
-                            className='p-6 mb-6 ml-6 lg:ml-12 text-base bg-white rounded-lg dark:bg-gray-900'
+                            className='p-6 mb-6 ml-6 lg:ml-12 text-base bg-white rounded-lg dark:bg-gray-800'
                           >
                             <footer className='flex justify-between items-center mb-2'>
                               <div className='flex items-center'>
@@ -607,9 +600,9 @@ const ExtensionPage = ({
                                   </time>
                                 </p>
                               </div>
-                              {/* <div>
+                              <div>
                                 <CommentMenu commentId={item.id} removeComment={removeComment} />
-                              </div> */}
+                              </div>
                             </footer>
                             <p className='text-gray-500 dark:text-gray-400'>
                               {item.reply}
