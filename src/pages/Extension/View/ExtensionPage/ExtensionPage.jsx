@@ -17,6 +17,7 @@ import {
   getComments,
   replyToComment,
 	deleteComment,
+  deleteReply,
 } from 'api'
 import 'glider-js/glider.min.css'
 import Button from 'ui/Button'
@@ -30,7 +31,7 @@ import Pagination from 'ui/Pagination'
 import Loader from 'ui/Loader'
 
 
-const CommentMenu = ({commentId, removeComment}) => {
+const CommentMenu = ({removeItem}) => {
   return (
     <Menu as='div' className='relative'>
       <div>
@@ -81,7 +82,7 @@ const CommentMenu = ({commentId, removeComment}) => {
                     'bg-gray-100 dark:bg-slate-800': active,
                   }
                 )}
-                onClick={() => removeComment(commentId)}
+                onClick={() => removeItem()}
               >
                 Remove
               </div>
@@ -202,6 +203,7 @@ const ExtensionPage = ({
     })
       .then((response) => {
 				response.user = {nickname: user.nickname}
+        response.replies = []
         setComments({
           comments: [...comments.comments, response],
           count: comments.count + 1,
@@ -232,6 +234,31 @@ const ExtensionPage = ({
         showError(`Error reply to comment: ${err}`)
       })
   }
+
+  const removeReply = async (commentId, replyId) => {
+    await deleteReply(replyId)
+    .then((response) => {
+      console.log(response)
+      const updatedComments = _map(comments.comments, (comment) => {
+        if (comment.id === commentId) {
+          comment.replies = _filter(comment.replies, (reply) => reply.id !== replyId)
+        }
+        return comment
+      })
+
+      setComments({
+        comments: updatedComments,
+        count: comments.count
+      })
+
+      alert.success('Reply to comment successfully deleted')
+
+    })
+      .catch((err) => {
+        showError(`Error reply to comment: ${err}`)
+      })
+  }
+
 
   const getAllComments = async (extensionId) => {
 		setLoadingComments(true)
@@ -504,7 +531,7 @@ const ExtensionPage = ({
                               </p>
                             </div>
                             <div>
-                              <CommentMenu commentId={item.id} removeComment={removeComment} />
+                              <CommentMenu removeItem={() => removeComment(item.id)} />
                             </div>
                           </footer>
 													<div className='my-2'>
@@ -593,7 +620,7 @@ const ExtensionPage = ({
                                 </p>
                               </div>
                               <div>
-                                <CommentMenu commentId={reply.id} removeComment={removeComment} />
+                                <CommentMenu removeItem={() => removeReply(item.id, reply.id)} />
                               </div>
                             </footer>
                             <p className='text-gray-500 dark:text-gray-400'>
