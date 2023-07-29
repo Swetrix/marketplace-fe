@@ -140,7 +140,7 @@ const ExtensionPage = ({
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [installLoading, setInstallLoading] = useState(false)
   const [commentInputs, setCommentInputs] = useState('')
-  const [commentForm, setCommentForm] = useState({text: '', rating: 5})
+  const [commentForm, setCommentForm] = useState({text: '', rating: 5, reply: ''})
 	const [isLoadingComments, setLoadingComments] = useState(true)
   const [page, setPage] = useState(1)
 
@@ -201,6 +201,7 @@ const ExtensionPage = ({
       rating,
     })
       .then((response) => {
+				response.user = {nickname: user.nickname}
         setComments({
           comments: [...comments.comments, response],
           count: comments.count + 1,
@@ -213,14 +214,15 @@ const ExtensionPage = ({
       })
   }
 
-  const replyComment = async (commentId, reply) => {
-    await replyToComment(commentId, { reply: reply })
+  const replyComment = async (commentId, text) => {
+    await replyToComment(commentId, text)
       .then((response) => {
+				response.user = {nickname: user.nickname}
 				toggleCommentInput(commentId)
-				setCommentForm({text: '', rating: 5})
+				setCommentForm({text: '', rating: 5, reply: ''})
         setComments({
           comments: _map(comments.comments, (comment) =>
-            comment.id === commentId ? {...comment, reply: reply} : comment
+            comment.id === commentId ? {...comment, replies: [...comment.replies, response]} : comment
           ),
           count: comments.count,
         })
@@ -267,7 +269,7 @@ const ExtensionPage = ({
     e.preventDefault()
     e.stopPropagation()
 
-		e.target.id === 'mainForm' ? await addComment(commentForm) : await replyComment(commentId, commentForm.text)
+		e.target.id === 'mainForm' ? await addComment(commentForm) : await replyComment(commentId, commentForm.reply)
   }
 
 	const handleRating = (rating) => {
@@ -282,7 +284,7 @@ const ExtensionPage = ({
 
 		setCommentForm(oldForm => ({
       ...oldForm,
-      text: target.value,
+      [target.name]: target.value,
     }))
   }
 
@@ -455,6 +457,7 @@ const ExtensionPage = ({
                     <textarea
                       id='comment'
                       value={commentForm.text}
+                      name='text'
                       onChange={handleInput}
                       rows='6'
                       className='px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
@@ -489,7 +492,7 @@ const ExtensionPage = ({
                                   src='#'
                                   alt='userName'
                                 />
-                                {item.userId}
+                                {item.user.nickname}
                               </p>
                               <p className='text-sm text-gray-600 dark:text-gray-400'>
                                 <time
@@ -543,7 +546,8 @@ const ExtensionPage = ({
                               <textarea
                                 id='comment'
                                 rows='6'
-                                value={commentForm.text}
+                                value={commentForm.reply}
+                                name='reply'
                                 onChange={handleInput}
                                 className='my-3 px-4 w-full text-sm text-gray-900 border-0 rounded-md focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
                                 placeholder={t('comments.writeComment')}
@@ -561,9 +565,12 @@ const ExtensionPage = ({
                           )}
                         </article>
 
-                        {item.reply && (
-                          <article
-                            key={item.id}
+                        {!_isEmpty(item.replies) && (
+
+													<div>
+														{_map(item.replies, (reply) => (
+													<article
+                            key={reply.id}
                             className='p-6 mb-6 ml-6 lg:ml-12 text-base rounded-lg'
                           >
                             <footer className='flex justify-between items-center mb-2'>
@@ -574,25 +581,27 @@ const ExtensionPage = ({
                                     src='#'
                                     alt='userName'
                                   />
-                                  User name
+                                  {reply.user.nickname}
                                 </p>
                                 <p className='text-sm text-gray-600 dark:text-gray-400'>
                                   <time
                                     dateTime='2022-02-08'
                                     title='February 8th, 2022'
                                   >
-                                    reply.addedAt
+                                    {reply.addedAt}
                                   </time>
                                 </p>
                               </div>
                               <div>
-                                <CommentMenu commentId={item.id} removeComment={removeComment} />
+                                <CommentMenu commentId={reply.id} removeComment={removeComment} />
                               </div>
                             </footer>
                             <p className='text-gray-500 dark:text-gray-400'>
-                              {item.reply}
+                              {reply.text}
                             </p>
                           </article>
+														))}
+													</div>
                         )}
                       </div>
                     ))}
