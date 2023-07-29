@@ -18,6 +18,7 @@ import {
   replyToComment,
 	deleteComment,
   deleteReply,
+  updateReply,
 } from 'api'
 import 'glider-js/glider.min.css'
 import Button from 'ui/Button'
@@ -31,7 +32,7 @@ import Pagination from 'ui/Pagination'
 import Loader from 'ui/Loader'
 
 
-const CommentMenu = ({removeItem}) => {
+const CommentMenu = ({editItem, removeItem}) => {
   return (
     <Menu as='div' className='relative'>
       <div>
@@ -66,7 +67,7 @@ const CommentMenu = ({removeItem}) => {
                     'bg-gray-100 dark:bg-slate-800': active,
                   }
                 )}
-                onClick={() => console.log('Edit')}
+                onClick={() => editItem()}
               >
                 Edit
               </div>
@@ -141,7 +142,8 @@ const ExtensionPage = ({
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [installLoading, setInstallLoading] = useState(false)
   const [commentInputs, setCommentInputs] = useState('')
-  const [commentForm, setCommentForm] = useState({text: '', rating: 5, reply: ''})
+  const [isEditReply, setEditReply] = useState('')
+  const [commentForm, setCommentForm] = useState({text: '', rating: 5, reply: '', editReply: ''})
 	const [isLoadingComments, setLoadingComments] = useState(true)
   const [page, setPage] = useState(1)
 
@@ -235,6 +237,27 @@ const ExtensionPage = ({
       })
   }
 
+  const editReply = async (commentId, replyId, text) => {
+    await updateReply(replyId, text)
+      .then((response) => {
+        toggleEditReply(replyId)        
+        const updatedComments = _map(comments.comments, (comment) => {
+          if (comment.id === commentId) {
+            comment.replies = _map(comment.replies, (reply) => reply.id === replyId ? response : reply)
+          }
+          return comment
+        })
+        setComments({
+          comments: updatedComments,
+          count: comments.count,
+        })
+				alert.success('Reply to comment successfully changed')
+      })
+      .catch((err) => {
+        showError(`Error reply to comment: ${err}`)
+      })
+  }
+
   const removeReply = async (commentId, replyId) => {
     await deleteReply(replyId)
     .then((response) => {
@@ -245,14 +268,11 @@ const ExtensionPage = ({
         }
         return comment
       })
-
       setComments({
         comments: updatedComments,
         count: comments.count
       })
-
       alert.success('Reply to comment successfully deleted')
-
     })
       .catch((err) => {
         showError(`Error reply to comment: ${err}`)
@@ -292,11 +312,22 @@ const ExtensionPage = ({
     setCommentInputs((prevState) => prevState === commentId ? '' : commentId)
   }
 
-  const handleSubmit = async (e, commentId) => {
+  const toggleEditReply = (replyId, value = '') => {
+    setCommentForm((prevState) => ({
+      ...prevState,       
+      editReply: value, 
+    }))
+    setEditReply((prevState) => prevState === replyId ? '' : replyId)
+  }
+
+  const handleSubmit = async (e, commentId, replyId) => {
     e.preventDefault()
     e.stopPropagation()
+    const formId = e.target.id 
 
-		e.target.id === 'mainForm' ? await addComment(commentForm) : await replyComment(commentId, commentForm.reply)
+    if(formId === 'mainForm') await addComment(commentForm)
+    else if(formId === 'replyForm') replyComment(commentId, commentForm.reply)
+    else if(formId === 'editReplyForm') editReply(commentId, replyId, commentForm.editReply)
   }
 
 	const handleRating = (rating) => {
@@ -620,12 +651,44 @@ const ExtensionPage = ({
                                 </p>
                               </div>
                               <div>
-                                <CommentMenu removeItem={() => removeReply(item.id, reply.id)} />
+                                <CommentMenu editItem={() => toggleEditReply(reply.id, reply.text)} removeItem={() => removeReply(item.id, reply.id)} />
                               </div>
                             </footer>
-                            <p className='text-gray-500 dark:text-gray-400'>
+                            {isEditReply !== reply.id ? <p className='text-gray-500 dark:text-gray-400'>
                               {reply.text}
-                            </p>
+                            </p> : <form
+                              id='editReplyForm'
+                              onSubmit={(e) => handleSubmit(e, item.id, reply.id)}
+                              className='w-full flex flex-col items-end'
+                            >
+                              <textarea
+                                id='comment'
+                                rows='6'
+                                value={commentForm.editReply}
+                                name='editReply'
+                                onChange={handleInput}
+                                className='my-3 px-4 w-full text-sm text-gray-900 border-0 rounded-md focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
+                                placeholder={t('comments.editReply')}
+                                required
+                              ></textarea>
+                              
+                              <div className='flex gap-2'>
+                              <Button
+                                onClick={() => toggleEditReply(reply.id, '')}
+                                className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
+                                danger
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                type='submit'
+                                primary
+                                className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
+                              >
+                                Submit
+                              </Button>
+                              </div>
+                            </form>}
                           </article>
 														))}
 													</div>

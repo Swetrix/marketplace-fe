@@ -287,7 +287,7 @@ export const deleteInstallExtension = (extensionId) =>
 			api
 			.post(`/comments?userId=${userId}`, comment)
 			.then((response) => response.data)
-    .catch((error) => {
+      .catch((error) => {
       debug('%s', error)
       throw _isEmpty(error.response.data?.message)
         ? error.response.data
@@ -298,7 +298,18 @@ export const deleteInstallExtension = (extensionId) =>
 			api
 			.post(`/comments/reply`, {commentId, text})
 			.then((response) => response.data)
-    .catch((error) => {
+      .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+			})
+
+      export const updateReply = (replyId, text) => 
+        api
+        .put(`/comments/reply/${replyId}`, {text})
+        .then((response) => response.data)
+      .catch((error) => {
       debug('%s', error)
       throw _isEmpty(error.response.data?.message)
         ? error.response.data
@@ -309,7 +320,7 @@ export const deleteInstallExtension = (extensionId) =>
 			api
 			.delete(`/comments/reply/${replyId}`)
 			.then((response) => response.data)
-    .catch((error) => {
+      .catch((error) => {
       debug('%s', error)
       throw _isEmpty(error.response.data?.message)
         ? error.response.data
