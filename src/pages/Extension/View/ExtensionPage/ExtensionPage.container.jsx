@@ -11,7 +11,7 @@ const mapStateToProps = (state) => ({
   isLoading: state.ui.extensions.isLoading,
   authenticated: state.auth.authenticated,
   user: state.auth.user,
-	comments: state.ui.extensions.comments,
+  comments: state.ui.extensions.comments,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -21,7 +21,7 @@ const mapDispatchToProps = (dispatch) => ({
   setExtensions: (extensions, publish) => {
     dispatch(UIActions.setExtensions(extensions, publish))
   },
-	setComments: (comments) => {
+  setComments: (comments) => {
     dispatch(UIActions.setComments(comments))
   },
 })

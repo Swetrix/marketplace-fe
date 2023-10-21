@@ -14,7 +14,7 @@ const StarsRaiting = ({ stars = 0, disabled = false, onClick }) => {
   const handleStar = (index) => {
     if (!disabled) {
       setSelectedStars(index + 1)
-			onClick(index + 1)
+      onClick(index + 1)
     }
   }
 
