@@ -65,8 +65,7 @@ export const languageFlag = {
 
 export const ENTRIES_PER_PAGE_DASHBOARD = 10
 export const ENTRIES_PER_PAGE_EXTENSIONS = 30
-export const ENTRIES_PER_PAGE_COMMENTS = 2
-
+export const ENTRIES_PER_PAGE_COMMENTS = 10
 
 export const tabForInstallExtension = 'installed'
 export const tabForPublishExtensions = 'published'
