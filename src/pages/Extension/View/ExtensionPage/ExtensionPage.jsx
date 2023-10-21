@@ -361,7 +361,7 @@ const ExtensionPage = ({
                   <div className='pr-16 sm:px-16 sm:text-center'>
                     <p className='font-medium text-white'>
                       <span>
-                        It is preview because your extensions passes inspection
+                        Your extension is pending review and is currently not available to other users
                       </span>
                     </p>
                   </div>

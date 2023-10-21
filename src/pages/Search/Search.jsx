@@ -130,7 +130,9 @@ const Search = ({
                 </div>
               )
               : _isEmpty(extensions)
-                ? <p className='text-gray-200 text-2xl pt-40 text-center'>This param don`t have extension</p>
+                ? <p className='text-gray-900 dark:text-gray-200 text-2xl pt-40 text-center'>
+                  There are no extensions that match your search
+                </p>
                 : _map(extensions, ((item) => (
                   <ExtensionsCard key={item.id} id={item.id} name={item.name} stars={4} downloads={item.usersQuantity} price={item.price} companyName={item.owner?.nickname || ''} mainImage={item.mainImage} />
                 )))}

@@ -18,6 +18,7 @@ import {
 import { submit2FA } from 'api'
 import { setAccessToken } from 'utils/accessToken'
 import { setRefreshToken } from 'utils/refreshToken'
+import { TRIAL_DAYS } from 'redux/constants'
 
 const Signin = ({ login, loginSuccess, loginFailed }) => {
   const { t } = useTranslation('common')
@@ -160,53 +161,83 @@ const Signin = ({ login, loginSuccess, loginFailed }) => {
 
   return (
     <Title title={t('titles.signin')}>
-      <div className='min-h-page bg-gray-50 dark:bg-slate-900 flex flex-col py-6 px-4 sm:px-6 lg:px-8'>
-        <form className='max-w-7xl w-full mx-auto' onSubmit={handleSubmit}>
-          <h2 className='mt-2 text-3xl font-bold text-gray-900 dark:text-gray-50'>
+      <div className='bg-gray-50 dark:bg-slate-900 flex flex-col py-6 px-4 sm:px-6 lg:px-8'>
+        <div className='sm:mx-auto sm:w-full sm:max-w-md'>
+          <h2 className='text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-gray-50'>
             {t('auth.signin.title')}
           </h2>
-          <Input
-            name='email'
-            id='email'
-            type='email'
-            label={t('auth.common.email')}
-            value={form.email}
-            placeholder='you@example.com'
-            className='mt-4'
-            onChange={handleInput}
-            error={beenSubmitted && errors.email}
-          />
-          <Input
-            name='password'
-            id='password'
-            type='password'
-            label={t('auth.common.password')}
-            hint={t('auth.common.hint', { amount: MIN_PASSWORD_CHARS })}
-            value={form.password}
-            placeholder={t('auth.common.password')}
-            className='mt-4'
-            onChange={handleInput}
-            error={beenSubmitted && errors.password}
-          />
-          <Checkbox
-            checked={form.dontRemember}
-            onChange={handleInput}
-            name='dontRemember'
-            id='dontRemember'
-            className='mt-4'
-            label={t('auth.common.noRemember')}
-          />
-          <div className='flex justify-between mt-3'>
-            <div className='pt-1'>
-              <Link to={routes.signup} className='underline text-blue-600 hover:text-indigo-800 dark:text-blue-400 dark:hover:text-blue-500'>
-                {t('auth.common.signupInstead')}
-              </Link>
-            </div>
-            <Button type='submit' loading={isLoading} primary large>
-              {t('auth.signin.button')}
-            </Button>
+        </div>
+        <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]'>
+          <div className='bg-white dark:bg-slate-800/20 dark:ring-1 dark:ring-slate-800 px-6 py-12 shadow sm:rounded-lg sm:px-12'>
+            <form className='space-y-6' onSubmit={handleSubmit}>
+              <Input
+                name='email'
+                id='email'
+                type='email'
+                label={t('auth.common.email')}
+                value={form.email}
+                className='mt-4'
+                onChange={handleInput}
+                error={beenSubmitted ? errors.email : ''}
+              />
+              <Input
+                name='password'
+                id='password'
+                type='password'
+                label={t('auth.common.password')}
+                hint={t('auth.common.hint', { amount: MIN_PASSWORD_CHARS })}
+                value={form.password}
+                className='mt-4'
+                onChange={handleInput}
+                error={beenSubmitted ? errors.password : ''}
+              />
+              <div className='flex items-center justify-between'>
+                <Checkbox
+                  checked={form.dontRemember}
+                  onChange={handleInput}
+                  name='dontRemember'
+                  id='dontRemember'
+                  label={t('auth.common.noRemember')}
+                />
+                <div className='text-sm leading-6'>
+                  <a
+                    className='font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-500'
+                    href={`${process.env.REACT_APP_FE_URL}recovery`}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    {t('auth.signin.forgot')}
+                  </a>
+                </div>
+              </div>
+
+              <Button className='w-full justify-center' type='submit' loading={isLoading} primary giant>
+                {t('auth.signin.button')}
+              </Button>
+            </form>
           </div>
-        </form>
+          <p className='mt-10 mb-4 text-center text-sm text-gray-500 dark:text-gray-200'>
+            <Trans
+              t={t}
+              i18nKey='auth.signin.notAMember'
+              components={{
+                url: (
+                  // eslint-disable-next-line jsx-a11y/anchor-has-content
+                  <a
+                    className='font-semibold leading-6 text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-500'
+                    href={`${process.env.REACT_APP_FE_URL}signup`}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    aria-label={t('titles.signup')}
+                  />
+                )
+              }}
+              values={{
+                amount: TRIAL_DAYS,
+              }}
+            />
+          </p>
+        </div>
       </div>
     </Title>
   )

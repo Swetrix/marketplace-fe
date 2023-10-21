@@ -21,7 +21,6 @@ import _includes from 'lodash/includes'
 import { authMe } from './api'
 
 const MainPage = lazy(() => import('pages/MainPage'))
-const SignUp = lazy(() => import('pages/Auth/Signup'))
 const SignIn = lazy(() => import('pages/Auth/Signin'))
 const NotFound = lazy(() => import('pages/NotFound'))
 const Dashboard = lazy(() => import('pages/Dashboard'))
@@ -130,7 +129,6 @@ const App = () => {
             <Switch>
               <Route path={routes.main} component={MainPage} exact />
               <Route path={routes.signin} component={SignIn} exact />
-              <Route path={routes.signup} component={SignUp} exact />
               <Route path={routes.user_settings} component={UserSettings} exact />
               <Route path={routes.dashboard} component={Dashboard} exact />
               <Route path={routes.search} component={Search} exact />

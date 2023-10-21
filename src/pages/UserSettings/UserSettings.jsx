@@ -87,8 +87,8 @@ const UserSettings = ({
               {t('titles.profileSettings')}
             </h2>
             <a
-              className='bg-indigo-500 dark:bg-indigo-600 text-gray-300 rounded hover:bg-indigo-600 dark:hover:bg-indigo-700 px-4 py-2 text-sm font-medium ml-3'
-              href={`${process.env.REACT_APP_FE_URL}settings`}
+              className='shadow-sm text-gray-50 bg-slate-900 hover:bg-slate-700 dark:bg-indigo-700 dark:hover:bg-indigo-800 rounded-md px-4 py-2 text-sm font-medium ml-3'
+              href={`${process.env.REACT_APP_FE_URL}user-settings`}
               target='_blank'
               rel='noopener noreferrer'
             >

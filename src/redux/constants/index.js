@@ -7,15 +7,26 @@ export const HAVE_I_BEEN_PWNED_URL = 'https://haveibeenpwned.com/passwords'
 export const LINKEDIN_URL = 'https://www.linkedin.com/company/swetrix/'
 export const GITHUB_URL = 'https://github.com/Swetrix'
 export const TWITTER_URL = 'https://twitter.com/swetrix'
+export const DISCORD_URL = 'https://discord.gg/ZVK8Tw2E8j'
 export const STATUSPAGE_URL = 'https://stats.uptimerobot.com/33rvmiXXEz'
 export const ABOUT_PAGE_URL = 'https://swetrix.com/about'
 export const PRIVACY_PAGE_URL = 'https://swetrix.com/privacy'
 export const CONTACT_PAGE_URL = 'https://swetrix.com/contact'
+export const COOKIE_POLICY_URL = 'https://swetrix.com/cookie-policy'
 export const TERMS_PAGE_URL = 'https://swetrix.com/terms'
-export const BLOG_URL = 'https://blog.swetrix.com'
+export const OPEN_STARTUP_URL = 'https://swetrix.com/open'
+export const PRESS_PAGE_URL = 'https://swetrix.com/press'
+export const BLOG_URL = 'https://swetrix.com/blog'
 export const UTM_GENERATOR_URL = 'https://url.swetrix.com'
 export const DOCS_URL = 'https://docs.swetrix.com'
 export const SDK_DOCS_URL = DOCS_URL + '/sdk-introduction'
+
+export const CAPTCHA_URL = 'https://captcha.swetrix.com'
+
+// Swetrix vs ...
+export const SWETRIX_VS_GOOGLE = 'https://swetrix.com/blog/vs-google-analytics/'
+export const SWETRIX_VS_CLOUDFLARE = 'https://swetrix.com/blog/vs-cloudflare-analytics/'
+export const SWETRIX_VS_SIMPLE_ANALYTICS = 'https://swetrix.com/blog/vs-simple-analytics/'
 
 export const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
 
@@ -88,3 +99,5 @@ export const extensionStatuses = {
   DELETED: 'DELETED',
   NO_EXTENSION_UPLOADED: 'NO_EXTENSION_UPLOADED',
 }
+
+export const TRIAL_DAYS = 14
