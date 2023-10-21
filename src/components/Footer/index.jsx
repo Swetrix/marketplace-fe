@@ -9,22 +9,39 @@ import {
   DONATE_URL, FIREFOX_ADDON_URL, CHROME_EXTENSION_URL, GITHUB_URL,
   LINKEDIN_URL, STATUSPAGE_URL, TWITTER_URL, BLOG_URL, ABOUT_PAGE_URL,
   SDK_DOCS_URL, PRIVACY_PAGE_URL, CONTACT_PAGE_URL, TERMS_PAGE_URL,
+  OPEN_STARTUP_URL, PRESS_PAGE_URL, DOCS_URL, COOKIE_POLICY_URL,
+  SWETRIX_VS_GOOGLE, SWETRIX_VS_CLOUDFLARE, SWETRIX_VS_SIMPLE_ANALYTICS,
+  CAPTCHA_URL, UTM_GENERATOR_URL, DISCORD_URL,
 } from 'redux/constants'
+import routes from 'routes'
 
 const navigation = {
-  support: [
-    { key: 'docs', href: SDK_DOCS_URL },
-  ],
   company: [
     { key: 'about', href: ABOUT_PAGE_URL },
-    { key: 'contact', href: CONTACT_PAGE_URL },
+    { key: 'changelog', href: routes.changelog },
+    { key: 'open', href: OPEN_STARTUP_URL },
+    { key: 'press', href: PRESS_PAGE_URL },
     { key: 'status', href: STATUSPAGE_URL },
     { key: 'donate', href: DONATE_URL },
     { key: 'blog', href: BLOG_URL },
   ],
   legal: [
-    { key: 'terms', href: TERMS_PAGE_URL },
-    { key: 'privacy', href: PRIVACY_PAGE_URL },
+    (authenticated) => (authenticated
+        ? { key: 'billing', href: `${process.env.REACT_APP_FE_URL}/billing` }
+        : { key: 'pricing', href: `${process.env.REACT_APP_FE_URL}/#pricing` }
+      ),
+    () => ({ key: 'docs', href: DOCS_URL }),
+    () => ({ key: 'contact', href: CONTACT_PAGE_URL }),
+    () => ({ key: 'privacy', href: PRIVACY_PAGE_URL }),
+    () => ({ key: 'terms', href: TERMS_PAGE_URL }),
+    () => ({ key: 'cookie', href: COOKIE_POLICY_URL }),
+  ],
+  features: [
+    { value: 'vs Google Analytics', href: SWETRIX_VS_GOOGLE },
+    { value: 'vs Cloudflare Analytics', href: SWETRIX_VS_CLOUDFLARE },
+    { value: 'vs Simple Analytics', href: SWETRIX_VS_SIMPLE_ANALYTICS },
+    { key: 'captcha', href: CAPTCHA_URL },
+    { key: 'utm', href: UTM_GENERATOR_URL },
   ],
   social: [
     {
@@ -54,24 +71,33 @@ const navigation = {
       ),
     },
     {
+      name: 'Discord',
+      href: DISCORD_URL,
+      icon: (props) => (
+        <svg fill='currentColor' viewBox='0 0 127.14 96.36' {...props}>
+          <path d='M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z' />
+        </svg>
+      ),
+    },
+    {
       name: 'LinkedIn',
       href: LINKEDIN_URL,
       icon: () => (
-        <img className='h-6 w-6 opacity-75 hover:opacity-90 bg-white rounded' aria-hidden='true' src='/assets/linkedin.svg' alt='' />
+        <img className='h-6 w-6 opacity-75 hover:opacity-90 bg-white rounded' aria-hidden='true' src='/assets/linkedin.svg' alt='LinkedIn' />
       ),
     },
     {
       name: 'Firefox Addon',
       href: FIREFOX_ADDON_URL,
       icon: () => (
-        <img className='h-6 w-6 opacity-75 hover:opacity-90' aria-hidden='true' src='/assets/firefox.svg' alt='' />
+        <img className='h-6 w-6 opacity-75 hover:opacity-90' aria-hidden='true' src='/assets/firefox.svg' alt='Firefox' />
       ),
     },
     {
       name: 'Chrome Extension',
       href: CHROME_EXTENSION_URL,
       icon: () => (
-        <img className='h-6 w-6 opacity-75 hover:opacity-90' aria-hidden='true' src='/assets/chrome.svg' alt='' />
+        <img className='h-6 w-6 opacity-75 hover:opacity-90' aria-hidden='true' src='/assets/chrome.svg' alt='Chrome' />
       ),
     },
   ],
@@ -83,46 +109,31 @@ const Footer = ({ minimal, authenticated }) => {
 
   if (minimal) {
     return (
-      <footer className='bg-slate-900 dark:bg-gray-900'>
+      <footer className='bg-gray-50 dark:bg-slate-900 border-t border-gray-200 dark:border-slate-800/50'>
         <div className='max-w-7xl mx-auto py-8 px-4 overflow-hidden sm:px-6 lg:px-8'>
           <nav className='-mx-5 -my-2 flex flex-wrap justify-center' aria-label='Footer'>
-
             <div className='px-5 py-2'>
-              <a href={CONTACT_PAGE_URL} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
+              <a href={CONTACT_PAGE_URL} className='leading-6 text-slate-900 dark:text-gray-300 hover:text-slate-700 dark:hover:text-white' target='_blank' rel='noopener noreferrer'>
                 {t('footer.contact')}
               </a>
             </div>
-
             <div className='px-5 py-2'>
-              <a href={SDK_DOCS_URL} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
-                {t('footer.docs')}
-              </a>
-            </div>
-
-
-            <div className='px-5 py-2'>
-              <a href={PRIVACY_PAGE_URL} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
+              <a href={PRIVACY_PAGE_URL} className='leading-6 text-slate-900 dark:text-gray-300 hover:text-slate-700 dark:hover:text-white' target='_blank' rel='noopener noreferrer'>
                 {t('footer.pp')}
               </a>
             </div>
-
-
             <div className='px-5 py-2'>
-              <a href={TERMS_PAGE_URL} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
+              <a href={TERMS_PAGE_URL} className='leading-6 text-slate-900 dark:text-gray-300 hover:text-slate-700 dark:hover:text-white' target='_blank' rel='noopener noreferrer'>
                 {t('footer.tos')}
               </a>
             </div>
-
-
             <div className='px-5 py-2'>
-              <a href={ABOUT_PAGE_URL} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
+              <a href={ABOUT_PAGE_URL} className='leading-6 text-slate-900 dark:text-gray-300 hover:text-slate-700 dark:hover:text-white' target='_blank' rel='noopener noreferrer'>
                 {t('footer.about')}
               </a>
             </div>
-
-
             <div className='px-5 py-2'>
-              <a href={STATUSPAGE_URL} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
+              <a href={STATUSPAGE_URL} className='leading-6 text-slate-900 dark:text-gray-300 hover:text-slate-700 dark:hover:text-white' target='_blank' rel='noopener noreferrer'>
                 {t('footer.status')}
               </a>
             </div>
@@ -137,11 +148,11 @@ const Footer = ({ minimal, authenticated }) => {
       <h2 id='footer-heading' className='sr-only'>
         Footer
       </h2>
-      <div className='w-11/12 mx-auto pt-8 pb-5 px-4 sm:px-6 lg:px-8'>
-        <div className='xl:grid xl:grid-cols-3 xl:gap-8'>
-          <div className='space-y-8 xl:col-span-1'>
+      <div className='w-11/12 pt-8 pb-5 px-4 sm:px-6 lg:px-8'>
+        <div className='xl:grid xl:grid-cols-2 xl:gap-8'>
+          <div className='space-y-5 xl:col-span-1'>
             <div className='flex gap-5 flex-wrap'>
-              <img className='h-7' height='28' src='/assets/logo_white.png' loading='lazy' alt='Swetrix' />
+              <img height='28px' width='126.35px' src='/assets/logo_white.png' loading='lazy' alt='Swetrix Analytics' />
             </div>
             <p className='text-gray-300 text-base'>
               {t('footer.slogan')}
@@ -151,16 +162,16 @@ const Footer = ({ minimal, authenticated }) => {
             <div>
               <p className='flex text-gray-300 text-base'>
                 {t('footer.madeIn')}
-                <a className='flex hover:underline hover:opacity-80 text-blue-400 ml-1' href={`https://${language}.wikipedia.org/wiki/Ukraine`} target='_blank' rel='noopener noreferrer'>
-                  <Flag country='UA' size={18} alt='' />
+                <a className='flex hover:underline hover:opacity-80 text-blue-400 ml-1' href={`https://${language}.wikipedia.org/wiki/Ukraine`} target='_blank' rel='noopener noreferrer' aria-label='Ukraine Wikipedia page (opens in a new tab)'>
+                  <Flag country='UA' size={18} alt='' aria-hidden='true' />
                   &nbsp;
                   {t('footer.ukraine')}
                 </a>
               </p>
               <p className='flex text-gray-300 text-base'>
                 {t('footer.hostedIn')}
-                <a className='flex hover:underline hover:opacity-80 text-blue-400 ml-1' href={`https://${language}.wikipedia.org/wiki/European_Union`} target='_blank' rel='noopener noreferrer'>
-                  <Flag country='EU' size={18} alt='' />
+                <a className='flex hover:underline hover:opacity-80 text-blue-400 ml-1' href={`https://${language}.wikipedia.org/wiki/European_Union`} target='_blank' rel='noopener noreferrer' aria-label='European Union Wikipedia page (opens in a new tab)'>
+                  <Flag country='EU' size={18} alt='' aria-hidden='true' />
                   &nbsp;
                   {t('footer.eu')}
                 </a>
@@ -168,35 +179,56 @@ const Footer = ({ minimal, authenticated }) => {
             </div>
             <div className='flex space-x-4'>
               {_map(navigation.social, (item) => (
-                <a key={item.name} href={item.href} title={item.name} target='_blank' rel='noopener noreferrer' className='text-gray-400 hover:text-gray-300'>
+                <a key={item.name} href={item.href} title={item.name} target='_blank' rel='noopener noreferrer' className='text-gray-400 hover:text-gray-300' aria-label={`${item.name} (opens in a new tab)`}>
                   <span className='sr-only'>{item.name}</span>
                   <item.icon className='h-6 w-6' aria-hidden='true' />
                 </a>
               ))}
             </div>
+            <p className='text-base pt-10 text-gray-300'>
+              &copy;
+              {' '}
+              {year}
+              {' '}
+              {t('footer.copy')}
+            </p>
           </div>
-          <div className='mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2'>
-            <div className='md:grid md:grid-cols-2 md:gap-8'>
-              <div />
-              <div className='mt-12 md:mt-0'>
+          <div className='mt-12 xl:mt-0'>
+            <div className='grid grid-cols-2 md:grid-cols-3 gap-8'>
+              <div>
                 <h3 className='text-sm font-semibold text-white tracking-wider uppercase'>
-                  {t('footer.support')}
+                  {t('footer.features')}
                 </h3>
                 <ul className='mt-4 space-y-4'>
-                  {_map(navigation.support, ({ key, href }) => {
+                  {_map(navigation.features, (data) => {
+                    const {
+                      value, key, href, internal,
+                    } = data
+
+                    const displayValue = value || t(`footer.${key}`)
 
                     return (
-                      <li key={key}>
-                        <a href={href} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
-                          {t(`footer.${key}`)}
-                        </a>
+                      <li key={displayValue}>
+                        {internal ? (
+                          <Link to={href} className='text-base text-gray-300 hover:text-white'>
+                            {displayValue}
+                          </Link>
+                        ) : (
+                          <a
+                            href={href}
+                            className='text-base text-gray-300 hover:text-white'
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            aria-label={`${displayValue} (opens in a new tab)`}
+                          >
+                            {displayValue}
+                          </a>
+                        )}
                       </li>
                     )
                   })}
                 </ul>
               </div>
-            </div>
-            <div className='md:grid md:grid-cols-2 md:gap-8'>
               <div>
                 <h3 className='text-sm font-semibold text-white tracking-wider uppercase'>
                   {t('footer.company')}
@@ -209,7 +241,7 @@ const Footer = ({ minimal, authenticated }) => {
                           {t(`footer.${key}`)}
                         </Link>
                       ) : (
-                        <a href={href} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
+                        <a href={href} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer' aria-label={`${t(`footer.${key}`)} (opens in a new tab)`}>
                           {t(`footer.${key}`)}
                         </a>
                       )}
@@ -222,37 +254,27 @@ const Footer = ({ minimal, authenticated }) => {
                   {t('footer.legal')}
                 </h3>
                 <ul className='mt-4 space-y-4'>
-                  {_map(navigation.legal, ({ key, href, internal }) => (
-                    <li key={key}>
-                      {internal ? (
-                        <Link to={href} className='text-base text-gray-300 hover:text-white'>
-                          {t(`footer.${key}`)}
-                        </Link>
-                      ) : (
-                        <a href={href} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer'>
-                          {t(`footer.${key}`)}
-                        </a>
-                      )}
-                    </li>
-                  ))}
+                  {_map(navigation.legal, (func) => {
+                    const { key, href, internal } = func(authenticated)
+
+                    return (
+                      <li key={key}>
+                        {internal ? (
+                          <Link to={href} className='text-base text-gray-300 hover:text-white'>
+                            {t(`footer.${key}`)}
+                          </Link>
+                        ) : (
+                          <a href={href} className='text-base text-gray-300 hover:text-white' target='_blank' rel='noopener noreferrer' aria-label={`${t(`footer.${key}`)} (opens in a new tab)`}>
+                            {t(`footer.${key}`)}
+                          </a>
+                        )}
+                      </li>
+                    )
+                  })}
                 </ul>
               </div>
             </div>
-            <div className='flex gap-5 flex-wrap col-span-2 items-center justify-end'>
-              <img className='h-10 w-auto' src='/assets/pci.png' height='40' width='auto' loading='lazy' alt='' />
-              <img className='h-10 w-auto' src='/assets/visa.png' height='40' width='auto' loading='lazy' alt='' />
-              <img className='h-10 w-auto' src='/assets/mc.png' height='40' width='auto' loading='lazy' alt='' />
-            </div>
           </div>
-        </div>
-        <div className='mt-6 border-t border-[#727987] pt-5'>
-          <p className='text-base text-gray-300 xl:text-center'>
-            &copy;
-            {' '}
-            {year}
-            {' '}
-            {t('footer.copy')}
-          </p>
         </div>
       </div>
     </footer>

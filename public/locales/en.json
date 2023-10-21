@@ -188,7 +188,10 @@
     "status": "Status",
     "donate": "Donate",
     "about": "About us",
-    "changelog": "Changelog"
-
+    "changelog": "Changelog",
+    "cookie": "Cookie Policy",
+    "captcha": "CAPTCHA",
+    "press":"Media & Press",
+    "open": "Open startup"
   }
 }
