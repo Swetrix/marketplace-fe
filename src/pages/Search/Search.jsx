@@ -130,7 +130,7 @@ const Search = ({
                 </div>
               )
               : _isEmpty(extensions)
-                ? <p className='text-gray-200 text-2xl pt-40 text-center'>
+                ? <p className='text-gray-900 dark:text-gray-200 text-2xl pt-40 text-center'>
                   There are no extensions that match your search
                 </p>
                 : _map(extensions, ((item) => (
