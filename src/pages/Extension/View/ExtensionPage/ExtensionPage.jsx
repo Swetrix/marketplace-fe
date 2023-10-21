@@ -404,10 +404,10 @@ const ExtensionPage = ({
                     <p className='text-base text-gray-900 dark:text-gray-50'>
                       {extension.usersQuantity} users
                     </p>
-                    <span> | </span>
+                    {/* <span> | </span>
                     <div className='flex flex-row items-center gap-1'>
                       <StarsRaiting disabled stars='3' />
-                    </div>
+                    </div> */}
                     {/* <span> | </span>
                     <p className='text-base text-gray-900 dark:text-gray-50'>
                       9$
