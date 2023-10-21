@@ -1,6 +1,5 @@
 import React, { memo } from 'react'
 import { Link } from 'react-router-dom'
-import { HashLink } from 'react-router-hash-link'
 import { useTranslation } from 'react-i18next'
 import _map from 'lodash/map'
 import Flag from 'react-flagkit'
@@ -11,7 +10,6 @@ import {
   LINKEDIN_URL, STATUSPAGE_URL, TWITTER_URL, BLOG_URL, ABOUT_PAGE_URL,
   SDK_DOCS_URL, PRIVACY_PAGE_URL, CONTACT_PAGE_URL, TERMS_PAGE_URL,
 } from 'redux/constants'
-import routes from 'routes'
 
 const navigation = {
   support: [

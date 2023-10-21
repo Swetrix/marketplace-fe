@@ -61,7 +61,9 @@ const ExtensionPage = ({ extensions, showError, setExtensions, installExtensions
                 <div className='mx-auto max-w-7xl py-3 px-3 sm:px-6 lg:px-8'>
                   <div className='pr-16 sm:px-16 sm:text-center'>
                     <p className='font-medium text-white'>
-                      <span>It is preview because your extensions passes inspection</span>
+                      <span>
+                        Your extension is pending review and is currently not available to other users
+                      </span>
                     </p>
                   </div>
                 </div>

@@ -19,6 +19,7 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import duration from 'dayjs/plugin/duration'
 import _map from 'lodash/map'
+import _includes from 'lodash/includes'
 import cx from 'clsx'
 
 import routes from 'routes'
@@ -28,7 +29,7 @@ import UIActions from 'redux/actions/ui'
 
 import {
   whitelist, languages, languageFlag, isSelfhosted, BLOG_URL,
-  DOCS_URL,
+  DOCS_URL, SUPPORTED_THEMES,
 } from 'redux/constants'
 import Dropdown from 'ui/Dropdown'
 
@@ -423,23 +424,6 @@ const NotAuthedHeader = ({
             >
               {t('footer.blog')}
             </a>
-            {!isSelfhosted && (
-              <>
-                <Link
-                  to={routes.features}
-                  className='font-semibold leading-6 text-base text-slate-800 hover:text-slate-700 dark:text-slate-200 dark:hover:text-white'
-                >
-                  {t('common.features')}
-                </Link>
-                <Link
-                  to={`${routes.main}#pricing`}
-                  className='font-semibold leading-6 text-base text-slate-800 hover:text-slate-700 dark:text-slate-200 dark:hover:text-white'
-                  key='Pricing'
-                >
-                  {t('common.pricing')}
-                </Link>
-              </>
-            )}
             <a href={DOCS_URL} className='font-semibold leading-6 text-base text-slate-800 hover:text-slate-700 dark:text-slate-200 dark:hover:text-white' target='_blank' rel='noreferrer noopener'>
               {/* <DocumentTextIcon className='w-5 h-5 mr-1' /> */}
               {t('common.docs')}
@@ -509,19 +493,6 @@ const NotAuthedHeader = ({
         >
           {t('footer.blog')}
         </a>
-        <Link
-          to={`${routes.main}#pricing`}
-          className='flex items-center font-semibold leading-6 text-base text-slate-800 hover:text-slate-700 dark:text-slate-200 dark:hover:text-white'
-          key='Pricing'
-        >
-          {t('common.pricing')}
-        </Link>
-        <Link
-          to={routes.features}
-          className='flex items-center font-semibold leading-6 text-base text-slate-800 hover:text-slate-700 dark:text-slate-200 dark:hover:text-white'
-        >
-          {t('common.features')}
-        </Link>
         <a
           href={DOCS_URL}
           className='flex items-center font-semibold leading-6 text-base text-slate-800 hover:text-slate-700 dark:text-slate-200 dark:hover:text-white'
@@ -535,8 +506,7 @@ const NotAuthedHeader = ({
   </header>
 )
 
-
-const Header= ({ theme }) => {
+const Header = ({ theme }) => {
   const { t, i18n: { language } } = useTranslation('common')
 
   const dispatch = useDispatch()
@@ -584,13 +554,9 @@ const Header= ({ theme }) => {
     dispatch(sagaActions.logout(false))
   }
 
-//   const switchTheme = (_theme) => {
-//     const newTheme = (_includes(SUPPORTED_THEMES, _theme) && _theme) || (theme === 'dark' ? 'light' : 'dark')
-//     dispatch(UIActions.setTheme(newTheme))
-//   }
-
-  const switchTheme = () => {
-    dispatch(UIActions.setTheme(theme === 'dark' ? 'light' : 'dark'))
+  const switchTheme = (_theme) => {
+    const newTheme = (_includes(SUPPORTED_THEMES, _theme) && _theme) || (theme === 'dark' ? 'light' : 'dark')
+    dispatch(UIActions.setTheme(newTheme))
   }
 
   const onLanguageChange = (id) => {
@@ -730,9 +696,15 @@ const Header= ({ theme }) => {
                       </Link>
                     </div>
                     <div onClick={() => buttonRef.current?.click()}>
-                      <Link to={routes.signup} className='w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700' aria-label={t('titles.signup')}>
+                      <a
+                        href={`${process.env.REACT_APP_FE_URL}signup`}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700'
+                        aria-label={t('titles.signup')}
+                      >
                         {t('common.getStarted')}
-                      </Link>
+                      </a>
                     </div>
                   </>
                 )}

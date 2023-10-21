@@ -12,7 +12,7 @@ export const ABOUT_PAGE_URL = 'https://swetrix.com/about'
 export const PRIVACY_PAGE_URL = 'https://swetrix.com/privacy'
 export const CONTACT_PAGE_URL = 'https://swetrix.com/contact'
 export const TERMS_PAGE_URL = 'https://swetrix.com/terms'
-export const BLOG_URL = 'https://blog.swetrix.com'
+export const BLOG_URL = 'https://swetrix.com/blog'
 export const UTM_GENERATOR_URL = 'https://url.swetrix.com'
 export const DOCS_URL = 'https://docs.swetrix.com'
 export const SDK_DOCS_URL = DOCS_URL + '/sdk-introduction'
@@ -86,3 +86,5 @@ export const extensionStatuses = {
   DELETED: 'DELETED',
   NO_EXTENSION_UPLOADED: 'NO_EXTENSION_UPLOADED',
 }
+
+export const TRIAL_DAYS = 14

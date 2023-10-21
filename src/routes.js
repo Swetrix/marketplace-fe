@@ -1,6 +1,5 @@
 const routes = Object.freeze({
   signin: '/login',
-  signup: '/signup',
   main: '/',
   dashboard: '/dashboard',
   user_settings: '/settings',
@@ -16,8 +15,6 @@ const routes = Object.freeze({
   view_extensions: '/extensions/:id',
   changelog: 'https://swetrix.com/changelog',
   billing: '/billing',
-  features: '/features',
-
 })
 
 export default routes
