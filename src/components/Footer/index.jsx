@@ -9,7 +9,7 @@ import {
   DONATE_URL, FIREFOX_ADDON_URL, CHROME_EXTENSION_URL, GITHUB_URL,
   LINKEDIN_URL, STATUSPAGE_URL, TWITTER_URL, BLOG_URL, ABOUT_PAGE_URL,
   SDK_DOCS_URL, PRIVACY_PAGE_URL, CONTACT_PAGE_URL, TERMS_PAGE_URL,
-  OPEN_STARTUP_URL, PRESS_PAGE_URL, DOCS_URL, COOKIE_POLICY_URL,
+  OPEN_STARTUP_URL, PRESS_PAGE_URL, COOKIE_POLICY_URL,
   SWETRIX_VS_GOOGLE, SWETRIX_VS_CLOUDFLARE, SWETRIX_VS_SIMPLE_ANALYTICS,
   CAPTCHA_URL, UTM_GENERATOR_URL, DISCORD_URL,
 } from 'redux/constants'
@@ -30,7 +30,7 @@ const navigation = {
         ? { key: 'billing', href: `${process.env.REACT_APP_FE_URL}/billing` }
         : { key: 'pricing', href: `${process.env.REACT_APP_FE_URL}/#pricing` }
       ),
-    () => ({ key: 'docs', href: DOCS_URL }),
+    () => ({ key: 'docs', href: SDK_DOCS_URL }),
     () => ({ key: 'contact', href: CONTACT_PAGE_URL }),
     () => ({ key: 'privacy', href: PRIVACY_PAGE_URL }),
     () => ({ key: 'terms', href: TERMS_PAGE_URL }),
