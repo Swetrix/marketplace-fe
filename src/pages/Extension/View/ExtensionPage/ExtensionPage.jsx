@@ -56,37 +56,41 @@ const CommentMenu = ({ editItem, removeItem }) => {
         leaveTo='transform opacity-0 scale-95'
       >
         <Menu.Items className='absolute right-0 z-30 mt-2 w-60 min-w-max origin-top-right rounded-md bg-white dark:bg-slate-900 py-1 shadow-lg ring-1 ring-slate-200 dark:ring-slate-800 focus:outline-none'>
-          <Menu.Item>
-            {({ active }) => (
-              <div
-                className={cx(
-                  'cursor-pointer block px-4 py-2 text-sm text-gray-700 dark:text-gray-50',
-                  {
-                    'bg-gray-100 dark:bg-slate-800': active,
-                  }
-                )}
-                onClick={() => editItem()}
-              >
-                Edit
-              </div>
-            )}
-          </Menu.Item>
-          <Menu.Item>
-            {({ active }) => (
-              <div
-                className={cx(
-                  'cursor-pointer block px-4 py-2 text-sm text-gray-700 dark:text-gray-50',
-                  {
-                    'bg-gray-100 dark:bg-slate-800': active,
-                  }
-                )}
-                onClick={() => removeItem()}
-              >
-                Remove
-              </div>
-            )}
-          </Menu.Item>
-          <Menu.Item>
+          {editItem && (
+            <Menu.Item>
+              {({ active }) => (
+                <div
+                  className={cx(
+                    'cursor-pointer block px-4 py-2 text-sm text-gray-700 dark:text-gray-50',
+                    {
+                      'bg-gray-100 dark:bg-slate-800': active,
+                    }
+                  )}
+                  onClick={editItem}
+                >
+                  Edit
+                </div>
+              )}
+            </Menu.Item>
+          )}
+          {removeItem && (
+            <Menu.Item>
+              {({ active }) => (
+                <div
+                  className={cx(
+                    'cursor-pointer block px-4 py-2 text-sm text-gray-700 dark:text-gray-50',
+                    {
+                      'bg-gray-100 dark:bg-slate-800': active,
+                    }
+                  )}
+                  onClick={removeItem}
+                >
+                  Remove
+                </div>
+              )}
+            </Menu.Item>
+          )}
+          {/* <Menu.Item>
             {({ active }) => (
               <div
                 className={cx(
@@ -100,7 +104,7 @@ const CommentMenu = ({ editItem, removeItem }) => {
                 Report
               </div>
             )}
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu.Items>
       </Transition>
     </Menu>
@@ -564,9 +568,13 @@ const ExtensionPage = ({
                                         </time>
                                       </p>
                                     </div>
-                                    <div>
-                                      <CommentMenu removeItem={() => removeComment(item.id)} />
-                                    </div>
+                                    {/* 'Report' functionality is currently WIP hence I'm doing this nickname === nicknage condition here */}
+                                    {/* Eventually it should be implemented for edit / remove functinoality inside CommentMenu only */}
+                                    {item.user.nickname === user.nickname && (
+                                      <div>
+                                        <CommentMenu removeItem={() => removeComment(item.id)} />
+                                      </div>
+                                    )}
                                   </div>
                                   <div className='my-2'>
                                     <StarsRaiting stars={item.rating} disabled />
@@ -651,9 +659,13 @@ const ExtensionPage = ({
                                                 </time>
                                               </p>
                                             </div>
-                                            <div>
-                                              <CommentMenu editItem={() => toggleEditReply(reply.id, reply.text)} removeItem={() => removeReply(item.id, reply.id)} />
-                                            </div>
+                                            {/* 'Report' functionality is currently WIP hence I'm doing this nickname === nicknage condition here */}
+                                            {/* Eventually it should be implemented for edit / remove functinoality inside CommentMenu only */}
+                                            {reply.user.nickname === user.nickname && (
+                                              <div>
+                                                <CommentMenu editItem={() => toggleEditReply(reply.id, reply.text)} removeItem={() => removeReply(item.id, reply.id)} />
+                                              </div>
+                                            )}
                                           </footer>
                                           {isEditReply === reply.id ? (
                                             <form
