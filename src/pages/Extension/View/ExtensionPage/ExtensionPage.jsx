@@ -1,14 +1,15 @@
-import React, { Fragment, useEffect, useMemo, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Glider from 'react-glider'
-
 import { useAlert } from '@blaumaus/react-alert'
-
+import dayjs from 'dayjs'
 import _find from 'lodash/find'
 import _map from 'lodash/map'
 import _isEmpty from 'lodash/isEmpty'
 import _filter from 'lodash/filter'
 import _ceil from 'lodash/ceil'
+import cx from 'clsx'
+import 'glider-js/glider.min.css'
 
 import {
   installExtension,
@@ -16,23 +17,20 @@ import {
   createComment,
   getComments,
   replyToComment,
-	deleteComment,
+  deleteComment,
   deleteReply,
   updateReply,
 } from 'api'
-import 'glider-js/glider.min.css'
 import Button from 'ui/Button'
 import Title from 'components/Title'
 import { ENTRIES_PER_PAGE_COMMENTS, extensionStatuses } from 'redux/constants'
 import StarsRaiting from 'ui/StarsRaiting'
-import cx from 'clsx'
 import { Menu, Transition } from '@headlessui/react'
 import { useTranslation } from 'react-i18next'
 import Pagination from 'ui/Pagination'
 import Loader from 'ui/Loader'
 
-
-const CommentMenu = ({editItem, removeItem}) => {
+const CommentMenu = ({ editItem, removeItem }) => {
   return (
     <Menu as='div' className='relative'>
       <div>
@@ -73,7 +71,6 @@ const CommentMenu = ({editItem, removeItem}) => {
               </div>
             )}
           </Menu.Item>
-
           <Menu.Item>
             {({ active }) => (
               <div
@@ -89,7 +86,6 @@ const CommentMenu = ({editItem, removeItem}) => {
               </div>
             )}
           </Menu.Item>
-
           <Menu.Item>
             {({ active }) => (
               <div
@@ -143,8 +139,8 @@ const ExtensionPage = ({
   const [installLoading, setInstallLoading] = useState(false)
   const [commentInputs, setCommentInputs] = useState('')
   const [isEditReply, setEditReply] = useState('')
-  const [commentForm, setCommentForm] = useState({text: '', rating: 5, reply: '', editReply: ''})
-	const [isLoadingComments, setLoadingComments] = useState(true)
+  const [commentForm, setCommentForm] = useState({ text: '', rating: 5, reply: '', editReply: '' })
+  const [isLoadingComments, setLoadingComments] = useState(true)
   const [page, setPage] = useState(1)
 
   const pageAmount = useMemo(() => _ceil(comments.count / ENTRIES_PER_PAGE_COMMENTS), [comments.count])
@@ -173,7 +169,7 @@ const ExtensionPage = ({
         setExtensions([...installExtensions, extension], false)
       })
       .catch((err) => {
-        showError(`Error installing extension: ${err.message}`)
+        showError(err.message)
       })
     setInstallLoading(false)
   }
@@ -192,55 +188,66 @@ const ExtensionPage = ({
         )
       })
       .catch((err) => {
-        showError(`Error deleting extension: ${err.message}`)
+        showError(err.message)
       })
     setDeleteLoading(false)
   }
 
-  const addComment = async ({text, rating}) => {
+  const addComment = async ({ text, rating }) => {
+    if (!authenticated) {
+      showError('You must be logged in to add comments')
+      return
+    }
+
     await createComment(user.id, {
       extensionId: extension.id,
       text,
       rating,
     })
       .then((response) => {
-				response.user = {nickname: user.nickname}
+        response.user = { nickname: user.nickname }
         response.replies = []
         setComments({
           comments: [...comments.comments, response],
           count: comments.count + 1,
         })
-				setCommentForm({text: '', rating: 5})
-				alert.success('Comment added successfully')
+        setCommentForm({ text: '', rating: 5 })
+        alert.success('Comment added successfully')
       })
-      .catch((err) => {
-        showError(`Error add a comment: ${err}`)
-      })
+      .catch(showError)
   }
 
   const replyComment = async (commentId, text) => {
+    if (!authenticated) {
+      showError('You must be logged in to reply to comments')
+      return
+    }
+
     await replyToComment(commentId, text)
       .then((response) => {
-				response.user = {nickname: user.nickname}
-				toggleCommentInput(commentId)
-				setCommentForm({text: '', rating: 5, reply: ''})
+        response.user = { nickname: user.nickname }
+        toggleCommentInput(commentId)
+        setCommentForm({ text: '', rating: 5, reply: '' })
         setComments({
           comments: _map(comments.comments, (comment) =>
-            comment.id === commentId ? {...comment, replies: [...comment.replies, response]} : comment
+            comment.id === commentId ? { ...comment, replies: [...comment.replies, response] } : comment
           ),
           count: comments.count,
         })
-				alert.success('Reply added successfully')
+        alert.success('Reply added successfully')
       })
-      .catch((err) => {
-        showError(`Error reply to comment: ${err}`)
-      })
+      .catch(showError)
   }
 
   const editReply = async (commentId, replyId, text) => {
+    if (!authenticated) {
+      showError('You must be logged in to perform this action')
+      return
+    }
+
     await updateReply(replyId, text)
       .then((response) => {
-        toggleEditReply(replyId)        
+        toggleEditReply(replyId)
         const updatedComments = _map(comments.comments, (comment) => {
           if (comment.id === commentId) {
             comment.replies = _map(comment.replies, (reply) => reply.id === replyId ? response : reply)
@@ -251,37 +258,37 @@ const ExtensionPage = ({
           comments: updatedComments,
           count: comments.count,
         })
-				alert.success('Reply to comment successfully changed')
+        alert.success('Reply to comment successfully changed')
       })
-      .catch((err) => {
-        showError(`Error reply to comment: ${err}`)
-      })
+      .catch(showError)
   }
 
   const removeReply = async (commentId, replyId) => {
+    if (!authenticated) {
+      showError('You must be logged in to perform this action')
+      return
+    }
+
     await deleteReply(replyId)
-    .then((response) => {
-      console.log(response)
-      const updatedComments = _map(comments.comments, (comment) => {
-        if (comment.id === commentId) {
-          comment.replies = _filter(comment.replies, (reply) => reply.id !== replyId)
-        }
-        return comment
+      .then((response) => {
+        console.log(response)
+        const updatedComments = _map(comments.comments, (comment) => {
+          if (comment.id === commentId) {
+            comment.replies = _filter(comment.replies, (reply) => reply.id !== replyId)
+          }
+          return comment
+        })
+        setComments({
+          comments: updatedComments,
+          count: comments.count
+        })
+        alert.success('Reply to comment successfully deleted')
       })
-      setComments({
-        comments: updatedComments,
-        count: comments.count
-      })
-      alert.success('Reply to comment successfully deleted')
-    })
-      .catch((err) => {
-        showError(`Error reply to comment: ${err}`)
-      })
+      .catch(showError)
   }
 
-
-  const getAllComments = async (extensionId) => {
-		setLoadingComments(true)
+  const getAllComments = useCallback(async (extensionId) => {
+    setLoadingComments(true)
     await getComments(extensionId, ENTRIES_PER_PAGE_COMMENTS, (page - 1) * ENTRIES_PER_PAGE_COMMENTS)
       .then((response) => {
         setComments(response)
@@ -290,32 +297,30 @@ const ExtensionPage = ({
         showError(`Error get a comments: ${err}`)
       })
 
-			setLoadingComments(false)
-  }
+    setLoadingComments(false)
+  }, [page, setComments, showError])
 
-	const removeComment = async (commentId) => {
-		await deleteComment(commentId)
-			.then((response) => {
-				setComments({
+  const removeComment = async (commentId) => {
+    await deleteComment(commentId)
+      .then((response) => {
+        setComments({
           comments: _filter(comments.comments, (comment) => comment.id !== commentId),
           count: comments.count - 1,
         })
-				alert.success('Comment successfully deleted')
+        alert.success('Comment successfully deleted')
 
-			})
-      .catch((err) => {
-        showError(`Error remove to comments: ${err}`)
       })
-	}
+      .catch(showError)
+  }
 
-	const toggleCommentInput = (commentId) => {
+  const toggleCommentInput = (commentId) => {
     setCommentInputs((prevState) => prevState === commentId ? '' : commentId)
   }
 
   const toggleEditReply = (replyId, value = '') => {
     setCommentForm((prevState) => ({
-      ...prevState,       
-      editReply: value, 
+      ...prevState,
+      editReply: value,
     }))
     setEditReply((prevState) => prevState === replyId ? '' : replyId)
   }
@@ -323,24 +328,24 @@ const ExtensionPage = ({
   const handleSubmit = async (e, commentId, replyId) => {
     e.preventDefault()
     e.stopPropagation()
-    const formId = e.target.id 
+    const formId = e.target.id
 
-    if(formId === 'mainForm') await addComment(commentForm)
-    else if(formId === 'replyForm') replyComment(commentId, commentForm.reply)
-    else if(formId === 'editReplyForm') editReply(commentId, replyId, commentForm.editReply)
+    if (formId === 'mainForm') await addComment(commentForm)
+    else if (formId === 'replyForm') replyComment(commentId, commentForm.reply)
+    else if (formId === 'editReplyForm') editReply(commentId, replyId, commentForm.editReply)
   }
 
-	const handleRating = (rating) => {
-		setCommentForm(oldForm => ({
+  const handleRating = (rating) => {
+    setCommentForm(oldForm => ({
       ...oldForm,
       rating,
     }))
-	}
+  }
 
   const handleInput = (event) => {
     const { target } = event
 
-		setCommentForm(oldForm => ({
+    setCommentForm(oldForm => ({
       ...oldForm,
       [target.name]: target.value,
     }))
@@ -348,7 +353,7 @@ const ExtensionPage = ({
 
   useEffect(() => {
     getAllComments(extension.id)
-  }, [page])
+  }, [page, extension.id, getAllComments])
 
   return (
     <>
@@ -414,7 +419,7 @@ const ExtensionPage = ({
                       danger
                       regular
                     >
-                      Uninstall
+                      {t('common.uninstall')}
                     </Button>
                   ) : (
                     <Button
@@ -424,7 +429,7 @@ const ExtensionPage = ({
                       primary
                       onClick={install}
                     >
-                      Install
+                      {t('common.install')}
                     </Button>
                   )}
                 </div>
@@ -490,228 +495,231 @@ const ExtensionPage = ({
                 </div>
               )}
             </div>
-
-						{extension.status !== extensionStatuses.ACCEPTED ? <></> : 
-						isLoadingComments ? <div className='min-h-min-footer bg-gray-50 dark:bg-slate-900'>
-							<Loader />
-						</div> : (
-							<section className=' py-8 lg:py-16'>
-              <div className='max-w-2xl mx-auto px-4'>
-								{!_isEmpty(comments.comments) && <div className='flex flex-col justify-start items-start mb-3'>
-                  <h2 className='text-lg lg:text-2xl font-bold text-gray-900 dark:text-white'>
-                    {t('comments.discussion')} {comments.count}
-                  </h2>
-                </div> 
-								}
-
-								{true && <form id='mainForm' onSubmit={handleSubmit} className='mb-6'>
-                  <div className='flex flex-row items-center gap-1 mb-6'>
-                    <StarsRaiting  stars={commentForm.rating} onClick={handleRating}/>
+            {extension.status === extensionStatuses.ACCEPTED && (
+              <section className=' py-8 lg:py-16'>
+                <div className='max-w-2xl mx-auto px-4'>
+                  <div className='flex flex-col justify-start items-start mb-3'>
+                    <h2 className='text-lg lg:text-2xl font-bold text-gray-900 dark:text-white'>
+                      {t('comments.userReviews')}
+                    </h2>
                   </div>
-                  <div className='py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700'>
-                    <label htmlFor='comment' className='sr-only'>
-                      {t('comments.writeComment')}
-                    </label>
-                    <textarea
-                      id='comment'
-                      value={commentForm.text}
-                      name='text'
-                      onChange={handleInput}
-                      rows='6'
-                      className='px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
-                      placeholder={t('comments.writeComment')}
-                      required
-                    ></textarea>
-                  </div>
-                  <div className='flex justify-end'>
-                    <Button
-                      type='submit'
-                      primary
-                      className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
-                    >
-                      Submit
-                    </Button>
-                  </div>
-                </form>
-								}
-
-                {_isEmpty(comments.comments) ? (
-									<NoComments t={t}/>
-                ) : (
-                  <div>
-                    {_map(comments.comments, (item) => (
-                      <div key={item.id}>
-                        <article className='p-6 mb-6 text-base rounded-lg'>
-                          <footer className='flex justify-between items-center mb-2'>
-                            <div className='flex items-center'>
-                              <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'>
-                                <img
-                                  className='mr-2 w-6 h-6 rounded-full'
-                                  src='#'
-                                  alt='userName'
-                                />
-                                {item.user.nickname}
-                              </p>
-                              <p className='text-sm text-gray-600 dark:text-gray-400'>
-                                <time
-                                  dateTime='2022-02-08'
-                                  title='February 8th, 2022'
-                                >
-                                  {item.addedAt}
-                                </time>
-                              </p>
-                            </div>
-                            <div>
-                              <CommentMenu removeItem={() => removeComment(item.id)} />
-                            </div>
-                          </footer>
-													<div className='my-2'>
-														<StarsRaiting stars={item.rating} disabled/>
-													</div>
-                          <p className='text-gray-500 dark:text-gray-400'>
-                            {item.text}
-                          </p>
-                          <div className='flex items-center mt-4 space-x-4'>
-                            <button
-                              onClick={() => toggleCommentInput(item.id)}
-                              type='button'
-                              className='flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400'
-                            >
-                              <svg
-                                aria-hidden='true'
-                                className='mr-1 w-4 h-4'
-                                fill='none'
-                                stroke='currentColor'
-                                viewBox='0 0 24 24'
-                                xmlns='http://www.w3.org/2000/svg'
-                              >
-                                <path
-                                  strokeLinecap='round'
-                                  strokeLinejoin='round'
-                                  strokeWidth='2'
-                                  d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
-                                ></path>
-                              </svg>
-                              Reply
-                            </button>
+                  {isLoadingComments ? (
+                    <Loader />
+                  ) : (
+                    <>
+                      {authenticated && (
+                        <form id='mainForm' onSubmit={handleSubmit} className='mb-6'>
+                          <div className='flex flex-row items-center gap-1 mb-6'>
+                            <StarsRaiting stars={commentForm.rating} onClick={handleRating} />
                           </div>
-                          {commentInputs === item.id && (
-                            <form
-                              id='replyForm'
-                              onSubmit={(e) => handleSubmit(e, item.id)}
-                              className='w-full flex flex-col items-end'
+                          <div className='py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700'>
+                            <label htmlFor='comment' className='sr-only'>
+                              {t('comments.writeComment')}
+                            </label>
+                            <textarea
+                              id='comment'
+                              value={commentForm.text}
+                              name='text'
+                              onChange={handleInput}
+                              rows='6'
+                              className='px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
+                              placeholder={t('comments.writeComment')}
+                              required
+                            />
+                          </div>
+                          <div className='flex justify-end'>
+                            <Button
+                              type='submit'
+                              primary
+                              className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
                             >
-                              <textarea
-                                id='comment'
-                                rows='6'
-                                value={commentForm.reply}
-                                name='reply'
-                                onChange={handleInput}
-                                className='my-3 px-4 w-full text-sm text-gray-900 border-0 rounded-md focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
-                                placeholder={t('comments.writeComment')}
-                                required
-                              ></textarea>
+                              {t('common.submit')}
+                            </Button>
+                          </div>
+                        </form>
+                      )}
+                      {_isEmpty(comments.comments) ? (
+                        <NoComments t={t} />
+                      ) : (
+                        <div>
+                          {_map(comments.comments, (item) => {
+                            const commentDate = language === 'en'
+                              ? dayjs(item.addedAt).locale(language).format('MMMM D, YYYY')
+                              : dayjs(item.addedAt).locale(language).format('D MMMM, YYYY')
 
-                              <Button
-                                type='submit'
-                                primary
-                                className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
-                              >
-                                Submit
-                              </Button>
-                            </form>
-                          )}
-                        </article>
+                            return (
+                              <div key={item.id}>
+                                <div className='py-2 mb-6 text-base'>
+                                  <div className='flex justify-between items-center mb-2'>
+                                    <div className='flex items-center'>
+                                      <p className='mr-3 text-sm text-gray-900 dark:text-white'>
+                                        {item.user.nickname}
+                                      </p>
+                                      <p className='text-sm text-gray-600 dark:text-gray-400'>
+                                        <time
+                                          dateTime={dayjs(item.addedAt).format('YYYY-MM-DD hh:mm:ss')}
+                                          title={commentDate}
+                                        >
+                                          {commentDate}
+                                        </time>
+                                      </p>
+                                    </div>
+                                    <div>
+                                      <CommentMenu removeItem={() => removeComment(item.id)} />
+                                    </div>
+                                  </div>
+                                  <div className='my-2'>
+                                    <StarsRaiting stars={item.rating} disabled />
+                                  </div>
+                                  <p className='text-gray-500 dark:text-gray-400'>
+                                    {item.text}
+                                  </p>
+                                  <div className='flex items-center mt-4 space-x-4'>
+                                    <button
+                                      onClick={() => toggleCommentInput(item.id)}
+                                      type='button'
+                                      className='flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400'
+                                    >
+                                      <svg
+                                        aria-hidden='true'
+                                        className='mr-1 w-4 h-4'
+                                        fill='none'
+                                        stroke='currentColor'
+                                        viewBox='0 0 24 24'
+                                        xmlns='http://www.w3.org/2000/svg'
+                                      >
+                                        <path
+                                          strokeLinecap='round'
+                                          strokeLinejoin='round'
+                                          strokeWidth='2'
+                                          d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
+                                        ></path>
+                                      </svg>
+                                      Reply
+                                    </button>
+                                  </div>
+                                  {commentInputs === item.id && (
+                                    <form
+                                      id='replyForm'
+                                      onSubmit={(e) => handleSubmit(e, item.id)}
+                                      className='w-full flex flex-col items-end'
+                                    >
+                                      <textarea
+                                        id='comment'
+                                        rows='6'
+                                        value={commentForm.reply}
+                                        name='reply'
+                                        onChange={handleInput}
+                                        className='my-3 px-4 w-full text-sm text-gray-900 border-0 rounded-md focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
+                                        placeholder={t('comments.writeComment')}
+                                        required
+                                      />
+                                      <Button
+                                        type='submit'
+                                        primary
+                                        className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
+                                      >
+                                        {t('common.submit')}
+                                      </Button>
+                                    </form>
+                                  )}
+                                </div>
 
-                        {!_isEmpty(item.replies) && (
+                                {!_isEmpty(item.replies) && (
+                                  <div>
+                                    {_map(item.replies, (reply) => {
+                                      const replyDate = language === 'en'
+                                        ? dayjs(reply.addedAt).locale(language).format('MMMM D, YYYY')
+                                        : dayjs(reply.addedAt).locale(language).format('D MMMM, YYYY')
 
-													<div>
-														{_map(item.replies, (reply) => (
-													<article
-                            key={reply.id}
-                            className='p-6 mb-6 ml-6 lg:ml-12 text-base rounded-lg'
-                          >
-                            <footer className='flex justify-between items-center mb-2'>
-                              <div className='flex items-center'>
-                                <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white'>
-                                  <img
-                                    className='mr-2 w-6 h-6 rounded-full'
-                                    src='#'
-                                    alt='userName'
-                                  />
-                                  {reply.user.nickname}
-                                </p>
-                                <p className='text-sm text-gray-600 dark:text-gray-400'>
-                                  <time
-                                    dateTime='2022-02-08'
-                                    title='February 8th, 2022'
-                                  >
-                                    {reply.addedAt}
-                                  </time>
-                                </p>
+                                      return (
+                                        <article
+                                          key={reply.id}
+                                          className='ml-3 lg:ml-12 text-base rounded-lg'
+                                        >
+                                          <footer className='flex justify-between items-center mb-2'>
+                                            <div className='flex items-center'>
+                                              <p className='mr-3 text-sm text-gray-900 dark:text-white'>
+                                                {reply.user.nickname}
+                                              </p>
+                                              <p className='text-sm text-gray-600 dark:text-gray-400'>
+                                                <time
+                                                  dateTime={dayjs(reply.addedAt).format('YYYY-MM-DD hh:mm:ss')}
+                                                  title={replyDate}
+                                                >
+                                                  {replyDate}
+                                                </time>
+                                              </p>
+                                            </div>
+                                            <div>
+                                              <CommentMenu editItem={() => toggleEditReply(reply.id, reply.text)} removeItem={() => removeReply(item.id, reply.id)} />
+                                            </div>
+                                          </footer>
+                                          {isEditReply === reply.id ? (
+                                            <form
+                                              id='editReplyForm'
+                                              onSubmit={(e) => handleSubmit(e, item.id, reply.id)}
+                                              className='w-full flex flex-col items-end'
+                                            >
+                                              <textarea
+                                                id='comment'
+                                                rows='6'
+                                                value={commentForm.editReply}
+                                                name='editReply'
+                                                onChange={handleInput}
+                                                className='my-3 px-4 w-full text-sm text-gray-900 border-0 rounded-md focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
+                                                placeholder={t('comments.editReply')}
+                                                required
+                                              />
+                                              <div className='flex gap-2'>
+                                                <Button
+                                                  onClick={() => toggleEditReply(reply.id, '')}
+                                                  className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
+                                                  danger
+                                                >
+                                                  {t('common.cancel')}
+                                                </Button>
+                                                <Button
+                                                  type='submit'
+                                                  primary
+                                                  className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
+                                                >
+                                                  {t('common.submit')}
+                                                </Button>
+                                              </div>
+                                            </form>
+                                          ) : (
+                                            <p className='text-gray-500 dark:text-gray-400'>
+                                              {reply.text}
+                                            </p>
+                                          )}
+                                        </article>
+                                      )
+                                    })}
+                                  </div>
+                                )}
                               </div>
-                              <div>
-                                <CommentMenu editItem={() => toggleEditReply(reply.id, reply.text)} removeItem={() => removeReply(item.id, reply.id)} />
-                              </div>
-                            </footer>
-                            {isEditReply !== reply.id ? <p className='text-gray-500 dark:text-gray-400'>
-                              {reply.text}
-                            </p> : <form
-                              id='editReplyForm'
-                              onSubmit={(e) => handleSubmit(e, item.id, reply.id)}
-                              className='w-full flex flex-col items-end'
-                            >
-                              <textarea
-                                id='comment'
-                                rows='6'
-                                value={commentForm.editReply}
-                                name='editReply'
-                                onChange={handleInput}
-                                className='my-3 px-4 w-full text-sm text-gray-900 border-0 rounded-md focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
-                                placeholder={t('comments.editReply')}
-                                required
-                              ></textarea>
-                              
-                              <div className='flex gap-2'>
-                              <Button
-                                onClick={() => toggleEditReply(reply.id, '')}
-                                className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
-                                danger
-                              >
-                                Cancel
-                              </Button>
-                              <Button
-                                type='submit'
-                                primary
-                                className='inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-3 text-sm'
-                              >
-                                Submit
-                              </Button>
-                              </div>
-                            </form>}
-                          </article>
-														))}
-													</div>
-                        )}
-                      </div>
-                    ))}
+                            )
+                          })}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+
+                {pageAmount > 1 && (
+                  <div className='mt-2'>
+                    <Pagination
+                      page={page}
+                      setPage={setPage}
+                      pageAmount={pageAmount || 0}
+                      total={comments.count}
+                      limit={ENTRIES_PER_PAGE_COMMENTS}
+                    />
                   </div>
                 )}
-              </div>
-							
-              {pageAmount > 1 && (
-                <div className='mt-2'>
-                  <Pagination
-                    page={page}
-                    setPage={setPage}
-										pageAmount={pageAmount || 0}
-                    total={comments.count}
-                    limit={ENTRIES_PER_PAGE_COMMENTS}
-                  />
-                </div>
-              )}
-            </section>
-						)}
+              </section>
+            )}
           </div>
         </div>
       </Title>

@@ -116,7 +116,6 @@ const UserSettings = ({
             type='text'
             label='Nickname'
             value={form.nickname}
-            placeholder='you name'
             className='mt-4'
             onChange={handleInput}
             error={beenSubmitted ? errors.nickname : null}
