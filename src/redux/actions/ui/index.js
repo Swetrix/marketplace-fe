@@ -205,6 +205,11 @@ const setThemeType = (theme) => ({
   payload: { theme },
 })
 
+const setComments = (comments) => ({
+  type: types.SET_COMMENTS,
+  payload: { comments }
+})
+
 const UIActions = {
   loadExtensions,
   loadPublishExtensions,
@@ -236,6 +241,7 @@ const UIActions = {
   setAllExtensionsLoading,
   setAllTotal,
   setThemeType,
+  setComments,
 }
 
 export default UIActions

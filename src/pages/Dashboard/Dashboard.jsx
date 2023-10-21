@@ -56,47 +56,47 @@ const ExtensionsCart = ({
               {name}
             </p>
 
-					{/* version */}
+          {/* version */}
           <div className='flex ml-5 gap-2 flex-row items-center' onClick={(e) => e.stopPropagation()}>
-						<div className='hidden xs:flex flex-shrink-0 gap-2'>
-							<div className='flex items-center text-sm text-gray-500 dark:text-gray-300'>
-								{t('dashboard.version')}
-								{`: v${version}`}
-							</div>
-							</div>
+            <div className='hidden xs:flex flex-shrink-0 gap-2'>
+              <div className='flex items-center text-sm text-gray-500 dark:text-gray-300'>
+                {t('dashboard.version')}
+                {`: v${version}`}
+              </div>
+              </div>
 
-					{/* icons */}
+          {/* icons */}
               {
                 !publish ? (
-										<div className='flex justify-center items-center gap-2'>
-											<div className='cursor-pointer' onClick={redirectExtSettings}>
-												<AdjustmentsVerticalIcon className='w-6 h-6 text-gray-800 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-500' />
-											</div>
-											<a
-											href={_replace(routes.extension, ':id', id)}
-											aria-label='name (opens in a new tab)'
-											target='_blank'
-											rel='noopener noreferrer'
-											>
-												<ArrowTopRightOnSquareIcon className='w-6 h-6 text-gray-800 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-500' />
-										</a>
-								</div>
+                    <div className='flex justify-center items-center gap-2'>
+                      <div className='cursor-pointer' onClick={redirectExtSettings}>
+                        <AdjustmentsVerticalIcon className='w-6 h-6 text-gray-800 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-500' />
+                      </div>
+                      <a
+                      href={_replace(routes.extension, ':id', id)}
+                      aria-label='name (opens in a new tab)'
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      >
+                        <ArrowTopRightOnSquareIcon className='w-6 h-6 text-gray-800 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-500' />
+                    </a>
+                </div>
                   
                 ) : (
                   <>
-								{/* publish */}
-										<div className='flex-shrink-0 flex items-center gap-2'>
-											<div className='cursor-pointer' onClick={redirectClick}>
-											<AdjustmentsVerticalIcon className='w-6 h-6 text-gray-800 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-500' /></div>
-											<a
-											href={_replace(routes.extension, ':id', publish.id)}
-											aria-label='name (opens in a new tab)'
-											target='_blank'
-											rel='noopener noreferrer'
-											>
-											<ArrowTopRightOnSquareIcon className='w-6 h-6 text-gray-800 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-500' />
-										</a>
-									</div>
+                {/* publish */}
+                    <div className='flex-shrink-0 flex items-center gap-2'>
+                      <div className='cursor-pointer' onClick={redirectClick}>
+                      <AdjustmentsVerticalIcon className='w-6 h-6 text-gray-800 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-500' /></div>
+                      <a
+                      href={_replace(routes.extension, ':id', publish.id)}
+                      aria-label='name (opens in a new tab)'
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      >
+                      <ArrowTopRightOnSquareIcon className='w-6 h-6 text-gray-800 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-500' />
+                    </a>
+                  </div>
                 </>
                 )
               }
@@ -104,14 +104,14 @@ const ExtensionsCart = ({
           </div>
 
 
-					{/* label */}
+          {/* label */}
           <div className='mt-1 flex-shrink-0 flex gap-2'>
-						{
+            {
               !publish ? (
-								installed && <ActivePin className='dark:!text-gray-300 dark:!bg-slate-600' label='installed' />
+                installed && <ActivePin className='dark:!text-gray-300 dark:!bg-slate-600' label='installed' />
                 ) : (
                   <>
-										{status === extensionStatuses.PENDING ? (
+                    {status === extensionStatuses.PENDING ? (
                       <InactivePin className='dark:!text-gray-300 dark:!bg-slate-600' label={status} />
                     ) : status === extensionStatuses.ACCEPTED ? (
                       <ActivePin className='dark:!text-gray-300 dark:!bg-slate-600' label={status} />
@@ -126,23 +126,23 @@ const ExtensionsCart = ({
           </div>
 
 
-					{/* calendar */}
-					<div className='mt-auto'>
+          {/* calendar */}
+          <div className='mt-auto'>
 
-					<div className='xs:hidden flex flex-shrink-0 gap-2'>
-							<div className='flex items-center text-sm text-gray-500 dark:text-gray-300'>
-								{t('dashboard.version')}
-								{`: v${version}`}
-							</div>
-							</div>
+          <div className='xs:hidden flex flex-shrink-0 gap-2'>
+              <div className='flex items-center text-sm text-gray-500 dark:text-gray-300'>
+                {t('dashboard.version')}
+                {`: v${version}`}
+              </div>
+              </div>
 
-					<div className='mt-1 flex flex-shrink-0 gap-2 items-end text-sm text-gray-500 dark:text-gray-300'>
+          <div className='mt-1 flex flex-shrink-0 gap-2 items-end text-sm text-gray-500 dark:text-gray-300'>
               <CalendarIcon className='flex-shrink-0 mr-0 xs:mr-1.5 h-5 w-5 text-gray-400 dark:text-gray-300' />
               <p>
-								<span className='hidden xs:inline'>
+                <span className='hidden xs:inline'>
                 {t('dashboard.createdOn')}
                 &nbsp;
-								</span>
+                </span>
                 <time dateTime={dayjs(created).format('YYYY-MM-DD')}>
                   {language === 'en'
                     ? dayjs(created).locale(language).format('MMMM D, YYYY')
@@ -150,7 +150,7 @@ const ExtensionsCart = ({
                 </time>
               </p>
             </div>
-					</div>
+          </div>
         </div>
     </li>
   )
@@ -256,13 +256,13 @@ const Dashboard = ({
               <h2 className='mt-2 text-3xl font-bold text-gray-900 dark:text-gray-50'>
                 {t('titles.dashboard')}
               </h2>
-							<span
+              <span
                 onClick={onNewExtension}
                 className='!pl-2 inline-flex justify-center items-center cursor-pointer text-center border border-transparent leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 shadow-sm text-white bg-slate-900 hover:bg-slate-700 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 dark:hover:bg-slate-700 px-3 py-2 text-sm'
               >
                 <FolderPlusIcon className='w-5 h-5 mr-1' />
                 {t('dashboard.newExtensions')}              
-								</span>
+                </span>
             </div>
             <div className='mt-6 mb-2'>
               {publishTotal > 0 && (
@@ -346,14 +346,13 @@ const Dashboard = ({
                               </Link>
                             </div>
                           ))}
-													<AddExtensions t={t} onClick={onNewExtension}/>
+                          <AddExtensions t={t} onClick={onNewExtension}/>
                         </ul>
                     )}
                   </div>
                 )}
               </>
             )}
-
             {
               pageAmount > 1 && (
                 <Pagination page={tabExtensions === tabForPublishExtensions ? dashboardPaginationPagePublish : dashboardPaginationPage} setPage={tabExtensions === tabForPublishExtensions ? (page) => setDashboardPaginationPagePublish(page) : (page) => setDashboardPaginationPage(page)} pageAmount={pageAmount || 0} total={tabExtensions === tabForPublishExtensions ? publishTotal : total} />

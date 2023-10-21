@@ -282,3 +282,82 @@ export const deleteInstallExtension = (extensionId) =>
         ? error.response.data
         : error.response.data.message
     })
+
+export const createComment = (userId, comment) =>
+  api
+    .post(`/comments?userId=${userId}`, comment)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+export const replyToComment = (commentId, text) =>
+  api
+    .post(`/comments/reply`, { commentId, text })
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+export const updateReply = (replyId, text) =>
+  api
+    .put(`/comments/reply/${replyId}`, { text })
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+export const deleteReply = (replyId) =>
+  api
+    .delete(`/comments/reply/${replyId}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+export const getComments = (extensionId, limit, offset, userId) =>
+  api
+    .get(`/comments?offset=${offset}&limit=${limit}&extensionId=${extensionId}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+export const getCommentById = (commentId) =>
+  api
+    .get(`/comments${commentId}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+export const deleteComment = (commentId) =>
+  api
+    .delete(`/comments/${commentId}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      debug('%s', error)
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+

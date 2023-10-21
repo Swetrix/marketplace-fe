@@ -5,6 +5,8 @@
     "rateLimitHit": "Too many requests, please try again later"
   },
   "common": {
+    "install": "Install",
+    "uninstall": "Uninstall",
     "features": "Features",
     "docs": "Docs",
     "getStarted": "Get started",
@@ -39,7 +41,8 @@
     "enable": "Enable",
     "disable": "Disable",
     "account": "Account",
-    "accountSettings": "Account settings"
+    "accountSettings": "Account settings",
+    "submit": "Submit"
   },
     "header": {
     "switchTheme": "Switch theme",
@@ -162,6 +165,13 @@
       "deleteHint": "If you delete an extension, you cannot return it.",
       "qDelete": "Are you sure?"
     }
+  },
+  "comments": {
+    "writeComment": "Write a comment",
+    "nocomments": "No comments yet",
+    "editReply": "Edit reply",
+    "discussion": "Discussion",
+    "userReviews": "User Reviews"
   },
   "footer": {
     "slogan": "The best apps need the best services.",
