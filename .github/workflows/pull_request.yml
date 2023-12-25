@@ -31,3 +31,6 @@ jobs:
 
       - name: Lint validation
         run: npm run lint
+
+      - name: Code formatting validation
+        run: npm run format
