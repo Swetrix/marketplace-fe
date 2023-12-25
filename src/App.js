@@ -72,8 +72,9 @@ const App = () => {
     }
   }, [])
 
+  // prettier-ignore
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       if (accessToken && refreshToken && !authenticated) {
         try {
           const me = await authMe()
