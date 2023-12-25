@@ -13,9 +13,7 @@ const NotFound = () => {
       <div className='bg-gray-50 dark:bg-slate-900 min-h-min-footer px-4 py-16 sm:px-6 sm:py-24 md:grid md:place-items-center lg:px-8'>
         <div className='max-w-max mx-auto'>
           <main className='sm:flex'>
-            <p className='text-4xl font-bold text-indigo-600 dark:text-indigo-500 sm:text-5xl'>
-              404
-            </p>
+            <p className='text-4xl font-bold text-indigo-600 dark:text-indigo-500 sm:text-5xl'>404</p>
             <div className='sm:ml-6'>
               <div className='sm:border-l sm:border-gray-200 sm:pl-6'>
                 <h1 className='text-4xl font-extrabold text-gray-900 dark:text-gray-50 tracking-tight sm:text-5xl'>

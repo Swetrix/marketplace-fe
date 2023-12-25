@@ -18,9 +18,7 @@ import Title from 'components/Title'
 
 import { getExtensionsSearch } from 'api'
 
-const Search = ({
-  limit, offset, setOffset, category, generateError,
-}) => {
+const Search = ({ limit, offset, setOffset, category, generateError }) => {
   const params = new URLSearchParams(window.location.search)
 
   const [search, setSearch] = useState(params.get('term'))
@@ -28,21 +26,21 @@ const Search = ({
   // const [filterSortBy, setFilterSortBy] = useState(params.get('sortBy'))
   const [extensions, setExtensions] = useState()
   const [loading, setLoading] = useState(false)
-  const [page, setPage] = useState((offset / limit) + 1)
+  const [page, setPage] = useState(offset / limit + 1)
   // eslint-disable-next-line no-unsafe-optional-chaining
   const [total, setTotal] = useState(0)
-  const pageAmount = useMemo(() => (_ceil(total / limit)), [total, limit])
+  const pageAmount = useMemo(() => _ceil(total / limit), [total, limit])
 
   const history = useHistory()
 
   const getExtensions = async () => {
     setLoading(true)
     await getExtensionsSearch(search, filterCategory, 'updatedAt', offset, limit)
-      .then(results => {
+      .then((results) => {
         setExtensions(results.extensions)
         setTotal(results.count)
       })
-      .catch(err => {
+      .catch((err) => {
         generateError(err.message)
         console.log(err)
       })
@@ -98,16 +96,15 @@ const Search = ({
                 <span className='mr-3 dark:text-gray-200'>Category:</span>
                 <Dropdown
                   items={_values([{ name: 'All', id: 'all' }, ...category])}
-                  labelExtractor={item => item.name}
-                  keyExtractor={item => item.id}
+                  labelExtractor={(item) => item.name}
+                  keyExtractor={(item) => item.id}
                   title={filterCategory || 'All'}
                   buttonClassName='flex items-center w-full rounded-md border border-gray-300 shadow-sm px-1 md:px-2 py-1 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
                   selectItemClassName='text-gray-700 block px-2 py-1 text-base cursor-pointer hover:bg-gray-200 dark:text-gray-50 dark:border-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
                   onSelect={(item) => {
                     if (item.id === 'all') return setFilterCategory('')
                     else return setFilterCategory(item.name)
-                  }
-                  }
+                  }}
                 />
               </div>
               {/* <div>
@@ -122,20 +119,35 @@ const Search = ({
               </div> */}
             </div>
           </div>
-          <div className={loading || _isEmpty(extensions) ? 'flex justify-center align-middle' : 'grid auto-rows-min grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 mt-4 gap-1'}>
-            {loading
-              ? (
-                <div className='mx-auto pt-40'>
-                  <Loader />
-                </div>
-              )
-              : _isEmpty(extensions)
-                ? <p className='text-gray-900 dark:text-gray-200 text-2xl pt-40 text-center'>
-                  There are no extensions that match your search
-                </p>
-                : _map(extensions, ((item) => (
-                  <ExtensionsCard key={item.id} id={item.id} name={item.name} stars={4} downloads={item.usersQuantity} price={item.price} companyName={item.owner?.nickname || ''} mainImage={item.mainImage} />
-                )))}
+          <div
+            className={
+              loading || _isEmpty(extensions)
+                ? 'flex justify-center align-middle'
+                : 'grid auto-rows-min grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 mt-4 gap-1'
+            }
+          >
+            {loading ? (
+              <div className='mx-auto pt-40'>
+                <Loader />
+              </div>
+            ) : _isEmpty(extensions) ? (
+              <p className='text-gray-900 dark:text-gray-200 text-2xl pt-40 text-center'>
+                There are no extensions that match your search
+              </p>
+            ) : (
+              _map(extensions, (item) => (
+                <ExtensionsCard
+                  key={item.id}
+                  id={item.id}
+                  name={item.name}
+                  stars={4}
+                  downloads={item.usersQuantity}
+                  price={item.price}
+                  companyName={item.owner?.nickname || ''}
+                  mainImage={item.mainImage}
+                />
+              ))
+            )}
           </div>
           {pageAmount > 1 && (
             <div className='mt-2'>

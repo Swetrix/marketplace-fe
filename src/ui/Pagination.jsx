@@ -1,8 +1,5 @@
 import React, { memo } from 'react'
-import {
-  ArrowSmallLeftIcon,
-  ArrowSmallRightIcon,
-} from '@heroicons/react/24/solid'
+import { ArrowSmallLeftIcon, ArrowSmallRightIcon } from '@heroicons/react/24/solid'
 import _map from 'lodash/map'
 import cx from 'clsx'
 import { useTranslation } from 'react-i18next'

@@ -78,7 +78,9 @@ const setLiveStats = (data, publish) => ({
 const setLiveStatsForExtension = (id, count, publish) => ({
   type: types.SET_LIVE_STATS_EXTENSION,
   payload: {
-    id, count, publish,
+    id,
+    count,
+    publish,
   },
 })
 
@@ -123,21 +125,28 @@ const setAllExtensionsLoading = (isLoading) => ({
 const setExtensionCache = (pid, data, key) => ({
   type: types.SET_EXTENSION_CACHE,
   payload: {
-    pid, data, key,
+    pid,
+    data,
+    key,
   },
 })
 
 const deleteExtensionCache = (pid, period, timeBucket) => ({
   type: types.DELETE_EXTENSION_CACHE,
   payload: {
-    pid, period, timeBucket,
+    pid,
+    period,
+    timeBucket,
   },
 })
 
 const setExtensionViewPrefs = (pid, period, timeBucket, rangeDate) => ({
   type: types.SET_EXTENSION_VIEW_PREFS,
   payload: {
-    pid, period, timeBucket, rangeDate,
+    pid,
+    period,
+    timeBucket,
+    rangeDate,
   },
 })
 
@@ -197,7 +206,7 @@ const setCategory = (category) => ({
 
 const loadCategory = () => ({
   type: types.LOAD_CATEGORY,
-  payload: { },
+  payload: {},
 })
 
 const setThemeType = (theme) => ({
@@ -207,7 +216,7 @@ const setThemeType = (theme) => ({
 
 const setComments = (comments) => ({
   type: types.SET_COMMENTS,
-  payload: { comments }
+  payload: { comments },
 })
 
 const UIActions = {

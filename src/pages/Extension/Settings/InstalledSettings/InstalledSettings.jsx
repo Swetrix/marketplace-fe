@@ -12,7 +12,6 @@ import routes from 'routes'
 import Input from '../../../../ui/Input'
 import Button from '../../../../ui/Button'
 
-
 const InstalledSettings = ({ extensions, setInstallExtensions, generateError }) => {
   const { id } = useParams()
   const history = useHistory()
@@ -34,13 +33,14 @@ const InstalledSettings = ({ extensions, setInstallExtensions, generateError }) 
       .then((response) => {
         if (response.status === 200) {
           const newExtensions = _filter(extensions, (extension) => extension.id !== id)
-          setInstallExtensions(_map(newExtensions, (extension) => {
-            if (extension.id === id) {
-              return { ...extension, projectId: idValue }
-            }
-            return extension
-          }
-          ))
+          setInstallExtensions(
+            _map(newExtensions, (extension) => {
+              if (extension.id === id) {
+                return { ...extension, projectId: idValue }
+              }
+              return extension
+            }),
+          )
           history.push(routes.extensionSettings)
         }
       })
@@ -73,7 +73,12 @@ const InstalledSettings = ({ extensions, setInstallExtensions, generateError }) 
         />
         <div className='flex justify-between mt-8 h-20 sm:h-min'>
           <div className='flex flex-wrap items-center'>
-            <Button className='mr-2 border-indigo-100 dark:text-gray-50 dark:border-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600' primary regular onClick={onSubmit}>
+            <Button
+              className='mr-2 border-indigo-100 dark:text-gray-50 dark:border-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600'
+              primary
+              regular
+              onClick={onSubmit}
+            >
               {t('common.save')}
             </Button>
             <Button type='submit' danger regular onClick={onDelete}>

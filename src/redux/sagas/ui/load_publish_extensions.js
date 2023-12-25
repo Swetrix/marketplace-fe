@@ -5,9 +5,7 @@ import Debug from 'debug'
 import UIActions from 'redux/actions/ui'
 
 import { ENTRIES_PER_PAGE_DASHBOARD } from 'redux/constants'
-import {
-  getPublishExtensions,
-} from '../../../api'
+import { getPublishExtensions } from '../../../api'
 
 const debug = Debug('swetrix:rx:s:load-publish-extensions')
 
@@ -17,7 +15,8 @@ export default function* loadPublishExtensions({ payload: { take = ENTRIES_PER_P
 
     let {
       // eslint-disable-next-line prefer-const
-      extensions, count,
+      extensions,
+      count,
     } = yield call(getPublishExtensions, take, skip)
 
     yield put(UIActions.setExtensions(extensions, true))

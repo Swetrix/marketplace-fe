@@ -9,9 +9,7 @@ const Code = ({ text, className, language }) => (
 )
 
 Code.propTypes = {
-  text: PropTypes.oneOfType([
-    PropTypes.string, PropTypes.number, PropTypes.node,
-  ]).isRequired,
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.node]).isRequired,
   language: PropTypes.string.isRequired,
   className: PropTypes.string,
 }

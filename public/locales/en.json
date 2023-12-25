@@ -44,7 +44,7 @@
     "accountSettings": "Account settings",
     "submit": "Submit"
   },
-    "header": {
+  "header": {
     "switchTheme": "Switch theme",
     "dark": "Dark",
     "light": "Light",
@@ -201,7 +201,7 @@
     "changelog": "Changelog",
     "cookie": "Cookie Policy",
     "captcha": "CAPTCHA",
-    "press":"Media & Press",
+    "press": "Media & Press",
     "open": "Open startup"
   }
 }

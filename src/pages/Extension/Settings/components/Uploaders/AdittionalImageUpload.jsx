@@ -4,7 +4,6 @@ import { nanoid } from 'nanoid'
 import _isString from 'lodash/isString'
 
 const AdditionalImageUpload = ({ disabled, files, setFiles }) => {
-
   const uploadHandler = async (event) => {
     const file = event.target.files[0]
     if (!file) return
@@ -19,8 +18,7 @@ const AdditionalImageUpload = ({ disabled, files, setFiles }) => {
   }
 
   return (
-    <div
-      className='dark:bg-slate-800 p-4 border-2 border-dashed border-gray-300 dark:border-slate-700/80 relative'>
+    <div className='dark:bg-slate-800 p-4 border-2 border-dashed border-gray-300 dark:border-slate-700/80 relative'>
       <input
         disabled={disabled}
         type={files?.length >= 5 ? 'hidden' : 'file'}
@@ -31,13 +29,11 @@ const AdditionalImageUpload = ({ disabled, files, setFiles }) => {
       <div className='flex flex-col justify-center items-center'>
         <div className='relative mb-4'>
           <Button type='button' className={`${files?.length >= 5 ? 'cursor-not-allowed' : ''}`} primary regular>
-              Upload Images
+            Upload Images
           </Button>
         </div>
         <p className='flex text-sm font-medium text-gray-700 dark:text-gray-300'>Supported files</p>
-        <p className='flex text-sm font-medium text-gray-700 dark:text-gray-300'>
-          JPG and PNG images
-        </p>
+        <p className='flex text-sm font-medium text-gray-700 dark:text-gray-300'>JPG and PNG images</p>
       </div>
     </div>
   )

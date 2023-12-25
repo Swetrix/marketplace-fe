@@ -38,7 +38,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   showError: (message) => {
     dispatch(errorsActions.genericError(message))
-  }
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

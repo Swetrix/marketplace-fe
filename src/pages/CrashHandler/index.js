@@ -1,8 +1,6 @@
 import React from 'react'
 import _toString from 'lodash/toString'
-import {
-  ExclamationTriangleIcon, ChevronDownIcon, ChevronUpIcon,
-} from '@heroicons/react/24/outline'
+import { ExclamationTriangleIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import { CONTACT_EMAIL } from 'redux/constants'
 
 class CrashHandler extends React.Component {
@@ -31,9 +29,7 @@ class CrashHandler extends React.Component {
   }
 
   render() {
-    const {
-      appCrashed, crashStack, errorMessage, crashStackShown,
-    } = this.state
+    const { appCrashed, crashStack, errorMessage, crashStackShown } = this.state
     const { children } = this.props
 
     if (appCrashed) {
@@ -46,18 +42,21 @@ class CrashHandler extends React.Component {
             </div>
             <div className='py-8'>
               <div className='text-center'>
-                <h1 className='text-4xl font-extrabold text-gray-900 dark:text-gray-50 tracking-tight sm:text-5xl'>Uh-oh..</h1>
+                <h1 className='text-4xl font-extrabold text-gray-900 dark:text-gray-50 tracking-tight sm:text-5xl'>
+                  Uh-oh..
+                </h1>
                 <p className='mt-2 text-base font-medium text-gray-800 dark:text-gray-300'>
                   The app has crashed. We are sorry about that :(
                   <br />
-                  Please, tell us about it at
-                  {' '}
-                  {CONTACT_EMAIL}
+                  Please, tell us about it at {CONTACT_EMAIL}
                 </p>
                 <p className='mt-6 text-base font-medium text-gray-800 dark:text-gray-300'>
                   {errorMessage}
                   <br />
-                  <span onClick={this.onCrashStackClick} className='flex justify-center items-center text-base text-gray-800 dark:text-gray-300 cursor-pointer hover:underline'>
+                  <span
+                    onClick={this.onCrashStackClick}
+                    className='flex justify-center items-center text-base text-gray-800 dark:text-gray-300 cursor-pointer hover:underline'
+                  >
                     {crashStackShown ? (
                       <>
                         Hide crash stack
@@ -71,9 +70,7 @@ class CrashHandler extends React.Component {
                     )}
                   </span>
                   {crashStackShown && (
-                    <span className='text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line'>
-                      {crashStack}
-                    </span>
+                    <span className='text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line'>{crashStack}</span>
                   )}
                 </p>
               </div>

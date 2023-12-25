@@ -2,12 +2,20 @@ import React, { Fragment, memo } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'clsx'
 import { Dialog, Transition } from '@headlessui/react'
-import {
-  CheckIcon, ExclamationTriangleIcon, InformationCircleIcon, UserGroupIcon,
-} from '@heroicons/react/24/outline'
+import { CheckIcon, ExclamationTriangleIcon, InformationCircleIcon, UserGroupIcon } from '@heroicons/react/24/outline'
 
 const Modal = ({
-  className, type, title, message, isOpened, onClose, onSubmit, closeText, submitText, submitType, size,
+  className,
+  type,
+  title,
+  message,
+  isOpened,
+  onClose,
+  onSubmit,
+  closeText,
+  submitText,
+  submitType,
+  size,
 }) => (
   <Transition.Root show={isOpened} as={Fragment}>
     <Dialog
@@ -45,10 +53,13 @@ const Modal = ({
           leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
         >
           <div
-            className={cx('inline-block align-bottom bg-white dark:bg-slate-900 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:px-5 sm:py-4', {
-              'sm:max-w-lg sm:w-full': size === 'regular',
-              'max-w-5xl w-full': size === 'large',
-            })}
+            className={cx(
+              'inline-block align-bottom bg-white dark:bg-slate-900 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:px-5 sm:py-4',
+              {
+                'sm:max-w-lg sm:w-full': size === 'regular',
+                'max-w-5xl w-full': size === 'large',
+              },
+            )}
           >
             <div className='sm:flex sm:items-start'>
               {type === 'success' && (
@@ -82,19 +93,20 @@ const Modal = ({
                     {title}
                   </Dialog.Title>
                 )}
-                <div className='mt-2 text-sm text-gray-600 whitespace-pre-line dark:text-gray-200'>
-                  {message}
-                </div>
+                <div className='mt-2 text-sm text-gray-600 whitespace-pre-line dark:text-gray-200'>{message}</div>
               </div>
             </div>
             <div className='px-4 py-3 sm:px-0 sm:pb-0 sm:flex sm:flex-row-reverse'>
               {submitText && (
                 <button
                   type='button'
-                  className={cx('w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white sm:ml-3 sm:w-auto sm:text-sm', {
-                    'bg-indigo-600 hover:bg-indigo-700': submitType === 'regular',
-                    'bg-red-600 hover:bg-red-700': submitType === 'danger',
-                  })}
+                  className={cx(
+                    'w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white sm:ml-3 sm:w-auto sm:text-sm',
+                    {
+                      'bg-indigo-600 hover:bg-indigo-700': submitType === 'regular',
+                      'bg-red-600 hover:bg-red-700': submitType === 'danger',
+                    },
+                  )}
                   onClick={onSubmit}
                 >
                   {submitText}
@@ -121,9 +133,7 @@ Modal.propTypes = {
   type: PropTypes.oneOf(['error', 'success', 'info', 'warning', 'confirmed']),
   title: PropTypes.string,
   onClose: PropTypes.func.isRequired,
-  message: PropTypes.oneOfType([
-    PropTypes.string, PropTypes.node,
-  ]),
+  message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   className: PropTypes.string,
   isOpened: PropTypes.bool,
   onSubmit: PropTypes.func,
@@ -137,7 +147,7 @@ Modal.defaultProps = {
   className: '',
   message: '',
   isOpened: false,
-  onSubmit: () => { },
+  onSubmit: () => {},
   closeText: null,
   submitText: null,
   submitType: 'regular',

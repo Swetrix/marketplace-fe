@@ -6,7 +6,18 @@ import { ExclamationCircleIcon } from '@heroicons/react/24/solid'
 import Beta from 'ui/Beta'
 
 const Textarea = ({
-  label, hint, placeholder, type, id, name, className, onChange, error, value, disabled, isBeta,
+  label,
+  hint,
+  placeholder,
+  type,
+  id,
+  name,
+  className,
+  onChange,
+  error,
+  value,
+  disabled,
+  isBeta,
 }) => {
   const identifier = id || name || type
   const isError = !_isEmpty(error)
@@ -28,10 +39,13 @@ const Textarea = ({
           rows={4}
           name={identifier}
           id={identifier}
-          className={cx('shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 dark:text-gray-50 dark:placeholder-gray-400 dark:border-slate-800/25 dark:bg-slate-800 rounded-md', {
-            'border-red-300 text-red-900 placeholder-red-300': isError,
-            'cursor-text': disabled,
-          })}
+          className={cx(
+            'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 dark:text-gray-50 dark:placeholder-gray-400 dark:border-slate-800/25 dark:bg-slate-800 rounded-md',
+            {
+              'border-red-300 text-red-900 placeholder-red-300': isError,
+              'cursor-text': disabled,
+            },
+          )}
           value={value}
           onChange={onChange}
           placeholder={placeholder}
@@ -43,18 +57,20 @@ const Textarea = ({
           </div>
         )}
       </div>
-      <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line' id={`${identifier}-optional`}>{hint}</p>
+      <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line' id={`${identifier}-optional`}>
+        {hint}
+      </p>
       {isError && (
-        <p className='mt-2 text-sm text-red-600 dark:text-red-500' id='email-error'>{error}</p>
+        <p className='mt-2 text-sm text-red-600 dark:text-red-500' id='email-error'>
+          {error}
+        </p>
       )}
     </div>
   )
 }
 
 Textarea.propTypes = {
-  value: PropTypes.oneOfType([
-    PropTypes.string, PropTypes.number,
-  ]).isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   label: PropTypes.string,
   hint: PropTypes.string,
   placeholder: PropTypes.string,
@@ -62,9 +78,7 @@ Textarea.propTypes = {
   id: PropTypes.string,
   type: PropTypes.string,
   className: PropTypes.string,
-  error: PropTypes.oneOfType([
-    PropTypes.string, PropTypes.bool,
-  ]),
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   name: PropTypes.string,
   disabled: PropTypes.bool,
   isBeta: PropTypes.bool,
@@ -74,7 +88,7 @@ Textarea.defaultProps = {
   label: '',
   hint: '',
   placeholder: '',
-  onChange: () => { },
+  onChange: () => {},
   id: '',
   type: '',
   className: '',

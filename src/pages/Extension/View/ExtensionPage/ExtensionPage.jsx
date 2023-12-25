@@ -60,12 +60,9 @@ const CommentMenu = ({ editItem, removeItem }) => {
             <Menu.Item>
               {({ active }) => (
                 <div
-                  className={cx(
-                    'cursor-pointer block px-4 py-2 text-sm text-gray-700 dark:text-gray-50',
-                    {
-                      'bg-gray-100 dark:bg-slate-800': active,
-                    }
-                  )}
+                  className={cx('cursor-pointer block px-4 py-2 text-sm text-gray-700 dark:text-gray-50', {
+                    'bg-gray-100 dark:bg-slate-800': active,
+                  })}
                   onClick={editItem}
                 >
                   Edit
@@ -77,12 +74,9 @@ const CommentMenu = ({ editItem, removeItem }) => {
             <Menu.Item>
               {({ active }) => (
                 <div
-                  className={cx(
-                    'cursor-pointer block px-4 py-2 text-sm text-gray-700 dark:text-gray-50',
-                    {
-                      'bg-gray-100 dark:bg-slate-800': active,
-                    }
-                  )}
+                  className={cx('cursor-pointer block px-4 py-2 text-sm text-gray-700 dark:text-gray-50', {
+                    'bg-gray-100 dark:bg-slate-800': active,
+                  })}
                   onClick={removeItem}
                 >
                   Remove
@@ -111,11 +105,7 @@ const CommentMenu = ({ editItem, removeItem }) => {
   )
 }
 
-const NoComments = ({ t }) => (
-  <p className='mt-5 text-center dark:text-gray-50'>
-    {t('comments.nocomments')}
-  </p>
-)
+const NoComments = ({ t }) => <p className='mt-5 text-center dark:text-gray-50'>{t('comments.nocomments')}</p>
 
 const ExtensionPage = ({
   extensions,
@@ -135,9 +125,8 @@ const ExtensionPage = ({
     i18n: { language },
   } = useTranslation('common')
   const extension = useMemo(
-    () =>
-      _find([...extensions, ...publishExtensions], (p) => p.id === id) || {},
-    [extensions, publishExtensions, id]
+    () => _find([...extensions, ...publishExtensions], (p) => p.id === id) || {},
+    [extensions, publishExtensions, id],
   )
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [installLoading, setInstallLoading] = useState(false)
@@ -151,16 +140,13 @@ const ExtensionPage = ({
 
   const isInstalled = useMemo(
     () => !_isEmpty(_find(installExtensions, (p) => p.id === id) || {}),
-    [installExtensions, id]
+    [installExtensions, id],
   )
   const isPublish = useMemo(
     () => !_isEmpty(_find(publishExtensions, (p) => p.id === id) || {}),
-    [publishExtensions, id]
+    [publishExtensions, id],
   )
-  const isPending = useMemo(
-    () => extension.status !== extensionStatuses.ACCEPTED,
-    [extension]
-  )
+  const isPending = useMemo(() => extension.status !== extensionStatuses.ACCEPTED, [extension])
 
   const install = async () => {
     if (!authenticated) {
@@ -188,7 +174,7 @@ const ExtensionPage = ({
       .then((response) => {
         setExtensions(
           _filter(extensions, (p) => p.id !== id),
-          false
+          false,
         )
       })
       .catch((err) => {
@@ -234,7 +220,7 @@ const ExtensionPage = ({
         setCommentForm({ text: '', rating: 5, reply: '' })
         setComments({
           comments: _map(comments.comments, (comment) =>
-            comment.id === commentId ? { ...comment, replies: [...comment.replies, response] } : comment
+            comment.id === commentId ? { ...comment, replies: [...comment.replies, response] } : comment,
           ),
           count: comments.count,
         })
@@ -254,7 +240,7 @@ const ExtensionPage = ({
         toggleEditReply(replyId)
         const updatedComments = _map(comments.comments, (comment) => {
           if (comment.id === commentId) {
-            comment.replies = _map(comment.replies, (reply) => reply.id === replyId ? response : reply)
+            comment.replies = _map(comment.replies, (reply) => (reply.id === replyId ? response : reply))
           }
           return comment
         })
@@ -284,25 +270,28 @@ const ExtensionPage = ({
         })
         setComments({
           comments: updatedComments,
-          count: comments.count
+          count: comments.count,
         })
         alert.success('Reply to comment successfully deleted')
       })
       .catch(showError)
   }
 
-  const getAllComments = useCallback(async (extensionId) => {
-    setLoadingComments(true)
-    await getComments(extensionId, ENTRIES_PER_PAGE_COMMENTS, (page - 1) * ENTRIES_PER_PAGE_COMMENTS)
-      .then((response) => {
-        setComments(response)
-      })
-      .catch((err) => {
-        showError(`Error get a comments: ${err}`)
-      })
+  const getAllComments = useCallback(
+    async (extensionId) => {
+      setLoadingComments(true)
+      await getComments(extensionId, ENTRIES_PER_PAGE_COMMENTS, (page - 1) * ENTRIES_PER_PAGE_COMMENTS)
+        .then((response) => {
+          setComments(response)
+        })
+        .catch((err) => {
+          showError(`Error get a comments: ${err}`)
+        })
 
-    setLoadingComments(false)
-  }, [page, setComments, showError])
+      setLoadingComments(false)
+    },
+    [page, setComments, showError],
+  )
 
   const removeComment = async (commentId) => {
     await deleteComment(commentId)
@@ -312,13 +301,12 @@ const ExtensionPage = ({
           count: comments.count - 1,
         })
         alert.success('Comment successfully deleted')
-
       })
       .catch(showError)
   }
 
   const toggleCommentInput = (commentId) => {
-    setCommentInputs((prevState) => prevState === commentId ? '' : commentId)
+    setCommentInputs((prevState) => (prevState === commentId ? '' : commentId))
   }
 
   const toggleEditReply = (replyId, value = '') => {
@@ -326,7 +314,7 @@ const ExtensionPage = ({
       ...prevState,
       editReply: value,
     }))
-    setEditReply((prevState) => prevState === replyId ? '' : replyId)
+    setEditReply((prevState) => (prevState === replyId ? '' : replyId))
   }
 
   const handleSubmit = async (e, commentId, replyId) => {
@@ -340,7 +328,7 @@ const ExtensionPage = ({
   }
 
   const handleRating = (rating) => {
-    setCommentForm(oldForm => ({
+    setCommentForm((oldForm) => ({
       ...oldForm,
       rating,
     }))
@@ -349,7 +337,7 @@ const ExtensionPage = ({
   const handleInput = (event) => {
     const { target } = event
 
-    setCommentForm(oldForm => ({
+    setCommentForm((oldForm) => ({
       ...oldForm,
       [target.name]: target.value,
     }))
@@ -369,9 +357,7 @@ const ExtensionPage = ({
                 <div className='mx-auto max-w-7xl py-3 px-3 sm:px-6 lg:px-8'>
                   <div className='pr-16 sm:px-16 sm:text-center'>
                     <p className='font-medium text-white'>
-                      <span>
-                        Your extension is pending review and is currently not available to other users
-                      </span>
+                      <span>Your extension is pending review and is currently not available to other users</span>
                     </p>
                   </div>
                 </div>
@@ -393,17 +379,13 @@ const ExtensionPage = ({
                   />
                 </div>
                 <div className='flex items-start flex-col pl-12'>
-                  <h2 className='text-2xl font-bold text-gray-900 dark:text-gray-50 break-words'>
-                    {extension.name}
-                  </h2>
+                  <h2 className='text-2xl font-bold text-gray-900 dark:text-gray-50 break-words'>{extension.name}</h2>
                   <div className='flex flex-row gap-4 items-center'>
                     <p className='font-semibold text-lg text-gray-900 dark:text-gray-50'>
                       {extension.owner?.nickname || 'Empty nickname'}
                     </p>
                     <span> | </span>
-                    <p className='text-base text-gray-900 dark:text-gray-50'>
-                      {extension.usersQuantity} users
-                    </p>
+                    <p className='text-base text-gray-900 dark:text-gray-50'>{extension.usersQuantity} users</p>
                     {/* <span> | </span>
                     <div className='flex flex-row items-center gap-1'>
                       <StarsRaiting disabled stars='3' />
@@ -416,23 +398,11 @@ const ExtensionPage = ({
                 </div>
                 <div className='flex flex-row items-end pl-12'>
                   {isInstalled ? (
-                    <Button
-                      type='submit'
-                      loading={deleteLoading}
-                      onClick={deleted}
-                      danger
-                      regular
-                    >
+                    <Button type='submit' loading={deleteLoading} onClick={deleted} danger regular>
                       {t('common.uninstall')}
                     </Button>
                   ) : (
-                    <Button
-                      type='button'
-                      loading={installLoading}
-                      regular
-                      primary
-                      onClick={install}
-                    >
+                    <Button type='button' loading={installLoading} regular primary onClick={install}>
                       {t('common.install')}
                     </Button>
                   )}
@@ -457,10 +427,7 @@ const ExtensionPage = ({
                         <img
                           alt=''
                           className='rounded-lg w-full max-w-[800px] max-h-[400px]'
-                          src={
-                            `${process.env.REACT_APP_CDN_URL}file/${image}` ||
-                            'https://via.placeholder.com/150'
-                          }
+                          src={`${process.env.REACT_APP_CDN_URL}file/${image}` || 'https://via.placeholder.com/150'}
                         />
                       </div>
                     ))}
@@ -475,9 +442,7 @@ const ExtensionPage = ({
                     Description
                   </h3>
                 </div>
-                <p className='text-lg dark:text-gray-50 whitespace-pre-line'>
-                  {extension.description}
-                </p>
+                <p className='text-lg dark:text-gray-50 whitespace-pre-line'>{extension.description}</p>
               </div>
               {!_isEmpty(extension.tags) && (
                 <div className='relative bg-white dark:bg-gray-750 pt-5 px-4 min-h-72 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden pb-12'>
@@ -547,18 +512,17 @@ const ExtensionPage = ({
                       ) : (
                         <div>
                           {_map(comments.comments, (item) => {
-                            const commentDate = language === 'en'
-                              ? dayjs(item.addedAt).locale(language).format('MMMM D, YYYY')
-                              : dayjs(item.addedAt).locale(language).format('D MMMM, YYYY')
+                            const commentDate =
+                              language === 'en'
+                                ? dayjs(item.addedAt).locale(language).format('MMMM D, YYYY')
+                                : dayjs(item.addedAt).locale(language).format('D MMMM, YYYY')
 
                             return (
                               <div key={item.id}>
                                 <div className='py-2 mb-6 text-base'>
                                   <div className='flex justify-between items-center mb-2'>
                                     <div className='flex items-center'>
-                                      <p className='mr-3 text-sm text-gray-900 dark:text-white'>
-                                        {item.user.nickname}
-                                      </p>
+                                      <p className='mr-3 text-sm text-gray-900 dark:text-white'>{item.user.nickname}</p>
                                       <p className='text-sm text-gray-600 dark:text-gray-400'>
                                         <time
                                           dateTime={dayjs(item.addedAt).format('YYYY-MM-DD hh:mm:ss')}
@@ -579,9 +543,7 @@ const ExtensionPage = ({
                                   <div className='my-2'>
                                     <StarsRaiting stars={item.rating} disabled />
                                   </div>
-                                  <p className='text-gray-500 dark:text-gray-400'>
-                                    {item.text}
-                                  </p>
+                                  <p className='text-gray-500 dark:text-gray-400'>{item.text}</p>
                                   <div className='flex items-center mt-4 space-x-4'>
                                     <button
                                       onClick={() => toggleCommentInput(item.id)}
@@ -636,15 +598,13 @@ const ExtensionPage = ({
                                 {!_isEmpty(item.replies) && (
                                   <div>
                                     {_map(item.replies, (reply) => {
-                                      const replyDate = language === 'en'
-                                        ? dayjs(reply.addedAt).locale(language).format('MMMM D, YYYY')
-                                        : dayjs(reply.addedAt).locale(language).format('D MMMM, YYYY')
+                                      const replyDate =
+                                        language === 'en'
+                                          ? dayjs(reply.addedAt).locale(language).format('MMMM D, YYYY')
+                                          : dayjs(reply.addedAt).locale(language).format('D MMMM, YYYY')
 
                                       return (
-                                        <article
-                                          key={reply.id}
-                                          className='ml-3 lg:ml-12 text-base rounded-lg'
-                                        >
+                                        <article key={reply.id} className='ml-3 lg:ml-12 text-base rounded-lg'>
                                           <footer className='flex justify-between items-center mb-2'>
                                             <div className='flex items-center'>
                                               <p className='mr-3 text-sm text-gray-900 dark:text-white'>
@@ -663,7 +623,10 @@ const ExtensionPage = ({
                                             {/* Eventually it should be implemented for edit / remove functinoality inside CommentMenu only */}
                                             {reply.user.nickname === user.nickname && (
                                               <div>
-                                                <CommentMenu editItem={() => toggleEditReply(reply.id, reply.text)} removeItem={() => removeReply(item.id, reply.id)} />
+                                                <CommentMenu
+                                                  editItem={() => toggleEditReply(reply.id, reply.text)}
+                                                  removeItem={() => removeReply(item.id, reply.id)}
+                                                />
                                               </div>
                                             )}
                                           </footer>
@@ -701,9 +664,7 @@ const ExtensionPage = ({
                                               </div>
                                             </form>
                                           ) : (
-                                            <p className='text-gray-500 dark:text-gray-400'>
-                                              {reply.text}
-                                            </p>
+                                            <p className='text-gray-500 dark:text-gray-400'>{reply.text}</p>
                                           )}
                                         </article>
                                       )

@@ -1,6 +1,4 @@
-import React, {
-  useEffect, lazy, Suspense, useState,
-} from 'react'
+import React, { useEffect, lazy, Suspense, useState } from 'react'
 import { Switch, Route, useLocation } from 'react-router-dom'
 import routes from 'routes'
 import { useDispatch, useSelector } from 'react-redux'
@@ -30,9 +28,7 @@ const ExtensionPage = lazy(() => import('pages/Extension/View/ExtensionPage'))
 const UserSettings = lazy(() => import('pages/UserSettings'))
 const Checklist = lazy(() => import('pages/Checklist'))
 const InstalledExtensionSettings = lazy(() => import('./pages/Extension/Settings/InstalledSettings'))
-const minimalFooterPages = [
-  '/projects', '/dashboard', '/settings', '/contact',
-]
+const minimalFooterPages = ['/projects', '/dashboard', '/settings', '/contact']
 
 const Fallback = () => {
   const [showLoader, setShowLoader] = useState(false)
@@ -51,23 +47,17 @@ const Fallback = () => {
     }
   }, [])
 
-  return (
-    <div className='bg-gray-50 dark:bg-slate-900 min-h-page'>
-      {showLoader && (
-        <Loader />
-      )}
-    </div>
-  )
+  return <div className='bg-gray-50 dark:bg-slate-900 min-h-page'>{showLoader && <Loader />}</div>
 }
 
 const App = () => {
   const dispatch = useDispatch()
   const alert = useAlert()
   const location = useLocation()
-  const { loading, authenticated } = useSelector(state => state.auth)
-  const { theme } = useSelector(state => state.ui.theme)
-  const { error } = useSelector(state => state.errors)
-  const { message, type } = useSelector(state => state.alerts)
+  const { loading, authenticated } = useSelector((state) => state.auth)
+  const { theme } = useSelector((state) => state.ui.theme)
+  const { error } = useSelector((state) => state.errors)
+  const { message, type } = useSelector((state) => state.alerts)
   const accessToken = getAccessToken()
   const refreshToken = getRefreshToken()
 
@@ -83,8 +73,8 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    (async () => {
-      if ((accessToken && refreshToken) && !authenticated) {
+    ;(async () => {
+      if (accessToken && refreshToken && !authenticated) {
         try {
           const me = await authMe()
           dispatch(authActions.loginSuccess(me))
@@ -133,26 +123,10 @@ const App = () => {
               <Route path={routes.dashboard} component={Dashboard} exact />
               <Route path={routes.search} component={Search} exact />
               <Route path={routes.checklist} component={Checklist} exact />
-              <Route
-                path={routes.new_extension}
-                component={ProjectSettings}
-                exact
-              />
-              <Route
-                path={routes.extension_settings}
-                component={ProjectSettings}
-                exact
-              />
-              <Route
-                path={routes.view_extensions}
-                component={ExtensionPage}
-                exact
-              />
-              <Route
-                path={routes.installed_extension_settings}
-                component={InstalledExtensionSettings}
-                exact
-              />
+              <Route path={routes.new_extension} component={ProjectSettings} exact />
+              <Route path={routes.extension_settings} component={ProjectSettings} exact />
+              <Route path={routes.view_extensions} component={ExtensionPage} exact />
+              <Route path={routes.installed_extension_settings} component={InstalledExtensionSettings} exact />
               <Route path='*' component={NotFound} />
             </Switch>
           </Suspense>

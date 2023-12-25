@@ -10,7 +10,7 @@ const getInitialState = () => {
     extensions: [],
     publishExtensions: [],
     installExtensions: [],
-    comments: {comments: [], count: 0},
+    comments: { comments: [], count: 0 },
     isLoading: true,
     isLoadingPublish: true,
     isLoadingInstall: true,
@@ -103,7 +103,7 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
       if (publish) {
         return {
           ...state,
-          publishExtensions: _map(state.publishExtensions, res => ({
+          publishExtensions: _map(state.publishExtensions, (res) => ({
             ...res,
             project: {
               ...res.project,
@@ -115,7 +115,7 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
 
       return {
         ...state,
-        extensions: _map(state.extensions, res => ({
+        extensions: _map(state.extensions, (res) => ({
           ...res,
           live: data[res.id],
         })),
@@ -128,7 +128,7 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
       if (publish) {
         return {
           ...state,
-          publishExtensions: _map(state.publishExtensions, res => {
+          publishExtensions: _map(state.publishExtensions, (res) => {
             if (res.id === id) {
               return {
                 ...res,
@@ -143,7 +143,7 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
 
       return {
         ...state,
-        extensions: _map(state.extensions, res => {
+        extensions: _map(state.extensions, (res) => {
           if (res.id === id) {
             return {
               ...res,
@@ -162,29 +162,31 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
       if (publish) {
         return {
           ...state,
-          publishExtensions: _findIndex(state.publishExtensions, (el) => el.id === project.id) >= 0
-            ? state.publishExtensions
-            : [
-              ...state.publishExtensions,
-              {
-                ...project,
-                uiHidden: true,
-              },
-            ],
+          publishExtensions:
+            _findIndex(state.publishExtensions, (el) => el.id === project.id) >= 0
+              ? state.publishExtensions
+              : [
+                  ...state.publishExtensions,
+                  {
+                    ...project,
+                    uiHidden: true,
+                  },
+                ],
         }
       }
 
       return {
         ...state,
-        extensions: _findIndex(state.extensions, (el) => el.id === project.id) >= 0
-          ? state.extensions
-          : [
-            ...state.extensions,
-            {
-              ...project,
-              uiHidden: true,
-            },
-          ],
+        extensions:
+          _findIndex(state.extensions, (el) => el.id === project.id) >= 0
+            ? state.extensions
+            : [
+                ...state.extensions,
+                {
+                  ...project,
+                  uiHidden: true,
+                },
+              ],
       }
     }
 
@@ -291,13 +293,13 @@ const extensionsReducer = (state = getInitialState(), { type, payload }) => {
     }
 
     case types.SET_COMMENTS: {
-      const {comments} = payload
+      const { comments } = payload
 
       return {
         ...state,
-        comments
+        comments,
+      }
     }
-  }
 
     default:
       return state

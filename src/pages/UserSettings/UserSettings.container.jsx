@@ -26,21 +26,13 @@ const UserSettingsContainer = () => {
     }
 
     dispatch(
-      authActions.updateUserProfileAsync(
-        data,
-        () => dispatch(
-          alertsActions.accountUpdated(t('profileSettings.updated')),
-        ),
+      authActions.updateUserProfileAsync(data, () =>
+        dispatch(alertsActions.accountUpdated(t('profileSettings.updated'))),
       ),
     )
   }
 
-  return (
-    <UserSettings
-      t={t}
-      onSubmit={onSubmit}
-    />
-  )
+  return <UserSettings t={t} onSubmit={onSubmit} />
 }
 
 export default memo(withAuthentication(UserSettingsContainer, auth.authenticated))

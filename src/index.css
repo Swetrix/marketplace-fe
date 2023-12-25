@@ -13,7 +13,6 @@ body {
   margin: 0;
 }
 
-
 .santa-claus {
   position: absolute;
   top: 0;
@@ -38,8 +37,9 @@ body {
   display: table;
   margin: 0 auto;
 }
-.sc-head .eyes::before, .sc-head .eyes::after {
-  content: "";
+.sc-head .eyes::before,
+.sc-head .eyes::after {
+  content: '';
   width: 8px;
   height: 8px;
   background: #000;
@@ -65,7 +65,7 @@ body {
   border-radius: 20% 20% 60% 60%;
 }
 .sc-head .beard::before {
-  content: "";
+  content: '';
   width: 20px;
   height: 20px;
   background: #000;
@@ -102,7 +102,7 @@ body {
   border-radius: 60px 80px 0 0;
 }
 .sc-hat::before {
-  content: "";
+  content: '';
   width: inherit;
   height: 20px;
   background: #fff;
@@ -124,7 +124,7 @@ body {
   left: 8px;
 }
 .sc-hat .hat-tip::before {
-  content: "";
+  content: '';
   width: 20px;
   height: 20px;
   background: #fff;
@@ -176,6 +176,6 @@ body {
   background: rgb(79 70 229);
 }
 
-.cm-theme{
+.cm-theme {
   border-radius: 15px;
 }

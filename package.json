@@ -48,8 +48,8 @@
     "eject": "react-scripts eject",
     "analyse": "source-map-explorer 'build/static/js/*.js'",
     "lint": "eslint src",
-    "format": "prettier --check --ignore-unknown ./app ./public",
-    "format:fix": "prettier --write --ignore-unknown ./app ./public"
+    "format": "prettier --check --ignore-unknown ./src",
+    "format:fix": "prettier --write --ignore-unknown ./src"
   },
   "browserslist": {
     "production": [

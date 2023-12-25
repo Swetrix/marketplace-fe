@@ -4,7 +4,6 @@ import { removeAccessToken } from 'utils/accessToken'
 import { removeItem } from 'utils/localstorage'
 import { LS_VIEW_PREFS_SETTING, LS_CAPTCHA_VIEW_PREFS_SETTING } from 'redux/constants'
 
-
 const loadProjects = (take, skip) => ({
   type: types.LOAD_PROJECTS,
   payload: { take, skip },
@@ -37,10 +36,11 @@ const loadProjectAlerts = (take, skip) => ({
   payload: { take, skip },
 })
 
-const loginAsync = (credentials, callback = () => { }) => ({
+const loginAsync = (credentials, callback = () => {}) => ({
   type: types.LOGIN_ASYNC,
   payload: {
-    credentials, callback,
+    credentials,
+    callback,
   },
 })
 
@@ -48,7 +48,10 @@ const loginAsync = (credentials, callback = () => { }) => ({
 const authSSO = (provider, dontRemember, t, callback) => ({
   type: types.AUTH_SSO,
   payload: {
-    dontRemember, callback, t, provider,
+    dontRemember,
+    callback,
+    t,
+    provider,
   },
 })
 
@@ -56,7 +59,9 @@ const authSSO = (provider, dontRemember, t, callback) => ({
 const linkSSO = (t, callback, provider = 'google') => ({
   type: types.LINK_SSO,
   payload: {
-    callback, t, provider,
+    callback,
+    t,
+    provider,
   },
 })
 
@@ -64,14 +69,18 @@ const linkSSO = (t, callback, provider = 'google') => ({
 const unlinkSSO = (t, callback, provider = 'google') => ({
   type: types.UNLINK_SSO,
   payload: {
-    callback, t, provider,
+    callback,
+    t,
+    provider,
   },
 })
 
 const signupAsync = (data, t, callback) => ({
   type: types.SIGNUP_ASYNC,
   payload: {
-    data, callback, t,
+    data,
+    callback,
+    t,
   },
 })
 
@@ -80,7 +89,7 @@ const emailVerifyAsync = (data, successfulCallback, errorCallback) => ({
   payload: { data, successfulCallback, errorCallback },
 })
 
-const updateUserProfileAsync = (data, callback = (item) => { }) => ({
+const updateUserProfileAsync = (data, callback = (item) => {}) => ({
   type: types.UPDATE_USER_PROFILE_ASYNC,
   payload: { data, callback },
 })
@@ -89,7 +98,9 @@ const deleteAccountAsync = (errorCallback, successCallback, t) => {
   return {
     type: types.DELETE_ACCOUNT_ASYNC,
     payload: {
-      errorCallback, successCallback, t,
+      errorCallback,
+      successCallback,
+      t,
     },
   }
 }
@@ -113,7 +124,8 @@ const logout = (basedOn401Error) => {
 const updateShowLiveVisitorsInTitle = (show, callback) => ({
   type: types.UPDATE_SHOW_LIVE_VISITORS_IN_TITLE,
   payload: {
-    show, callback,
+    show,
+    callback,
   },
 })
 

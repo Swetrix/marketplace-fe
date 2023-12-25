@@ -12,10 +12,9 @@ const trackViews = () => {
 
 const trackCustom = (ev, unique = false) => {
   Swetrix.track({
-    ev, unique,
+    ev,
+    unique,
   })
 }
 
-export {
-  trackViews, trackCustom,
-}
+export { trackViews, trackCustom }

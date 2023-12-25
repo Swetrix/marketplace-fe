@@ -9,7 +9,7 @@ import { authActions } from 'redux/actions/auth'
 import _map from 'lodash/map'
 
 import { getAccessToken, setAccessToken } from 'utils/accessToken'
-import { getRefreshToken, } from 'utils/refreshToken'
+import { getRefreshToken } from 'utils/refreshToken'
 
 const debug = Debug('swetrix:api')
 const baseURL = process.env.REACT_APP_API_URL
@@ -53,9 +53,7 @@ export const logoutApi = (refreshToken) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 api.interceptors.request.use(
@@ -78,9 +76,7 @@ export const authMe = () =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const refreshToken = () =>
@@ -89,9 +85,7 @@ export const refreshToken = () =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const login = (credentials) =>
@@ -100,9 +94,7 @@ export const login = (credentials) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const signup = (data) =>
@@ -123,9 +115,7 @@ export const submit2FA = (twoFactorAuthenticationCode) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const acceptShareProject = (id) =>
@@ -134,9 +124,7 @@ export const acceptShareProject = (id) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const getExtensions = (limit = 0, offset = 0) =>
@@ -145,9 +133,7 @@ export const getExtensions = (limit = 0, offset = 0) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const getInstallExtensions = (limit = 0, offset = 0) =>
@@ -156,9 +142,7 @@ export const getInstallExtensions = (limit = 0, offset = 0) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const getPublishExtensions = (limit = 0, offset = 0) =>
@@ -167,9 +151,7 @@ export const getPublishExtensions = (limit = 0, offset = 0) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const createExtension = (data) =>
@@ -178,9 +160,7 @@ export const createExtension = (data) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const updateExtension = (id, data) =>
@@ -189,9 +169,7 @@ export const updateExtension = (id, data) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const deleteExtension = (id) =>
@@ -200,9 +178,7 @@ export const deleteExtension = (id) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const getLiveVisitors = (pids) =>
@@ -211,9 +187,7 @@ export const getLiveVisitors = (pids) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const getExtensionsSearch = (term, category, sortBy, offset = 0, limit = 25) =>
@@ -222,9 +196,7 @@ export const getExtensionsSearch = (term, category, sortBy, offset = 0, limit = 
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const getCategories = () =>
@@ -233,9 +205,7 @@ export const getCategories = () =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const confirmEmail = () =>
@@ -244,9 +214,7 @@ export const confirmEmail = () =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const changeUserDetails = (data) =>
@@ -267,9 +235,7 @@ export const installExtension = (extensionId, projectId = '') =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const deleteInstallExtension = (extensionId) =>
@@ -278,9 +244,7 @@ export const deleteInstallExtension = (extensionId) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const createComment = (userId, comment) =>
@@ -289,9 +253,7 @@ export const createComment = (userId, comment) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const replyToComment = (commentId, text) =>
@@ -300,9 +262,7 @@ export const replyToComment = (commentId, text) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const updateReply = (replyId, text) =>
@@ -311,9 +271,7 @@ export const updateReply = (replyId, text) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const deleteReply = (replyId) =>
@@ -322,9 +280,7 @@ export const deleteReply = (replyId) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const getComments = (extensionId, limit, offset, userId) =>
@@ -333,9 +289,7 @@ export const getComments = (extensionId, limit, offset, userId) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const getCommentById = (commentId) =>
@@ -344,9 +298,7 @@ export const getCommentById = (commentId) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
 
 export const deleteComment = (commentId) =>
@@ -355,9 +307,5 @@ export const deleteComment = (commentId) =>
     .then((response) => response.data)
     .catch((error) => {
       debug('%s', error)
-      throw _isEmpty(error.response.data?.message)
-        ? error.response.data
-        : error.response.data.message
+      throw _isEmpty(error.response.data?.message) ? error.response.data : error.response.data.message
     })
-
-

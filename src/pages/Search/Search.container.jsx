@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   generateError: (message) => {
     dispatch(UIActions.generateError(message))
-  }
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search)

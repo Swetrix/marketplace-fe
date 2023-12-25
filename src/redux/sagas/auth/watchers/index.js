@@ -17,7 +17,5 @@ function* watchUpdateUserProfile() {
 }
 
 export default function* watchAuth() {
-  yield all([
-    call(watchLogin), call(watchSignup), call(watchUpdateUserProfile),
-  ])
+  yield all([call(watchLogin), call(watchSignup), call(watchUpdateUserProfile)])
 }

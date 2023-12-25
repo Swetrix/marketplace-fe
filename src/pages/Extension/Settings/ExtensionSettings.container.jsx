@@ -43,7 +43,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setPublishExtensions: (publishExtensions) => {
     dispatch(UIActions.setExtensions(publishExtensions, true))
-  }
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectSettings)
