@@ -5,5 +5,8 @@ import alerts from './alerts'
 import ui from './ui'
 
 export default combineReducers({
-  auth, errors, alerts, ui,
+  auth,
+  errors,
+  alerts,
+  ui,
 })

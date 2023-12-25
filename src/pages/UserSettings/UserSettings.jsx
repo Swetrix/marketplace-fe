@@ -1,6 +1,4 @@
-import React, {
-  useState, useEffect, memo,
-} from 'react'
+import React, { useState, useEffect, memo } from 'react'
 import { useSelector } from 'react-redux'
 import _size from 'lodash/size'
 import _isEmpty from 'lodash/isEmpty'
@@ -10,14 +8,10 @@ import Title from 'components/Title'
 import Input from 'ui/Input'
 import Button from 'ui/Button'
 import Modal from 'ui/Modal'
-import {
-  isValidEmail, isValidPassword, MIN_PASSWORD_CHARS,
-} from 'utils/validator'
+import { isValidEmail, isValidPassword, MIN_PASSWORD_CHARS } from 'utils/validator'
 
-const UserSettings = ({
-  onSubmit, t,
-}) => {
-  const { user } = useSelector(state => state.auth)
+const UserSettings = ({ onSubmit, t }) => {
+  const { user } = useSelector((state) => state.auth)
 
   const [form, setForm] = useState({
     email: user.email || '',
@@ -57,17 +51,17 @@ const UserSettings = ({
     validate()
   }, [form]) // eslint-disable-line
 
-  const handleInput = event => {
+  const handleInput = (event) => {
     const { target } = event
     const value = target.type === 'checkbox' ? target.checked : target.value
 
-    setForm(prevForm => ({
+    setForm((prevForm) => ({
       ...prevForm,
       [target.name]: value,
     }))
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     e.stopPropagation()
 
@@ -83,9 +77,7 @@ const UserSettings = ({
       <div className='min-h-min-footer bg-gray-50 dark:bg-slate-900 flex flex-col py-6 px-4 sm:px-6 lg:px-8'>
         <form className='max-w-7xl w-full mx-auto' onSubmit={handleSubmit}>
           <div className='flex items-end justify-between'>
-            <h2 className='mt-2 text-3xl font-bold text-gray-900 dark:text-gray-50'>
-              {t('titles.profileSettings')}
-            </h2>
+            <h2 className='mt-2 text-3xl font-bold text-gray-900 dark:text-gray-50'>{t('titles.profileSettings')}</h2>
             <a
               className='shadow-sm text-gray-50 bg-slate-900 hover:bg-slate-700 dark:bg-indigo-700 dark:hover:bg-indigo-800 rounded-md px-4 py-2 text-sm font-medium ml-3'
               href={`${process.env.REACT_APP_FE_URL}user-settings`}
@@ -95,9 +87,7 @@ const UserSettings = ({
               {t('profileSettings.other')}
             </a>
           </div>
-          <h3 className='mt-2 text-lg font-bold text-gray-900 dark:text-gray-50'>
-            {t('profileSettings.general')}
-          </h3>
+          <h3 className='mt-2 text-lg font-bold text-gray-900 dark:text-gray-50'>{t('profileSettings.general')}</h3>
           <Input
             name='email'
             id='email'
@@ -107,8 +97,8 @@ const UserSettings = ({
             placeholder='you@example.com'
             className='mt-4'
             disabled
-          // onChange={handleInput}
-          // error={beenSubmitted ? errors.email : null}
+            // onChange={handleInput}
+            // error={beenSubmitted ? errors.email : null}
           />
           <Input
             name='nickname'
@@ -122,17 +112,15 @@ const UserSettings = ({
           />
           <hr className='mt-5 border-gray-200 dark:border-gray-600' />
           <div className='flex justify-between mt-4'>
-            <Button
-              large
-              primary
-              type='submit'
-            >
+            <Button large primary type='submit'>
               {t('profileSettings.update')}
             </Button>
           </div>
         </form>
         <Modal
-          onClose={() => { setError('') }}
+          onClose={() => {
+            setError('')
+          }}
           closeText={t('common.gotIt')}
           type='error'
           title={t('common.error')}

@@ -35,5 +35,5 @@ export const secondsTillNextMonth = () => {
   date.setDate(1)
   date.setHours(0, 0, 0, 0)
 
-  return 0 | (date - now) / 1000
+  return 0 | ((date - now) / 1000)
 }

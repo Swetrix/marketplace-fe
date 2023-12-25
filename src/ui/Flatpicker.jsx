@@ -77,7 +77,7 @@ FlatPicker.propTypes = {
 }
 
 FlatPicker.defaultProps = {
-  onChange: () => { },
+  onChange: () => {},
   value: [],
 }
 

@@ -12,9 +12,7 @@ import routes from 'routes'
 import Input from 'ui/Input'
 import Button from 'ui/Button'
 import Checkbox from 'ui/Checkbox'
-import {
-  isValidEmail, isValidPassword, MIN_PASSWORD_CHARS,
-} from 'utils/validator'
+import { isValidEmail, isValidPassword, MIN_PASSWORD_CHARS } from 'utils/validator'
 import { submit2FA } from 'api'
 import { setAccessToken } from 'utils/accessToken'
 import { setRefreshToken } from 'utils/refreshToken'
@@ -56,13 +54,15 @@ const Signin = ({ login, loginSuccess, loginFailed }) => {
     validate()
   }, [form]) // eslint-disable-line
 
-  const handle2FAInput = event => {
-    const { target: { value } } = event
+  const handle2FAInput = (event) => {
+    const {
+      target: { value },
+    } = event
     setTwoFACode(value)
     setTwoFACodeError(null)
   }
 
-  const onSubmit = data => {
+  const onSubmit = (data) => {
     if (!isLoading) {
       setIsLoading(true)
       login(data, (result, twoFARequired) => {
@@ -102,13 +102,13 @@ const Signin = ({ login, loginSuccess, loginFailed }) => {
   const handleInput = ({ target }) => {
     const value = target.type === 'checkbox' ? target.checked : target.value
 
-    setForm(oldForm => ({
+    setForm((oldForm) => ({
       ...oldForm,
       [target.name]: value,
     }))
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     e.stopPropagation()
     setBeenSubmitted(true)
@@ -123,9 +123,7 @@ const Signin = ({ login, loginSuccess, loginFailed }) => {
       <Title title={t('titles.signin')}>
         <div className='min-h-page bg-gray-50 dark:bg-slate-900 flex flex-col py-6 px-4 sm:px-6 lg:px-8'>
           <form className='max-w-prose mx-auto' onSubmit={_submit2FA}>
-            <h2 className='mt-2 text-3xl font-bold text-gray-900 dark:text-gray-50'>
-              {t('auth.signin.2fa')}
-            </h2>
+            <h2 className='mt-2 text-3xl font-bold text-gray-900 dark:text-gray-50'>{t('auth.signin.2fa')}</h2>
             <p className='mt-4 text-base whitespace-pre-line text-gray-900 dark:text-gray-50'>
               {t('auth.signin.2faDesc')}
             </p>
@@ -145,7 +143,9 @@ const Signin = ({ login, loginSuccess, loginFailed }) => {
                   t={t}
                   i18nKey='auth.signin.2faUnavailable'
                   components={{
-                    ctl: <Link to={routes.contact} className='underline hover:text-gray-900 dark:hover:text-gray-200' />,
+                    ctl: (
+                      <Link to={routes.contact} className='underline hover:text-gray-900 dark:hover:text-gray-200' />
+                    ),
                   }}
                 />
               </div>
@@ -230,7 +230,7 @@ const Signin = ({ login, loginSuccess, loginFailed }) => {
                     rel='noopener noreferrer'
                     aria-label={t('titles.signup')}
                   />
-                )
+                ),
               }}
               values={{
                 amount: TRIAL_DAYS,

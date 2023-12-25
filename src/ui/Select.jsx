@@ -5,13 +5,13 @@ import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/solid'
 import _map from 'lodash/map'
 
-const Select = ({
-  title, label, className, items, labelExtractor, keyExtractor, onSelect, hint,
-}) => (
+const Select = ({ title, label, className, items, labelExtractor, keyExtractor, onSelect, hint }) => (
   <Listbox className={className} value={title} onChange={onSelect}>
     {({ open }) => (
       <>
-        <Listbox.Label className='block text-sm whitespace-pre-line font-medium text-gray-700 dark:text-gray-100'>{label}</Listbox.Label>
+        <Listbox.Label className='block text-sm whitespace-pre-line font-medium text-gray-700 dark:text-gray-100'>
+          {label}
+        </Listbox.Label>
         <div className='mt-1 relative'>
           <Listbox.Button className='relative w-full bg-white border border-gray-300 dark:text-gray-50 dark:border-gray-800 dark:bg-slate-800 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'>
             <span className='block truncate first-letter:capitalize'>{title}</span>
@@ -34,10 +34,12 @@ const Select = ({
               {_map(items, (item) => (
                 <Listbox.Option
                   key={keyExtractor ? keyExtractor(item) : item}
-                  className={({ active }) => cx('dark:text-white cursor-default select-none relative py-2 pl-8 pr-4', {
-                    'text-white bg-indigo-600': active,
-                    'text-gray-900': !active,
-                  })}
+                  className={({ active }) =>
+                    cx('dark:text-white cursor-default select-none relative py-2 pl-8 pr-4', {
+                      'text-white bg-indigo-600': active,
+                      'text-gray-900': !active,
+                    })
+                  }
                   value={labelExtractor ? labelExtractor(item) : item}
                 >
                   {({ selected, active }) => (
@@ -48,13 +50,10 @@ const Select = ({
 
                       {selected ? (
                         <span
-                          className={cx(
-                            'absolute inset-y-0 left-0 flex items-center pl-1.5',
-                            {
-                              'text-white': active,
-                              'text-indigo-600': !active,
-                            },
-                          )}
+                          className={cx('absolute inset-y-0 left-0 flex items-center pl-1.5', {
+                            'text-white': active,
+                            'text-indigo-600': !active,
+                          })}
                         >
                           <CheckIcon className='h-5 w-5' aria-hidden='true' />
                         </span>
@@ -66,9 +65,7 @@ const Select = ({
             </Listbox.Options>
           </Transition>
         </div>
-        {hint && (
-          <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>{hint}</p>
-        )}
+        {hint && <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>{hint}</p>}
       </>
     )}
   </Listbox>
@@ -77,12 +74,8 @@ const Select = ({
 Select.propTypes = {
   title: PropTypes.string.isRequired,
   onSelect: PropTypes.func.isRequired,
-  items: PropTypes.arrayOf(PropTypes.oneOfType([
-    PropTypes.string, PropTypes.object,
-  ])),
-  hint: PropTypes.oneOfType([
-    PropTypes.string, PropTypes.node,
-  ]),
+  items: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.object])),
+  hint: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   className: PropTypes.string,
   labelExtractor: PropTypes.func,
   keyExtractor: PropTypes.func,

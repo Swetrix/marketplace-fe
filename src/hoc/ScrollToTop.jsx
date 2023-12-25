@@ -2,11 +2,11 @@ import { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
 /**
-  * A HOC which listens to history changes and scrolls to top of the page when triggered.
-  *
-  * @component
-  * @param {HTMLElement} children The children covered by the listener.
-  */
+ * A HOC which listens to history changes and scrolls to top of the page when triggered.
+ *
+ * @component
+ * @param {HTMLElement} children The children covered by the listener.
+ */
 const ScrollToTop = ({ children }) => {
   const history = useHistory()
 

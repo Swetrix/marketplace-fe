@@ -24,9 +24,7 @@ const MainPage = ({ extensions, categories }) => {
     e.stopPropagation()
     e.preventDefault()
     if (!_isEmpty(search)) {
-      history.push(
-        `/search?term=${search}&category=&sortBy=${sortByConstans.CREATED_AT}`,
-      )
+      history.push(`/search?term=${search}&category=&sortBy=${sortByConstans.CREATED_AT}`)
     } else {
       console.log('wrong')
     }
@@ -39,10 +37,7 @@ const MainPage = ({ extensions, categories }) => {
           <h1 className='text-center pt-16 font-extrabold text-3xl dark:text-white text-gray-700'>
             Extensions for Swetrix Analytics
           </h1>
-          <form
-            className='mt-5 mx-auto flex rounded-md !max-w-[360px] !w-full'
-            onSubmit={searchSubmit}
-          >
+          <form className='mt-5 mx-auto flex rounded-md !max-w-[360px] !w-full' onSubmit={searchSubmit}>
             <Input
               type='text'
               label=''
@@ -65,7 +60,7 @@ const MainPage = ({ extensions, categories }) => {
         <section>
           <div className='max-w-[1400px] mx-auto py-10 px-4 sm:px-6 lg:px-8'>
             <div className='mt-6 relative p-5'>
-              {!_isEmpty(categories) && (
+              {!_isEmpty(categories) &&
                 _map(categories, (item) => {
                   const extensionForCategory = _filter(
                     extensions,
@@ -78,11 +73,14 @@ const MainPage = ({ extensions, categories }) => {
                           <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>
                             {item.name}
                           </h2>
-                          <Button onClick={() => {
-                            history.push(
-                              `/search?term=&category=${item.name}&sortBy=${sortByConstans.CREATED_AT}`,
-                            )
-                          }} text='See more' primary regular />
+                          <Button
+                            onClick={() => {
+                              history.push(`/search?term=&category=${item.name}&sortBy=${sortByConstans.CREATED_AT}`)
+                            }}
+                            text='See more'
+                            primary
+                            regular
+                          />
                         </div>
                         <Glider
                           hasArrows={extensionForCategory.length >= 5}
@@ -101,26 +99,27 @@ const MainPage = ({ extensions, categories }) => {
                               mainImage={extension.mainImage}
                               price={extension.price}
                               // companyLink='https://simpson.com'
-                              companyName={extension.owner?.nickname || 'Unknown'} />
+                              companyName={extension.owner?.nickname || 'Unknown'}
+                            />
                           ))}
                         </Glider>
                       </div>
                     )
                   }
-                })
-              )}
+                })}
             </div>
             {!_isEmpty(extensionsWithoutCategory) && (
               <div className='mt-6 relative p-5'>
                 <div className='flex items-center justify-between'>
-                  <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>
-                    Other
-                  </h2>
-                  <Button onClick={() => {
-                    history.push(
-                      `/search?term=&category=&sortBy=${sortByConstans.CREATED_AT}`
-                    )
-                  }} text='See more' primary regular />
+                  <h2 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white'>Other</h2>
+                  <Button
+                    onClick={() => {
+                      history.push(`/search?term=&category=&sortBy=${sortByConstans.CREATED_AT}`)
+                    }}
+                    text='See more'
+                    primary
+                    regular
+                  />
                 </div>
                 <Glider
                   hasArrows={extensionsWithoutCategory.length >= 5}
@@ -139,7 +138,8 @@ const MainPage = ({ extensions, categories }) => {
                       mainImage={extension.mainImage}
                       price={extension.price}
                       // companyLink='https://simpson.com'
-                      companyName={extension.owner?.nickname || 'Unknown'} />
+                      companyName={extension.owner?.nickname || 'Unknown'}
+                    />
                   ))}
                 </Glider>
               </div>

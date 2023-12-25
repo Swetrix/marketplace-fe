@@ -4,11 +4,11 @@ import routes from 'routes'
 
 export const auth = {
   authenticated: {
-    selector: state => state.auth.authenticated,
+    selector: (state) => state.auth.authenticated,
     redirectPath: routes.signin,
   },
   notAuthenticated: {
-    selector: state => !state.auth.authenticated,
+    selector: (state) => !state.auth.authenticated,
     redirectPath: routes.dashboard,
   },
 }

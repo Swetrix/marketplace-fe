@@ -4,9 +4,7 @@ import Debug from 'debug'
 
 import UIActions from 'redux/actions/ui'
 
-import {
-  getCategories,
-} from '../../../api'
+import { getCategories } from '../../../api'
 
 const debug = Debug('swetrix:rx:s:load-category')
 

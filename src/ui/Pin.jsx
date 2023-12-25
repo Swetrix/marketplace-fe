@@ -12,19 +12,34 @@ const defaultProps = {
 }
 
 const ActivePin = ({ label, className }) => (
-  <p className={cx('px-2 inline-flex text-sm leading-5 font-normal rounded-full bg-green-100 text-green-800 dark:bg-green-300 dark:text-green-900', className)}>
+  <p
+    className={cx(
+      'px-2 inline-flex text-sm leading-5 font-normal rounded-full bg-green-100 text-green-800 dark:bg-green-300 dark:text-green-900',
+      className,
+    )}
+  >
     {label}
   </p>
 )
 
 const InactivePin = ({ label, className }) => (
-  <p className={cx('px-2 inline-flex text-sm leading-5 font-normal rounded-full bg-red-100 text-red-800 dark:bg-red-300 dark:text-red-900', className)}>
+  <p
+    className={cx(
+      'px-2 inline-flex text-sm leading-5 font-normal rounded-full bg-red-100 text-red-800 dark:bg-red-300 dark:text-red-900',
+      className,
+    )}
+  >
     {label}
   </p>
 )
 
 const WarningPin = ({ label, className }) => (
-  <p className={cx('px-2 inline-flex text-sm leading-5 font-normal rounded-full bg-yellow-200 text-yellow-800 dark:bg-yellow-300 dark:text-yellow-900', className)}>
+  <p
+    className={cx(
+      'px-2 inline-flex text-sm leading-5 font-normal rounded-full bg-yellow-200 text-yellow-800 dark:bg-yellow-300 dark:text-yellow-900',
+      className,
+    )}
+  >
     {label}
   </p>
 )
@@ -38,8 +53,4 @@ WarningPin.defaultProps = defaultProps
 InactivePin.propTypes = propTypes
 InactivePin.defaultProps = defaultProps
 
-export {
-  ActivePin,
-  InactivePin,
-  WarningPin,
-}
+export { ActivePin, InactivePin, WarningPin }

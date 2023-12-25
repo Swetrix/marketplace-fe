@@ -8,7 +8,9 @@ import PropTypes from 'prop-types'
 import { TITLE_SUFFIX, whitelist } from 'redux/constants'
 
 const Title = ({ title, children }) => {
-  const { i18n: { language } } = useTranslation('common')
+  const {
+    i18n: { language },
+  } = useTranslation('common')
 
   if (_isEmpty(title)) {
     return (

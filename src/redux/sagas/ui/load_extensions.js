@@ -6,9 +6,7 @@ import Debug from 'debug'
 import UIActions from 'redux/actions/ui'
 
 import { ENTRIES_PER_PAGE_EXTENSIONS } from 'redux/constants'
-import {
-  getExtensions,
-} from '../../../api'
+import { getExtensions } from '../../../api'
 
 const debug = Debug('swetrix:rx:s:load-extensions')
 
@@ -18,10 +16,11 @@ export default function* loadExtensions({ payload: { take = ENTRIES_PER_PAGE_EXT
 
     let {
       // eslint-disable-next-line prefer-const
-      extensions, count,
+      extensions,
+      count,
     } = yield call(getExtensions, take, skip)
-  
-    extensions = _map(extensions, res => ({
+
+    extensions = _map(extensions, (res) => ({
       ...res,
     }))
 

@@ -62,25 +62,28 @@ export const authActions = {
   },
 
   // Asynchronous
-  loginAsync(credentials, callback = () => { }) {
+  loginAsync(credentials, callback = () => {}) {
     return {
       type: types.LOGIN_ASYNC,
       payload: {
-        credentials, callback,
+        credentials,
+        callback,
       },
     }
   },
 
-  signupAsync(data, t, callback = () => { }) {
+  signupAsync(data, t, callback = () => {}) {
     return {
       type: types.SIGNUP_ASYNC,
       payload: {
-        data, callback, t,
+        data,
+        callback,
+        t,
       },
     }
   },
 
-  updateUserProfileAsync(data, successfulCallback = () => { }) {
+  updateUserProfileAsync(data, successfulCallback = () => {}) {
     return {
       type: types.UPDATE_USER_PROFILE_ASYNC,
       payload: { data, successfulCallback },

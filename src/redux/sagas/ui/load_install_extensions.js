@@ -5,9 +5,7 @@ import Debug from 'debug'
 import UIActions from 'redux/actions/ui'
 
 import { ENTRIES_PER_PAGE_DASHBOARD } from 'redux/constants'
-import {
-  getInstallExtensions,
-} from '../../../api'
+import { getInstallExtensions } from '../../../api'
 
 const debug = Debug('swetrix:rx:s:load-installed-extensions')
 
@@ -17,9 +15,9 @@ export default function* loadInstallExtensions({ payload: { take = ENTRIES_PER_P
 
     let {
       // eslint-disable-next-line prefer-const
-      extensions, count,
+      extensions,
+      count,
     } = yield call(getInstallExtensions, take, skip)
-
 
     yield put(UIActions.setExtensions(extensions))
     yield put(UIActions.setTotal(count))

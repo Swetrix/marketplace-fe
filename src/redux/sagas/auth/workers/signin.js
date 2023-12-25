@@ -12,9 +12,7 @@ import { login } from 'api'
 export default function* singinWorker({ payload: { credentials, callback } }) {
   try {
     const { dontRemember } = credentials
-    const {
-      user, accessToken, refreshToken,
-    } = yield call(login, _omit(credentials, ['dontRemember']))
+    const { user, accessToken, refreshToken } = yield call(login, _omit(credentials, ['dontRemember']))
 
     yield put(authActions.setDontRemember(dontRemember))
 

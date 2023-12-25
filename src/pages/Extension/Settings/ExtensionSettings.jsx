@@ -1,7 +1,5 @@
 /* eslint-disable react/forbid-prop-types */
-import React, {
-  useState, useEffect, useMemo, memo, useCallback,
-} from 'react'
+import React, { useState, useEffect, useMemo, memo, useCallback } from 'react'
 import { useLocation, useHistory, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import cx from 'clsx'
@@ -15,16 +13,12 @@ import _filter from 'lodash/filter'
 import _forEach from 'lodash/forEach'
 import PropTypes from 'prop-types'
 import { nanoid } from 'nanoid'
-import {
-  ExclamationTriangleIcon,
-} from '@heroicons/react/24/outline'
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 
 import Title from 'components/Title'
 
 import { withAuthentication, auth } from 'hoc/protected'
-import {
-  createExtension, updateExtension, deleteExtension, getCategories,
-} from 'api'
+import { createExtension, updateExtension, deleteExtension, getCategories } from 'api'
 import Input from 'ui/Input'
 import Textarea from 'ui/Textarea'
 import Button from 'ui/Button'
@@ -73,15 +67,25 @@ const VERSION_TYPE_LIST = [
 ]
 
 const ExtensionSettings = ({
-  updateExtensionFailed, createNewExtensionFailed, newExtension, extensionDelete, deleteExtensionFailed,
-  loadExtensions, isLoading, showError, removeExtension, user, publishExtensions, setPublishExtensions,
+  updateExtensionFailed,
+  createNewExtensionFailed,
+  newExtension,
+  extensionDelete,
+  deleteExtensionFailed,
+  loadExtensions,
+  isLoading,
+  showError,
+  removeExtension,
+  user,
+  publishExtensions,
+  setPublishExtensions,
   setExtensions,
 }) => {
   const { t } = useTranslation('common')
   const { pathname } = useLocation()
   const { id } = useParams()
-  const isSettings = !_isEmpty(id) && (_replace(routes.extension_settings, ':id', id) === pathname)
-  const extension = useMemo(() => _find(publishExtensions, p => p.id === id) || {}, [id, publishExtensions])
+  const isSettings = !_isEmpty(id) && _replace(routes.extension_settings, ':id', id) === pathname
+  const extension = useMemo(() => _find(publishExtensions, (p) => p.id === id) || {}, [id, publishExtensions])
   const history = useHistory()
   const [form, setForm] = useState({
     name: '',
@@ -92,7 +96,7 @@ const ExtensionSettings = ({
     price: 0,
     file: {},
     category: null,
-    companyLink: null
+    companyLink: null,
   })
   const [validated, setValidated] = useState(false)
   const [errors, setErrors] = useState({})
@@ -146,9 +150,9 @@ const ExtensionSettings = ({
 
   const loadExtensionsFile = useCallback(async () => {
     await fetch(`${process.env.REACT_APP_CDN_URL}file/${form.fileURL}`)
-      .then(response => response.text())
-      .then(text => setCode(text))
-      .catch(error => console.log(error))
+      .then((response) => response.text())
+      .then((text) => setCode(text))
+      .catch((error) => console.log(error))
   }, [form.fileURL])
 
   const javascriptFileReader = useCallback(() => {
@@ -197,10 +201,10 @@ const ExtensionSettings = ({
         case FILE_TYPE.ADDITIONAL_IMAGES:
           return {
             ...items,
-            additionalImages: _filter(items.additionalImages, file => {
+            additionalImages: _filter(items.additionalImages, (file) => {
               return file?.files?.isUploading ? file.files.id !== rFiles.id : file !== rFiles
             }),
-            additionalImagesToDelete: [...items.additionalImagesToDelete, _isString(rFiles) && rFiles]
+            additionalImagesToDelete: [...items.additionalImagesToDelete, _isString(rFiles) && rFiles],
           }
         case FILE_TYPE.FILE:
           setIsEditCode(false)
@@ -208,7 +212,7 @@ const ExtensionSettings = ({
             ...items,
             file: {},
             fileURL: '',
-            additionalImagesToDelete: [...items.additionalImagesToDelete, _isString(rFiles) && rFiles]
+            additionalImagesToDelete: [...items.additionalImagesToDelete, _isString(rFiles) && rFiles],
           }
         default:
           return items
@@ -247,16 +251,14 @@ const ExtensionSettings = ({
           if (data.version !== extension.version && data.version !== VERSION_TYPE.NOTHING) {
             formData.append('version', data.version)
           }
-          await updateExtension(id, formData)
-            .then(() => {
-              newExtension(t('extension.settings.updated'))
-            })
+          await updateExtension(id, formData).then(() => {
+            newExtension(t('extension.settings.updated'))
+          })
         } else {
-          await createExtension(formData)
-            .then(() => {
-              trackCustom('EXTENSION_CREATED')
-              newExtension(t('extension.settings.created'))
-            })
+          await createExtension(formData).then(() => {
+            trackCustom('EXTENSION_CREATED')
+            newExtension(t('extension.settings.created'))
+          })
         }
         loadExtensions(true)
         history.push(routes.dashboard)
@@ -315,7 +317,7 @@ const ExtensionSettings = ({
     validate()
   }, [form]) // eslint-disable-line
 
-  const handleInput = event => {
+  const handleInput = (event) => {
     const { target } = event
     const value = target.type === 'checkbox' ? target.checked : target.value
 
@@ -327,13 +329,13 @@ const ExtensionSettings = ({
       return
     }
 
-    setForm(oldForm => ({
+    setForm((oldForm) => ({
       ...oldForm,
       [target.name]: value,
     }))
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     e.stopPropagation()
     setBeenSubmitted(true)
@@ -346,7 +348,6 @@ const ExtensionSettings = ({
       setIsWarningCodeSave(true)
       showError(t('extension.settings.noSaveCode'))
     }
-
   }
 
   const onCancel = () => history.push(isSettings ? _replace(routes.extension, ':id', id) : routes.dashboard)
@@ -363,15 +364,13 @@ const ExtensionSettings = ({
         })}
       >
         <form className='max-w-7xl w-full mx-auto' onSubmit={handleSubmit}>
-          <h2 className='mt-2 text-xl sm:text-3xl font-bold text-gray-900 dark:text-gray-50'>
-            {title}
-          </h2>
+          <h2 className='mt-2 text-xl sm:text-3xl font-bold text-gray-900 dark:text-gray-50'>{title}</h2>
           <Input
             name='name'
             id='name'
             type='text'
             label={t('extension.settings.name')}
-            hint={'Your extension\'s name without slogans or phrases (e.g. JSON Exporter, Map Beautifier).'}
+            hint={"Your extension's name without slogans or phrases (e.g. JSON Exporter, Map Beautifier)."}
             value={form.name}
             placeholder='My awesome extension'
             className='mt-4'
@@ -385,7 +384,9 @@ const ExtensionSettings = ({
             label={t('extension.settings.description')}
             value={form.description || ''}
             placeholder={'My extension does blah blah blah, it provides such great features as blah and blah.'}
-            hint={'Here you should describe your extension in details. What does it do? How does it work? Add a features list, changelog, or whatever else you think best describes it.'}
+            hint={
+              'Here you should describe your extension in details. What does it do? How does it work? Add a features list, changelog, or whatever else you think best describes it.'
+            }
             className='mt-4 mb-4'
             onChange={handleInput}
             error={beenSubmitted ? errors.description : null}
@@ -396,50 +397,57 @@ const ExtensionSettings = ({
               id='version'
               title={form.version || 'Select a changes'}
               label={t('extension.settings.version')}
-              hint={(
+              hint={
                 <span>
-                  This is the version identifier your customers will see when they install or upgrade to this version of your extension.
+                  This is the version identifier your customers will see when they install or upgrade to this version of
+                  your extension.
                   <br />
-                  It should be specified using
-                  {' '}
-                  <a href='https://semver.org/' className='dark:text-indigo-400 text-indigo-700' target='_blank' rel='noopener noreferrer'>SemVer</a>
-                  .
-                  {''}
+                  It should be specified using{' '}
+                  <a
+                    href='https://semver.org/'
+                    className='dark:text-indigo-400 text-indigo-700'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    SemVer
+                  </a>
+                  .{''}
                   <br />
-                  Please upload or update file before changing version.
-                  By default, the latest version is selected.
+                  Please upload or update file before changing version. By default, the latest version is selected.
                 </span>
-              )}
+              }
               className='mt-4 mb-4'
               items={VERSION_TYPE_LIST}
-              keyExtractor={item => item.value}
-              labelExtractor={item => item.label}
-              onSelect={(version) => setForm((oldForm) => {
-                switch (version) {
-                  case VERSION_TYPE_LIST[0].label:
-                    return {
-                      ...oldForm,
-                      version: VERSION_TYPE_LIST[0].value,
-                    }
-                  case VERSION_TYPE_LIST[1].label:
-                    return {
-                      ...oldForm,
-                      version: VERSION_TYPE_LIST[1].value,
-                    }
-                  case VERSION_TYPE_LIST[2].label:
-                    return {
-                      ...oldForm,
-                      version: VERSION_TYPE_LIST[2].value,
-                    }
-                  case VERSION_TYPE_LIST[3].label:
-                    return {
-                      ...oldForm,
-                      version: VERSION_TYPE_LIST[3].value,
-                    }
-                  default:
-                    return oldForm
-                }
-              })}
+              keyExtractor={(item) => item.value}
+              labelExtractor={(item) => item.label}
+              onSelect={(version) =>
+                setForm((oldForm) => {
+                  switch (version) {
+                    case VERSION_TYPE_LIST[0].label:
+                      return {
+                        ...oldForm,
+                        version: VERSION_TYPE_LIST[0].value,
+                      }
+                    case VERSION_TYPE_LIST[1].label:
+                      return {
+                        ...oldForm,
+                        version: VERSION_TYPE_LIST[1].value,
+                      }
+                    case VERSION_TYPE_LIST[2].label:
+                      return {
+                        ...oldForm,
+                        version: VERSION_TYPE_LIST[2].value,
+                      }
+                    case VERSION_TYPE_LIST[3].label:
+                      return {
+                        ...oldForm,
+                        version: VERSION_TYPE_LIST[3].value,
+                      }
+                    default:
+                      return oldForm
+                  }
+                })
+              }
               error={beenSubmitted ? errors.version : null}
             />
           )}
@@ -460,8 +468,8 @@ const ExtensionSettings = ({
             hint='Select a category your extension belongs to.'
             className='w-full'
             items={categories}
-            keyExtractor={item => item.id}
-            labelExtractor={item => item.name}
+            keyExtractor={(item) => item.id}
+            labelExtractor={(item) => item.name}
             onSelect={(category) => setForm({ ...form, category })}
           />
           <div>
@@ -484,10 +492,8 @@ const ExtensionSettings = ({
             />
             <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
               The primary visual identity of your app.
-              <br />
-              - Please use a square image of at least <b>150x150</b> dimensions.
-              <br />
-              - The image <b>should not</b> be larger than <b>1000x1000</b> pixels.
+              <br />- Please use a square image of at least <b>150x150</b> dimensions.
+              <br />- The image <b>should not</b> be larger than <b>1000x1000</b> pixels.
             </p>
           </div>
 
@@ -499,7 +505,10 @@ const ExtensionSettings = ({
               disabled={showDelete}
               files={form.additionalImages}
               setFiles={(files) => {
-                setForm((items) => ({ ...items, additionalImages: [...items.additionalImages, { files: files, url: fileReader(files) }] }))
+                setForm((items) => ({
+                  ...items,
+                  additionalImages: [...items.additionalImages, { files: files, url: fileReader(files) }],
+                }))
               }}
             />
             <ImageList
@@ -513,20 +522,19 @@ const ExtensionSettings = ({
               Most customers will decide to try an extension based off its gallery images.
               <br />
               <br />
-              We recommend at least one screenshot which shows the extension on a site, and another which shows a closeup of the extensions visual components.
+              We recommend at least one screenshot which shows the extension on a site, and another which shows a
+              closeup of the extensions visual components.
               <br />
-              You can also create a sequence of images which walk the customer through the features of the app like slides in a slide deck.
+              You can also create a sequence of images which walk the customer through the features of the app like
+              slides in a slide deck.
               <br />
               - Avoid full screenshots as most customers will not be able to determine where the app appears.
-              <br />
-              - Trim excessive empty space around slide decks.
+              <br />- Trim excessive empty space around slide decks.
             </p>
           </div>
 
           <div>
-            <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>
-              The extension .js file
-            </div>
+            <div className='flex text-sm font-medium text-gray-700 dark:text-gray-200 mt-4'>The extension .js file</div>
             <JsFileUpload
               disabled={showDelete}
               files={form.file}
@@ -543,12 +551,17 @@ const ExtensionSettings = ({
               handleEditMode={onClickEditCode}
               removeFile={(file) => removeFile(file, FILE_TYPE.FILE)}
             />
-            <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>
-              The extension .js file.
-            </p>
+            <p className='mt-2 text-sm text-gray-500 dark:text-gray-300 whitespace-pre-line'>The extension .js file.</p>
           </div>
 
-          {isEditCode && <CodeEditor isWarningCodeSave={isWarningCodeSave} code={code} onChangeCodeValue={onChangeCodeValue} onClickSaveCode={onClickSaveCode} />}
+          {isEditCode && (
+            <CodeEditor
+              isWarningCodeSave={isWarningCodeSave}
+              code={code}
+              onChangeCodeValue={onChangeCodeValue}
+              onClickSaveCode={onClickSaveCode}
+            />
+          )}
           {isSettings ? (
             <>
               <Checkbox
@@ -562,7 +575,12 @@ const ExtensionSettings = ({
               />
               <div className='flex justify-between mt-8 h-20 sm:h-min'>
                 <div className='flex flex-wrap items-center'>
-                  <Button className='mr-2 border-indigo-100 dark:text-gray-50 dark:border-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600' onClick={onCancel} secondary regular>
+                  <Button
+                    className='mr-2 border-indigo-100 dark:text-gray-50 dark:border-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600'
+                    onClick={onCancel}
+                    secondary
+                    regular
+                  >
                     {t('common.cancel')}
                   </Button>
                   <Button type='submit' loading={extensionSaving} primary regular>
@@ -570,7 +588,13 @@ const ExtensionSettings = ({
                   </Button>
                 </div>
                 <div className='flex flex-wrap items-center justify-end'>
-                  <Button className='ml-2' onClick={() => !extensionDeleting && setShowDelete(true)} loading={extensionDeleting} danger semiSmall>
+                  <Button
+                    className='ml-2'
+                    onClick={() => !extensionDeleting && setShowDelete(true)}
+                    loading={extensionDeleting}
+                    danger
+                    semiSmall
+                  >
                     <ExclamationTriangleIcon className='w-5 h-5 mr-1' />
                     {t('extension.settings.delete')}
                   </Button>
@@ -586,7 +610,12 @@ const ExtensionSettings = ({
 
           {!isSettings && (
             <div>
-              <Button className='mr-2 border-indigo-100 dark:text-gray-50 dark:border-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600' onClick={onCancel} secondary regular>
+              <Button
+                className='mr-2 border-indigo-100 dark:text-gray-50 dark:border-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600'
+                onClick={onCancel}
+                secondary
+                regular
+              >
                 {t('common.cancel')}
               </Button>
               <Button type='submit' loading={extensionSaving} primary regular>

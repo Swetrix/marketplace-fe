@@ -12,21 +12,15 @@ const Checklist = () => {
     <Title title={t('titles.checklist')}>
       <div className='bg-gray-50 dark:bg-slate-900'>
         <div className='w-11/12 md:w-4/5 mx-auto pb-16 pt-12 px-4 sm:px-6 lg:px-8 whitespace-pre-line'>
-          <h1 className='text-4xl font-bold text-gray-900 dark:text-gray-50 tracking-tight'>
-            {t('titles.checklist')}
-          </h1>
-          <p className='mt-4 text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
-            {t('checklist.desc')}
-          </p>
+          <h1 className='text-4xl font-bold text-gray-900 dark:text-gray-50 tracking-tight'>{t('titles.checklist')}</h1>
+          <p className='mt-4 text-lg text-gray-900 dark:text-gray-50 tracking-tight'>{t('checklist.desc')}</p>
 
           {_map(t('checklist.list', { returnObjects: true }), ({ title, desc }, index) => (
             <Fragment key={title}>
               <h3 className='text-2xl font-bold text-gray-900 dark:text-gray-50 tracking-tight mt-4'>
                 {`${1 + index}. ${title}`}
               </h3>
-              <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>
-                {desc}
-              </p>
+              <p className='text-lg text-gray-900 dark:text-gray-50 tracking-tight'>{desc}</p>
             </Fragment>
           ))}
 

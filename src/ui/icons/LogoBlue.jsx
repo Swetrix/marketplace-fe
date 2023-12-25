@@ -10,11 +10,7 @@ const LogoBlue = () => {
       viewBox='0 0 128 128'
       preserveAspectRatio='xMidYMid meet'
     >
-      <g
-        transform='translate(0,128) scale(0.1,-0.100000)'
-        fill='#4f46e5'
-        stroke='none'
-      >
+      <g transform='translate(0,128) scale(0.1,-0.100000)' fill='#4f46e5' stroke='none'>
         <path
           d='M3111 3466 c-106 -106 -189 -196 -185 -199 5 -2 35 -11 67 -18 56
 -12 58 -14 52 -38 -4 -14 -103 -343 -222 -731 -118 -388 -224 -735 -236 -772

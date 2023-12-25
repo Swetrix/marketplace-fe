@@ -2,9 +2,7 @@ import React, { memo } from 'react'
 import cx from 'clsx'
 import PropTypes from 'prop-types'
 
-const Checkbox = ({
-  label, hint, id, name, className, onChange, checked, hintClassName,
-}) => {
+const Checkbox = ({ label, hint, id, name, className, onChange, checked, hintClassName }) => {
   const identifier = id || name
 
   return (
@@ -21,9 +19,13 @@ const Checkbox = ({
         />
       </div>
       <div className='ml-3 text-sm'>
-        <label htmlFor={identifier} className='font-medium text-gray-700 dark:text-gray-200 cursor-pointer'>{label}</label>
+        <label htmlFor={identifier} className='font-medium text-gray-700 dark:text-gray-200 cursor-pointer'>
+          {label}
+        </label>
         {hint && (
-          <p id={`${identifier}-description`} className={cx('text-gray-500 dark:text-gray-300', hintClassName)}>{hint}</p>
+          <p id={`${identifier}-description`} className={cx('text-gray-500 dark:text-gray-300', hintClassName)}>
+            {hint}
+          </p>
         )}
       </div>
     </div>
@@ -31,9 +33,7 @@ const Checkbox = ({
 }
 
 Checkbox.propTypes = {
-  label: PropTypes.oneOfType([
-    PropTypes.string, PropTypes.node,
-  ]),
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   checked: PropTypes.bool.isRequired,
   hint: PropTypes.string,
   onChange: PropTypes.func,
@@ -46,7 +46,7 @@ Checkbox.propTypes = {
 Checkbox.defaultProps = {
   label: '',
   hint: '',
-  onChange: () => { },
+  onChange: () => {},
   id: '',
   className: '',
   name: '',

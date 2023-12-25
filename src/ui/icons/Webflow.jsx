@@ -3,15 +3,8 @@ import cx from 'clsx'
 import PropTypes from 'prop-types'
 
 const Webflow = ({ theme, className }) => (
-  <svg
-    className={className}
-    x='0px'
-    y='0px'
-    viewBox='0 0 808.3 203.3'
-  >
-    <title>
-      Webflow
-    </title>
+  <svg className={className} x='0px' y='0px' viewBox='0 0 808.3 203.3'>
+    <title>Webflow</title>
     <path
       className={cx({
         'fill-white': theme === 'dark',

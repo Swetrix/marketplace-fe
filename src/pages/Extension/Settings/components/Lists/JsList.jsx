@@ -4,15 +4,7 @@ import Button from '../../../../../ui/Button'
 import { subStr } from '../../../../../utils/subStr'
 import _isEmpty from 'lodash/isEmpty'
 
-const JsList = ({
-  file,
-  fileURL,
-  removeFile,
-  disabled,
-  handleEditMode,
-  isCodeEditing
-}) => {
-
+const JsList = ({ file, fileURL, removeFile, disabled, handleEditMode, isCodeEditing }) => {
   if (_isEmpty(file) && _isEmpty(fileURL)) return null
 
   if (file?.name || fileURL !== '') {
@@ -23,23 +15,20 @@ const JsList = ({
         </p>
         <div className='flex mw-full sm: justify-between'>
           {!isCodeEditing && (
-            <Button
-              secondary
-              regular
-              onClick={() => handleEditMode()}
-            >
-              <PencilIcon className='w-4 h-4 cursor-pointer'/>
+            <Button secondary regular onClick={() => handleEditMode()}>
+              <PencilIcon className='w-4 h-4 cursor-pointer' />
             </Button>
           )}
 
-            <Button
-              className='ml-2'
-              semiDanger
-              regular
-              onClick={() => {
+          <Button
+            className='ml-2'
+            semiDanger
+            regular
+            onClick={() => {
               if (!disabled) return removeFile(file)
-            }}>
-            <TrashIcon className='w-4 h-4 cursor-pointer'/>
+            }}
+          >
+            <TrashIcon className='w-4 h-4 cursor-pointer' />
           </Button>
         </div>
       </div>
