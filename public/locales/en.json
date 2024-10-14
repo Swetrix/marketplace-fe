@@ -136,6 +136,7 @@
   "profileSettings": {
     "general": "General settings",
     "update": "Update profile",
+    "updated": "Profile settings updated",
     "noLink": "Didn't receive a link to confirm the email address? Request a new one!",
     "other": "Other settings",
     "owned": "Your extensions",
