@@ -25,7 +25,7 @@ const InstalledSettings = ({ extensions, setInstallExtensions, generateError }) 
 
   const onSubmit = () => {
     if (idValue === extension?.projectId || idValue === '') {
-      generateError(t('ExtensionSettings.errors.sameId'))
+      generateError('This extension is already installed for this project.')
       return
     }
 
@@ -68,8 +68,8 @@ const InstalledSettings = ({ extensions, setInstallExtensions, generateError }) 
           name='name'
           id='name'
           type='text'
-          hint='Search your project in ID, if you want to install extension.'
-          label="Project's ID"
+          hint='Enter the project ID you want to install the extension to.'
+          label='Project ID'
         />
         <div className='flex justify-between mt-8 h-20 sm:h-min'>
           <div className='flex flex-wrap items-center'>
