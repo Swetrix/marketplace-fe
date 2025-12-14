@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> Swetrix Marketplace is deprecated as of 14 December 2025. I decided to focus on building and improving our core features for now. Please let us know on [Discord](https://swetrix.com/discord) if you're interested in using Swetrix Markerplace and custom extensions.
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://swetrix.com/assets/logo_white.png">
   <img alt="" src="https://swetrix.com/assets/logo_blue.png" height="80">
